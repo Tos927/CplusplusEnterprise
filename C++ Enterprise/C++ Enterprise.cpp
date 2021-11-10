@@ -53,7 +53,7 @@ int main()
             {
                 allBullets.clear();
                 ResetToCenter(ship);
-                level = NewLevel(1, 5, 2, 20, 5);
+                level = NewLevel(5, 20, 20, 2, 50);
             }
        
             // Rendu
