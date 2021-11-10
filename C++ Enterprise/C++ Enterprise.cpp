@@ -51,6 +51,7 @@ int main()
             ShipMovement(ship, elapsedTime.asSeconds(), angle, vitesse);
             if (IsOutOfScreen(ship.ship.getPosition(), 10.0f))
             {
+                ResetToCenter(ship);
                 level = NewLevel(1, 5, 2, 20, 5);
             }
        

@@ -19,10 +19,7 @@ void InitializeShip(Ship& ship)
 	ship.react2.setOrigin(45.0f, 20.0f);
 
 	//Initialisation de la position du vaisseau
-	ship.ship.setPosition(sf::Vector2f(400.0f, 300.0f));
-	ship.weapon.setPosition(sf::Vector2f(400.0f, 300.0f));
-	ship.react1.setPosition(sf::Vector2f(400.0f, 300.0f));
-	ship.react2.setPosition(sf::Vector2f(400.0f, 300.0f));
+	ResetToCenter(ship);
 
 	//Colorisation elements
 	ship.ship.setFillColor(sf::Color::Blue);
@@ -74,4 +71,12 @@ bool IsOutOfScreen(sf::Vector2f shipPosition, float screenTrigger)
 		return true;
 	}
 	return false;
+}
+
+void ResetToCenter(Ship& ship) 
+{
+	ship.ship.setPosition(sf::Vector2f(500.0f, 500.0f));
+	ship.weapon.setPosition(sf::Vector2f(500.0f, 500.0f));
+	ship.react1.setPosition(sf::Vector2f(500.0f, 500.0f));
+	ship.react2.setPosition(sf::Vector2f(500.0f, 500.0f));
 }
