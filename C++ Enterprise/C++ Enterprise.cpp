@@ -1,12 +1,19 @@
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include "ShipeBehaviour.h"
 #include "GeneratorLevel.h"
 
 
 
 int main()
 {
+    //Preparation variable et autre pour le vaisseau
+    Ship ship;
+    float angle = 0;
+    float vitesse = 0;
+    InitializeShip(ship);
+
     std::vector<Planet> level;
 
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "C++ Enterprise");    // WIDTH et HEIGHT sont des variable constante présent dans "GeneratorLevel.h"
@@ -29,7 +36,7 @@ int main()
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Space)
                     {
-                        level = NewLevel(1, 5, 2, 20, 5);
+                        
                     }
                     break;
 
@@ -41,9 +48,19 @@ int main()
 
             // Logique
             sf::Time elapsedTime = clock.restart();
+            ShipMovement(ship, elapsedTime.asSeconds(), angle, vitesse);
+            if (IsOutOfScreen(ship.ship.getPosition(), 10.0f))
+            {
+                level = NewLevel(1, 5, 2, 20, 5);
+            }
        
             // Rendu
             window.clear();
+
+            window.draw(ship.ship);
+            window.draw(ship.weapon);
+            window.draw(ship.react1);
+            window.draw(ship.react2);
 
             for (Planet p : level) {
                 window.draw(p.pShape);
