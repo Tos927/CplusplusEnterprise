@@ -15,6 +15,7 @@ int main()
     InitializeShip(ship);
 
     std::vector<Planet> level;
+    std::vector<Bullets> allBullets;
 
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "C++ Enterprise");    // WIDTH et HEIGHT sont des variable constante présent dans "GeneratorLevel.h"
     window.setVerticalSyncEnabled(true);  // Frame rate de l'écran
@@ -36,7 +37,7 @@ int main()
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Space)
                     {
-                        
+                        CreateBullet(allBullets, 5.0f, angle, ship.ship.getPosition());
                     }
                     break;
 
@@ -65,6 +66,11 @@ int main()
 
             for (Planet p : level) {
                 window.draw(p.pShape);
+            }
+
+            for (Bullets bul : allBullets) 
+            {
+                window.draw(bul.bullet);
             }
 
             // Whatever I want to draw goes here

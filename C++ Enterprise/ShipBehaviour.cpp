@@ -1,6 +1,7 @@
 #include "ShipBehaviour.h"
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <vector>
 #define PI 3.141592653589793238463
 
 void InitializeShip(Ship& ship) 
@@ -79,4 +80,21 @@ void ResetToCenter(Ship& ship)
 	ship.weapon.setPosition(sf::Vector2f(500.0f, 500.0f));
 	ship.react1.setPosition(sf::Vector2f(500.0f, 500.0f));
 	ship.react2.setPosition(sf::Vector2f(500.0f, 500.0f));
+}
+
+void CreateBullet(std::vector<Bullets>& bullets, float bulletSpeed, float bulletAngle, sf::Vector2f shipPosition)
+{
+	Bullets newBullet;
+
+	newBullet.bullet.setSize({ 5.f, 2.f });
+
+	newBullet.position = shipPosition;
+	newBullet.bulletSpeed = bulletSpeed;
+	newBullet.direction.x = cos(bulletAngle / 180 * PI);
+	newBullet.direction.y = sin(bulletAngle / 180 * PI);
+
+	newBullet.bullet.setPosition(newBullet.position);
+
+	std::cout << "création bullet" << std::endl;
+	bullets.push_back(newBullet);
 }
