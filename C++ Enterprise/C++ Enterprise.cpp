@@ -4,8 +4,6 @@
 #include "ShipBehaviour.h"
 #include "GeneratorLevel.h"
 
-
-
 int main()
 {
     //Preparation variable et autre pour le vaisseau
@@ -37,7 +35,7 @@ int main()
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Space)
                     {
-                        CreateBullet(allBullets, 100.0f, angle, ship);
+                        CreateBullet(allBullets, 300.0f, angle, ship);
                     }
                     break;
 
@@ -50,6 +48,7 @@ int main()
             // Logique
             sf::Time elapsedTime = clock.restart();
             ShipMovement(ship, elapsedTime.asSeconds(), angle, vitesse);
+            ActualisationProps(level, allBullets);
             if (IsOutOfScreen(ship.ship.getPosition(), 10.0f))
             {
                 allBullets.clear();

@@ -1,5 +1,6 @@
 
 #include "GeneratorLevel.h"
+#include "ShipBehaviour.h"
 #include <iostream>
 #include <vector>
 
@@ -44,3 +45,10 @@ std::vector<Planet> NewLevel(int planetMax, int planetMin, float radiusMax, floa
 
 	return allPlanets;
 }
+
+//void AddRessources(Ship& ship, Planet planet) 
+//{
+//	sf::Text ressourcesCounter;
+//	ressourcesCounter.setString("Ressource : " + );
+//
+//}

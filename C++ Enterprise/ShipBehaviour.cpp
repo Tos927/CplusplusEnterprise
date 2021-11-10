@@ -1,4 +1,5 @@
 #include "ShipBehaviour.h"
+#include "GeneratorLevel.h"
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <vector>
@@ -96,11 +97,40 @@ void CreateBullet(std::vector<Bullets>& bullets, float bulletSpeed, float bullet
 	newBullet.bullet.setPosition(newBullet.position);
 	newBullet.bullet.setRotation(shipPosition.ship.getRotation());
 
-	std::cout << "création bullet" << std::endl;
+	newBullet.damage = shipPosition.damagePower;
+
 	bullets.push_back(newBullet);
 }
 
 void MouvBullet(Bullets& bullet, float deltaTime) {
 	sf::Vector2f move = bullet.direction * bullet.bulletSpeed * deltaTime;
 	bullet.bullet.move(move);
+}
+
+void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bullet)
+{
+	auto bulIt = bullet.begin();
+	auto pIt = planete.begin();
+	while (pIt != planete.end())
+	{
+		while (bulIt != bullet.end())
+		{
+			float distance = std::sqrt(pIt->position.x * (*bulIt).bullet.getPosition().x + pIt->position.y * (*bulIt).bullet.getPosition().y);
+			if (pIt == planete.begin() && bulIt == bullet.begin())
+			{
+				std::cout << distance << std::endl;
+			}
+			if (distance <= pIt->radius)
+			{
+				pIt->vie -= bulIt->damage;
+				bulIt = bullet.erase(bulIt);
+				std::cout << "Touche" << std::endl;
+			}
+			else
+			{
+				bulIt++;
+			}
+		}
+		pIt++;
+	}
 }
