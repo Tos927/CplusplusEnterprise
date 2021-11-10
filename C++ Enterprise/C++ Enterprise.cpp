@@ -29,7 +29,7 @@ int main()
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Space)
                     {
-                        level = NewLevel();
+                        level = NewLevel(1, 5, 2, 20, 5);
                     }
                     break;
 

@@ -3,10 +3,10 @@
 #include <iostream>
 #include <vector>
 
-std::vector<Planet> NewLevel() {
+std::vector<Planet> NewLevel(int planetMax, int planetMin, float radiusMax, float radiusMin, float security) {
 	// int r = ((double)rand() / RAND_MAX) * (range_max - range_min) + range_min;
 
-	int planets = ((double)rand() / RAND_MAX) * (double(MAX_PLANET) - double(MIN_PLANET)) + MIN_PLANET;
+	int planets = ((double)rand() / RAND_MAX) * (double(planetMax) - double(planetMin)) + planetMin;
 	std::vector<Planet> allPlanets;
 	std::cout << "Nombre de planet :" << planets << std::endl;
 
@@ -14,7 +14,7 @@ std::vector<Planet> NewLevel() {
 		Planet newPlanet;
 		while (!newPlanet.isValide) {
 			// initialisation aléatoire des valeur
-			float radius = ((double)rand() / RAND_MAX) * (double(MAX_RADIUS) - double(MIN_RADIUS)) + double(MIN_RADIUS);
+			float radius = ((double)rand() / RAND_MAX) * (double(radiusMax) - double(radiusMin)) + double(radiusMin);
 			newPlanet.radius = radius;
 			newPlanet.pShape.setOrigin(radius, radius);
 			float posX = ((double)rand() / RAND_MAX) * ((double(WIDTH) - double(radius)) - double(radius)) + double(radius);
@@ -26,7 +26,7 @@ std::vector<Planet> NewLevel() {
 			bool collideWithOther = false;
 			for (Planet p : allPlanets) {
 				float dist = std::sqrt(p.position.x * newPlanet.position.x + p.position.y * newPlanet.position.y);
-				if (dist + (radius + SECURITY_RADIUS) + (p.radius + SECURITY_RADIUS) <= 0) {
+				if (dist + (radius + security) + (p.radius + security) <= 0) {
 					collideWithOther = true;
 				}
 			}
