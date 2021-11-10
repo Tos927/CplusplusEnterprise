@@ -152,6 +152,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="C++ Enterprise.cpp" />
+    <ClCompile Include="GeneratorLevel.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GeneratorLevel.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
