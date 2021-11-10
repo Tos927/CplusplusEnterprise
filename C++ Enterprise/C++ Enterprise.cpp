@@ -7,6 +7,7 @@ int main()
     //Preparation variable et autre pour le vaisseau
     Ship ship;
     float angle = 0;
+    float vitesse = 0;
     InitializeShip(ship);
 
     sf::RenderWindow window(sf::VideoMode(1000, 1000), "C++ Enterprise");
@@ -33,7 +34,7 @@ int main()
 
         // Logique
         sf::Time elapsedTime = clock.restart();
-        ShipMovement(ship, elapsedTime.asSeconds(), angle);
+        ShipMovement(ship, elapsedTime.asSeconds(), angle, vitesse);
         if (IsOutOfScreen(ship.ship.getPosition(), 10.0f))
         {
             std::cout << "Touché" << std::endl;

@@ -31,7 +31,7 @@ void InitializeShip(Ship& ship)
 	ship.react2.setFillColor(sf::Color::Green);
 }
 
-void ShipMovement(Ship& ship, float deltaTime, float& angle) 
+void ShipMovement(Ship& ship, float deltaTime, float& angle, float& vitesse) 
 {
 	int rotationSpeed = 200;
 
