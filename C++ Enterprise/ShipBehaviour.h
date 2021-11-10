@@ -13,3 +13,4 @@ struct Ship
 
 void InitializeShip(Ship& ship);
 void ShipMovement(Ship& ship, float deltaTime, float& angle);
+bool IsOutOfScreen(sf::Vector2f shipPosition, float screenTrigger);

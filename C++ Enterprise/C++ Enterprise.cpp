@@ -34,6 +34,10 @@ int main()
         // Logique
         sf::Time elapsedTime = clock.restart();
         ShipMovement(ship, elapsedTime.asSeconds(), angle);
+        if (IsOutOfScreen(ship.ship.getPosition(), 10.0f))
+        {
+            std::cout << "Touché" << std::endl;
+        }
 
         // Rendu
         window.clear();

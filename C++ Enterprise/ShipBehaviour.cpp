@@ -38,11 +38,11 @@ void ShipMovement(Ship& ship, float deltaTime, float& angle)
 	//Rotation du vaisseau
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) 
 	{
-		angle += rotationSpeed * deltaTime;
+		angle -= rotationSpeed * deltaTime;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) 
 	{
-		angle -= rotationSpeed * deltaTime;
+		angle += rotationSpeed * deltaTime;
 	}
 	ship.ship.setRotation(angle);
 	ship.weapon.setRotation(angle);
@@ -65,24 +65,13 @@ void ShipMovement(Ship& ship, float deltaTime, float& angle)
 		ship.react2.move(direction);
 
 	}
+}
 
-	/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+bool IsOutOfScreen(sf::Vector2f shipPosition, float screenTrigger)
+{
+	if (shipPosition.x + screenTrigger >= 1000 || shipPosition.x + screenTrigger <= 0 || shipPosition.y + screenTrigger >= 1000 || shipPosition.y + screenTrigger <= 0)
 	{
-		ship.move(sf::Vector2f(0.f, -speed * deltaTime));
-		weapon.move(sf::Vector2f(0.f, -speed * deltaTime));
+		return true;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-	{
-		ship.move(sf::Vector2f(0.f, speed * deltaTime));
-		weapon.move(sf::Vector2f(0.f, speed * deltaTime));
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-	{
-		ship.move(sf::Vector2f(-speed * deltaTime, 0.f));
-		weapon.move(sf::Vector2f(-speed * deltaTime, 0.f));
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-	{
-		ship.move(sf::Vector2f(speed * deltaTime, 0.f));
-		weapon.move(sf::Vector2f(speed * deltaTime, 0.f));*/
+	return false;
 }
