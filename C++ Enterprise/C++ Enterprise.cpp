@@ -37,7 +37,7 @@ int main()
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Space)
                     {
-                        CreateBullet(allBullets, 5.0f, angle, ship.ship.getPosition());
+                        CreateBullet(allBullets, 100.0f, angle, ship);
                     }
                     break;
 
@@ -52,6 +52,7 @@ int main()
             ShipMovement(ship, elapsedTime.asSeconds(), angle, vitesse);
             if (IsOutOfScreen(ship.ship.getPosition(), 10.0f))
             {
+                allBullets.clear();
                 ResetToCenter(ship);
                 level = NewLevel(1, 5, 2, 20, 5);
             }
@@ -68,8 +69,9 @@ int main()
                 window.draw(p.pShape);
             }
 
-            for (Bullets bul : allBullets) 
+            for (Bullets& bul : allBullets) 
             {
+                MouvBullet(bul, elapsedTime.asSeconds());
                 window.draw(bul.bullet);
             }
 

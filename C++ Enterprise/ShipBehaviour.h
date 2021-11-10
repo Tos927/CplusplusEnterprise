@@ -24,4 +24,5 @@ void InitializeShip(Ship& ship);
 void ShipMovement(Ship& ship, float deltaTime, float& angle, float& vitesse);
 bool IsOutOfScreen(sf::Vector2f shipPosition, float screenTrigger);
 void ResetToCenter(Ship& ship);
-void CreateBullet(std::vector<Bullets>& bullets, float bulletSpeed, float bulletAngle, sf::Vector2f shipPosition);
+void CreateBullet(std::vector<Bullets>& bullets, float bulletSpeed, float bulletAngle, const Ship& shipPosition);
+void MouvBullet(Bullets& bullet, float deltaTime);
