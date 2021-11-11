@@ -8,6 +8,9 @@
 
 int main()
 {
+    // initialisation aléatoire
+    srand(time(NULL));
+
     //Preparation variable et autre pour le vaisseau
     Ship ship;
     float angle = 0;
@@ -52,7 +55,7 @@ int main()
             if (IsOutOfScreen(ship.ship.getPosition(), 10.0f))
             {
                 ResetToCenter(ship);
-                level = NewLevel(1, 5, 2, 20, 5);
+                level = NewLevel(7, 7, 50, 50, 10);
             }
        
             // Rendu
