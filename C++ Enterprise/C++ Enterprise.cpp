@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "ShipBehaviour.h"
 #include "GeneratorLevel.h"
+#include "EnemiesBehaviour.h"
 
 
 
@@ -18,6 +19,7 @@ int main()
     InitializeShip(ship);
 
     std::vector<Planet> level;
+    std::vector<Enemy> allEnemies;
 
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "C++ Enterprise");    // WIDTH et HEIGHT sont des variable constante présent dans "GeneratorLevel.h"
     window.setVerticalSyncEnabled(true);  // Frame rate de l'écran
@@ -39,7 +41,7 @@ int main()
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Space)
                     {
-                        
+                        CreatNewEnemy(allEnemies, { 500,500 }, 2);
                     }
                     break;
 
@@ -68,6 +70,25 @@ int main()
 
             for (Planet p : level) {
                 window.draw(p.pShape);
+            }
+
+            for (Enemy& enemy : allEnemies) {
+                switch (enemy.type)
+                {
+                    case 0: {
+                        break;
+                    }
+                    case 1: {
+                        break;
+                    }
+                    case 2: {
+                        break;
+                    }
+                    case 3: {
+                        break;
+                    }
+                }
+                window.draw(enemy.shape);
             }
 
             // Whatever I want to draw goes here
