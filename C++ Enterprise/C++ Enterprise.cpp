@@ -1,12 +1,11 @@
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
-
 #include "Menu.h"
 #include "AppPath.h"
-
 #include "ShipBehaviour.h"
 #include "GeneratorLevel.h"
+
 
 int main()
 {
@@ -52,7 +51,7 @@ int main()
 
         // Input
         sf::Event event;
-        while (window.pollEvent(event)) {
+        while (window.pollEvent(event)) 
             {
                 switch (event.type)
                 {
@@ -163,6 +162,6 @@ int main()
             }
 
             window.display();
-        }
+        
     }
 }
