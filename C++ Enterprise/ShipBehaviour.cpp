@@ -110,10 +110,10 @@ void MouvBullet(Bullets& bullet, float deltaTime) {
 
 void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bullet)
 {
-	auto bulIt = bullet.begin();
 	auto pIt = planete.begin();
 	while (pIt != planete.end())
 	{
+		auto bulIt = bullet.begin();
 		while (bulIt != bullet.end())
 		{
 			float distance = std::sqrt(pow(pIt->position.x - (*bulIt).bullet.getPosition().x, 2) + pow(pIt->position.y - (*bulIt).bullet.getPosition().y, 2));
@@ -130,7 +130,6 @@ void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bull
 		}
 		if ((*pIt).vie <= 0)
 		{
-
 			pIt = planete.erase(pIt);
 		}
 		else
