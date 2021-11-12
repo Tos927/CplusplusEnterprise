@@ -3,6 +3,11 @@
 #include <iostream>
 #include <vector>
 
+
+/// <summary>
+/// Créer de façon aléatoire un nouvel ensemble de planète de nombre et taille prédéfinie. Une marge de sécurité peut être ajoutée entre chaques planètes.
+/// </summary>
+/// <returns>Retourne un nouveau tableau contenant les différentes planètes.</returns>
 std::vector<Planet> NewLevel(int planetMax, int planetMin, float radiusMax, float radiusMin, float security) {
 
 	int planets = ((double)rand() / RAND_MAX) * (double(planetMax) - double(planetMin)) + planetMin;

@@ -1,10 +1,12 @@
 
 #include <iostream>
-#include <vector>
 #include "EnemiesBehaviour.h"
+#include <map>
 
 
 void InitializeEnemy(Enemy& enemy, int type) {
+	enemy.shape.setFillColor(sf::Color::Transparent);
+	enemy.shape.setOutlineThickness(2);
 
 	switch (type)
 	{
@@ -12,7 +14,7 @@ void InitializeEnemy(Enemy& enemy, int type) {
 			// Apparence
 			enemy.type = TypeOfEnemies::SimpleEnemy;
 			enemy.shape = sf::CircleShape(20, 3);
-			enemy.shape.setFillColor(sf::Color::Blue);
+			enemy.shape.setOutlineColor(sf::Color::Blue);
 			enemy.shape.setOrigin(20, 20);
 			break;
 		}
@@ -21,7 +23,7 @@ void InitializeEnemy(Enemy& enemy, int type) {
 			// Apparence
 			enemy.type = TypeOfEnemies::HeavyEnemy;
 			enemy.shape = sf::CircleShape(20, 5);
-			enemy.shape.setFillColor(sf::Color::Red);
+			enemy.shape.setOutlineColor(sf::Color::Red);
 			enemy.shape.setOrigin(20, 20);
 
 			// Système de tire
@@ -39,8 +41,6 @@ void InitializeEnemy(Enemy& enemy, int type) {
 			// Apparence
 			enemy.type = TypeOfEnemies::BomberEnemy;
 			enemy.shape.setRadius(10);
-			enemy.shape.setOutlineThickness(1);
-			enemy.shape.setFillColor(sf::Color::Transparent);
 			enemy.shape.setOutlineColor(sf::Color::Red);
 			enemy.shape.setOrigin(10, 10);
 
@@ -53,8 +53,12 @@ void InitializeEnemy(Enemy& enemy, int type) {
 			// Apparence
 			enemy.type = TypeOfEnemies::TorpedoLuncherEnemy;
 			enemy.shape = sf::CircleShape(15, 4);
-			enemy.shape.setFillColor(sf::Color::Cyan);
+			enemy.shape.setOutlineColor(sf::Color::Cyan);
 			enemy.shape.setOrigin(15, 15);
+
+			// Tire des torpille
+			enemy.rate = 5.f;
+			enemy.defaultRate = 5.f;
 			break;
 		}
 
@@ -62,12 +66,59 @@ void InitializeEnemy(Enemy& enemy, int type) {
 }
 
 
+/// <summary>
+/// Permet de créer un nouvel ennemi d'un certain type à une position précise. 0 : Simple ; 1 : Heavy ; 2 : Bomber ; 3 : TorpedoLuncher.
+/// </summary>
 void CreatNewEnemy(std::vector<Enemy>& allEnemies, sf::Vector2f position, const int& type) {
 	Enemy newEnemy;
 	InitializeEnemy(newEnemy, type);
 	newEnemy.shape.setPosition(position);
 	allEnemies.push_back(newEnemy);
 }
+
+
+/// <summary>
+/// Permet de créer une nouvelle torpille initialisée et à des coordonnées précises. Sera stocké dans une map (int, Torpedo) contenant tout les topilles du jeu.
+/// </summary>
+/// <returns>Clef de la nouvelle torpille stocké dans allTorpedo, type integer</returns>
+int CreatNewTorpedo(std::map<int, Torpedo>& allTorpedo, sf::Vector2f startPosition) {
+	Torpedo newTorpedo;
+	newTorpedo.shap = sf::CircleShape(5, 3);
+	newTorpedo.shap.setPosition(startPosition);
+	newTorpedo.shap.setOrigin(5, 5);
+	newTorpedo.shap.setFillColor(sf::Color::Transparent);
+	newTorpedo.shap.setOutlineThickness(2);
+
+	int key = 0;
+
+	if (allTorpedo.size() != 0) {
+		std::map<int, Torpedo>::iterator it = allTorpedo.end();
+		it--;
+		key = it->first + 1;
+	}
+
+	allTorpedo[key] = newTorpedo;
+	return key;
+}
+
+
+/// <summary>
+/// Deplace l'object référencé de sa position initiale aux coordonnées ciblées (relatif ou absolue). Peut avoir une vitesse et peut tourner l'object de référence vers l'objet cible.
+/// </summary>
+void MoveToPoint(sf::CircleShape& origin, const sf::Vector2f& target, const int& speed, bool isRotate, const float& deltaTime) {
+	double radians = atan2(target.y - origin.getPosition().y, target.x - origin.getPosition().x);
+
+	sf::Vector2f direction;
+	direction.x = cos(radians) * speed * deltaTime;
+	direction.y = sin(radians) * speed * deltaTime;
+
+	origin.move(direction);
+
+	if (isRotate) {
+		origin.setRotation((radians * 180 / 3.141592653589793238463) + 90);
+	}
+}
+
 
 
 void StratHeavyMove(Enemy& enemy, sf::Vector2f shipPosition, const float& deltaTime) {
@@ -79,6 +130,19 @@ void StratHeavyMove(Enemy& enemy, sf::Vector2f shipPosition, const float& deltaT
 void StratBomberMove(Enemy& enemy, sf::Vector2f shipPosition, const float& deltaTime) {
 	// L'ennemi ce dirige sur la position du vaiseau
 	MoveToPoint(enemy.shape, shipPosition, enemy.speed, false, deltaTime);
+}
+
+void StratTorpedoLuncherMove(Enemy& enemy, std::map<int, Torpedo>& enemyTorpedo, sf::Vector2f shipPosition, const float& deltaTime) {
+
+	std::map<int, Torpedo>::iterator it = enemyTorpedo.find(enemy.torpedoKey);
+
+	if (it == enemyTorpedo.end()) {
+		enemy.rate -= deltaTime;
+		if (enemy.rate < 0) {
+			enemy.torpedoKey = CreatNewTorpedo(enemyTorpedo, enemy.shape.getPosition());
+			enemy.rate = enemy.defaultRate;
+		}
+	}
 }
 
 
@@ -103,20 +167,5 @@ void Shoot(Enemy& enemy, const float& deltaTime) {
 				enemy.nbBulletSemi = enemy.defaultNbBulletSemi;
 			}
 		}
-	}
-}
-
-
-void MoveToPoint(sf::CircleShape& origin, const sf::Vector2f& target, const int& speed, bool isRotate, const float& deltaTime) {
-	double radians = atan2(target.y - origin.getPosition().y, target.x - origin.getPosition().x);
-
-	sf::Vector2f direction;
-	direction.x = cos(radians) * speed * deltaTime;
-	direction.y = sin(radians) * speed * deltaTime;
-
-	origin.move(direction);
-
-	if (isRotate) {
-		origin.setRotation(radians * 180 / 3.141592653589793238463);
 	}
 }

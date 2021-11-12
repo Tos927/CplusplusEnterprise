@@ -153,13 +153,11 @@
   <ItemGroup>
     <ClCompile Include="C++ Enterprise.cpp" />
     <ClCompile Include="GeneratorLevel.cpp" />
-    <ClCompile Include="Mathematique.cpp" />
     <ClCompile Include="ShipBehaviour.cpp" />
     <ClCompile Include="EnemiesBehaviour.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratorLevel.h" />
-    <ClInclude Include="Mathematique.h" />
     <ClInclude Include="ShipBehaviour.h" />
     <ClInclude Include="EnemiesBehaviour.h" />
   </ItemGroup>

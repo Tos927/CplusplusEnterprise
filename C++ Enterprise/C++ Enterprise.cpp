@@ -20,6 +20,7 @@ int main()
 
     std::vector<Planet> level;
     std::vector<Enemy> allEnemies;
+    std::map<int, Torpedo> enemyTorpedo;
 
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "C++ Enterprise");    // WIDTH et HEIGHT sont des variable constante présent dans "GeneratorLevel.h"
     window.setVerticalSyncEnabled(true);  // Frame rate de l'écran
@@ -41,10 +42,10 @@ int main()
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Space)
                     {
-                        CreatNewEnemy(allEnemies, { 500,500 }, 0);
-                        CreatNewEnemy(allEnemies, { 600,500 }, 1);
-                        CreatNewEnemy(allEnemies, { 700,500 }, 2);
-                        CreatNewEnemy(allEnemies, { 800,500 }, 3);
+                        /*CreatNewEnemy(allEnemies, { 500, 500}, 0);
+                        CreatNewEnemy(allEnemies, { 600, 500 }, 1);
+                        CreatNewEnemy(allEnemies, { 700, 500 }, 2);*/
+                        CreatNewEnemy(allEnemies, { 800, 500 }, 3);
                     }
                     break;
 
@@ -71,8 +72,13 @@ int main()
             window.draw(ship.react1);
             window.draw(ship.react2);
 
-            for (Planet p : level) {
+            for (const Planet& p : level) {
                 window.draw(p.pShape);
+            }
+
+            for (std::pair<const int, Torpedo>& torpedo : enemyTorpedo) {
+                MoveToPoint(torpedo.second.shap, ship.ship.getPosition(), torpedo.second.speed, true, elapsedTime.asSeconds());
+                window.draw(torpedo.second.shap);
             }
 
             for (Enemy& enemy : allEnemies) {
@@ -90,6 +96,7 @@ int main()
                         break;
                     }
                     case 3: {
+                        StratTorpedoLuncherMove(enemy, enemyTorpedo, ship.ship.getPosition(), elapsedTime.asSeconds());
                         break;
                     }
                 }
