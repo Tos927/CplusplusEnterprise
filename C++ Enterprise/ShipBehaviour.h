@@ -3,12 +3,13 @@
 #include "Menu.h"
 #include "AppPath.h"
 #include "GeneratorLevel.h"
+#include "Menu.h"
 #include <vector>
 
 struct Ship
 {
 	int damagePower = 50;
-	int shipLife = 100;
+	int currentLife;
 	sf::CircleShape ship;
 	sf::RectangleShape weapon;
 	sf::RectangleShape react1;
@@ -29,6 +30,6 @@ void InitializeShip(Ship& ship);
 void ShipMovement(Ship& ship, float deltaTime, float& angle, float& vitesse);
 bool IsOutOfScreen(sf::Vector2f shipPosition, float screenTrigger);
 void ResetToCenter(Ship& ship);
-void CreateBullet(std::vector<Bullets>& bullets, float bulletSpeed, float bulletAngle, const Ship& shipPosition);
+void CreateBullet(std::vector<Bullets>& bullets, InfoShip& infoShip, float bulletAngle, const Ship& shipPosition);
 void MouvBullet(Bullets& bullet, float deltaTime);
 void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bullet, RessourcesStorage& ressource);
