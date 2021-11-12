@@ -62,6 +62,13 @@ int main()
                     {
                         displayZone = !displayZone;
                     }
+                    if (event.key.code == sf::Keyboard::I && equip1.ownRessource > equip1.neededRessources)
+                    {
+                        equip1.ownRessource -= equip1.neededRessources;
+                        equip1.level++;
+                        equip1.textLevel.setString("LvL" + std::to_string(equip1.level));
+                        std::cout << equip1.level << std::endl;
+                    }
                     break;
 
                 default:
@@ -81,21 +88,34 @@ int main()
             if (displayMenu)
             {
                 
+                // Draw the Menu background
                 window.draw(menu);
+
+                // Draw Ship Info
                 window.draw(shipInfo);
                 window.draw(arialText);
 
+                // Draw the different Equip struct
                 window.draw(equip1.background);
                 window.draw(equip1.name);
+                window.draw(equip1.levelBg);
+                window.draw(equip1.textLevel);
+                
 
                 window.draw(equip2.background);
                 window.draw(equip2.name);
+                window.draw(equip2.levelBg);
+                window.draw(equip2.textLevel);
 
                 window.draw(equip3.background);
                 window.draw(equip3.name);
+                window.draw(equip3.levelBg);
+                window.draw(equip3.textLevel);
 
                 window.draw(equip4.background);
                 window.draw(equip4.name);
+                window.draw(equip4.levelBg);
+                window.draw(equip4.textLevel);
             }
 
             if (displayZone)
