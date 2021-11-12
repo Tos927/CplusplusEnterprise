@@ -37,7 +37,7 @@ sf::RectangleShape Menu()
     return menu;
 }
 
-struct EquipStruct Equip(std::string name, sf::Vector2f posNameText, sf::Vector2f posBackground, sf::Font& arialttf)
+struct EquipStruct Equip(std::string key, std::string name, sf::Vector2f posNameText, sf::Vector2f posBackground, sf::Font& arialttf)
 {
     EquipStruct equip;
 
@@ -52,6 +52,8 @@ struct EquipStruct Equip(std::string name, sf::Vector2f posNameText, sf::Vector2
 
     equip.textLevel = SetUpText("LvL" + std::to_string(equip.level), arialttf, 25, sf::Color::White, posNameText + sf::Vector2f(195, 40));
 
+    equip.keyText = SetUpText("Press " + key, arialttf, 15, sf::Color::White, posNameText + sf::Vector2f(195, 0));
+
     equip.neededResourcesText = SetUpText("Needed resources : " + std::to_string(equip.neededResources), arialttf, 12, sf::Color::Black, posNameText + sf::Vector2f(0, 20));
 
     return equip;
@@ -65,8 +67,7 @@ struct RessourcesStorage Storage(sf::Font& arialttf)
 
     storage.storage = SetUpText("Storage", arialttf, 20, sf::Color::Black, sf::Vector2f(595, 170));
 
-    storage.nameResource = SetUpText("Stone " + std::to_string(storage.ownResource), arialttf, 15, sf::Color::Black, sf::Vector2f(585, 200));
-
+    storage.nameResource = SetUpText(storage.resource + std::to_string(storage.ownResource), arialttf, 11, sf::Color::Black, sf::Vector2f(585, 200));
 
 
     return storage;

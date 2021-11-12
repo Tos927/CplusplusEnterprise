@@ -1,7 +1,6 @@
 #include "ShipBehaviour.h"
 #include "GeneratorLevel.h"
 #include "Menu.h"
-#include "AppPath.h"
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <vector>
@@ -85,21 +84,21 @@ void ResetToCenter(Ship& ship)
 	ship.react2.setPosition(sf::Vector2f(500.0f, 500.0f));
 }
 
-void CreateBullet(std::vector<Bullets>& bullets, float bulletSpeed, float bulletAngle, const Ship& shipPosition)
+void CreateBullet(std::vector<Bullets>& bullets, InfoShip& infoShip, float bulletAngle, const Ship& shipPosition)
 {
 	Bullets newBullet;
 
 	newBullet.bullet.setSize({ 5.f, 2.f });
 
 	newBullet.position = shipPosition.ship.getPosition();
-	newBullet.bulletSpeed = bulletSpeed;
+	newBullet.bulletSpeed = infoShip.bspeedPoints;
 	newBullet.direction.x = cos(shipPosition.ship.getRotation() / 180 * PI);
 	newBullet.direction.y = sin(shipPosition.ship.getRotation() / 180 * PI);
 
 	newBullet.bullet.setPosition(newBullet.position);
 	newBullet.bullet.setRotation(shipPosition.ship.getRotation());
 
-	newBullet.damage = shipPosition.damagePower;
+	newBullet.damage = infoShip.atkPoints;
 
 	bullets.push_back(newBullet);
 }
@@ -109,12 +108,12 @@ void MouvBullet(Bullets& bullet, float deltaTime) {
 	bullet.bullet.move(move);
 }
 
-void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bullet, RessourcesStorage& ressource)
+void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bullet)
 {
+	auto bulIt = bullet.begin();
 	auto pIt = planete.begin();
 	while (pIt != planete.end())
 	{
-		auto bulIt = bullet.begin();
 		while (bulIt != bullet.end())
 		{
 			float distance = std::sqrt(pow(pIt->position.x - (*bulIt).bullet.getPosition().x, 2) + pow(pIt->position.y - (*bulIt).bullet.getPosition().y, 2));
@@ -131,9 +130,8 @@ void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bull
 		}
 		if ((*pIt).vie <= 0)
 		{
+
 			pIt = planete.erase(pIt);
-			ressource.ownResource += 150;
-			ressource.nameResource.setString("Stone " + std::to_string(ressource.ownResource));
 		}
 		else
 		{
