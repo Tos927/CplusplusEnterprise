@@ -156,12 +156,14 @@
     <ClCompile Include="GeneratorLevel.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="ShipBehaviour.cpp" />
+    <ClCompile Include="Victory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppPath.h" />
     <ClInclude Include="GeneratorLevel.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="ShipBehaviour.h" />
+    <ClInclude Include="Victory.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
