@@ -27,7 +27,7 @@ int main()
     bool displayMenu = false;
     sf::RectangleShape menu = Menu();
     // Fond des informations du ship
-    sf::RectangleShape shipInfo = SetupBackground(sf::Vector2f(380, 30), sf::Color::Color(240, 240, 240), sf::Vector2f(120, 170));
+    sf::RectangleShape shipInfo = SetupBackground(sf::Vector2f(380, 70), sf::Color::Color(240, 240, 240), sf::Vector2f(120, 170));
 
     InfoShip infoShip;
 
