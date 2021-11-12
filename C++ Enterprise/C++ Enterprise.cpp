@@ -9,6 +9,9 @@
 
 int main()
 {
+    // initialisation aléatoire
+    srand(time(NULL));
+
     //Preparation variable et autre pour le vaisseau
     Ship ship;
     float angle = 0;
@@ -35,13 +38,13 @@ int main()
     int pTop = 90;
     int margin = 3;
 
-    EquipStruct equip1 = Equip("Equip1", posbackG + sf::Vector2f(margin, margin), posbackG, arialttf);
+    EquipStruct equip1 = Equip("E", "Deflector Shield", posbackG + sf::Vector2f(margin, margin), posbackG, arialttf);
 
-    EquipStruct equip2 = Equip("Equip2", posbackG + sf::Vector2f(pRight + margin, margin), posbackG + sf::Vector2f(pRight, 0), arialttf);
+    EquipStruct equip2 = Equip("R", "Phaser Canon", posbackG + sf::Vector2f(pRight + margin, margin), posbackG + sf::Vector2f(pRight, 0), arialttf);
 
-    EquipStruct equip3 = Equip("Equip3", posbackG + sf::Vector2f(margin, pTop + margin), posbackG + sf::Vector2f(0, pTop), arialttf);
+    EquipStruct equip3 = Equip("T", "Artillery", posbackG + sf::Vector2f(margin, pTop + margin), posbackG + sf::Vector2f(0, pTop), arialttf);
 
-    EquipStruct equip4 = Equip("Equip4", posbackG + sf::Vector2f(pRight + margin, pTop + margin), posbackG + sf::Vector2f(pRight, pTop), arialttf);
+    EquipStruct equip4 = Equip("Y", "Crew", posbackG + sf::Vector2f(pRight + margin, pTop + margin), posbackG + sf::Vector2f(pRight, pTop), arialttf);
 
     RessourcesStorage storage = Storage(arialttf);
 
@@ -64,17 +67,39 @@ int main()
                     {
                         displayMenu = !displayMenu;
                     }
-                    if (event.key.code == sf::Keyboard::I && storage.ownResource >= equip1.neededResources)
+                    if (event.key.code == sf::Keyboard::E && storage.ownResource >= equip1.neededResources && displayMenu)
                     {
                         storage.ownResource -= equip1.neededResources;
                         equip1.neededResources = equip1.neededResources + (equip1.neededResources / 2);
                         equip1.level++;
-                        equip1.textLevel.setString("LvL" + std::to_string(equip1.level));
-                        storage.nameResource.setString("Stone " + std::to_string(storage.ownResource));
-                        equip1.neededResourcesText.setString("Needed resources : " + std::to_string(equip1.neededResources));
 
                         std::cout << equip1.level << std::endl;
                     }
+                    if (event.key.code == sf::Keyboard::R && storage.ownResource >= equip2.neededResources && displayMenu)
+                    {
+                        storage.ownResource -= equip2.neededResources;
+                        equip2.neededResources = equip2.neededResources + (equip2.neededResources / 2);
+                        equip2.level++;
+
+                        std::cout << equip2.level << std::endl;
+                    }
+                    if (event.key.code == sf::Keyboard::T && storage.ownResource >= equip3.neededResources && displayMenu)
+                    {
+                        storage.ownResource -= equip3.neededResources;
+                        equip3.neededResources = equip3.neededResources + (equip3.neededResources / 2);
+                        equip3.level++;
+
+                        std::cout << equip3.level << std::endl;
+                    }
+                    if (event.key.code == sf::Keyboard::Y && storage.ownResource >= equip4.neededResources && displayMenu)
+                    {
+                        storage.ownResource -= equip4.neededResources;
+                        equip4.neededResources = equip4.neededResources + (equip4.neededResources / 2);
+                        equip4.level++;
+
+                        std::cout << equip4.level << std::endl;
+                    }
+                    
                     if (event.key.code == sf::Keyboard::Space)
                     {
                         CreateBullet(allBullets, 300.0f, angle, ship);
@@ -88,6 +113,21 @@ int main()
             // Logique
             sf::Time elapsedTime = clock.restart();
 
+            // Element du menu qui sont dynamique
+            storage.nameResource.setString(storage.resource + std::to_string(storage.ownResource));
+
+            equip1.textLevel.setString("LvL" + std::to_string(equip1.level));
+            equip1.neededResourcesText.setString("Needed resources : " + std::to_string(equip1.neededResources));
+
+            equip2.textLevel.setString("LvL" + std::to_string(equip2.level));
+            equip2.neededResourcesText.setString("Needed resources : " + std::to_string(equip2.neededResources));
+
+            equip3.textLevel.setString("LvL" + std::to_string(equip3.level));
+            equip3.neededResourcesText.setString("Needed resources : " + std::to_string(equip3.neededResources));
+
+            equip4.textLevel.setString("LvL" + std::to_string(equip4.level));
+            equip4.neededResourcesText.setString("Needed resources : " + std::to_string(equip4.neededResources));
+
             ShipMovement(ship, elapsedTime.asSeconds(), angle, vitesse);
             ActualisationProps(level, allBullets);
             if (IsOutOfScreen(ship.ship.getPosition(), 10.0f))
@@ -99,7 +139,6 @@ int main()
 
             // Rendu
             window.clear();
-
 
 
             // Whatever I want to draw goes here 
@@ -119,22 +158,28 @@ int main()
                 window.draw(equip1.levelBg);
                 window.draw(equip1.textLevel);
                 window.draw(equip1.neededResourcesText);
-
+                window.draw(equip1.keyText);
 
                 window.draw(equip2.background);
                 window.draw(equip2.name);
                 window.draw(equip2.levelBg);
                 window.draw(equip2.textLevel);
+                window.draw(equip2.neededResourcesText);
+                window.draw(equip2.keyText);
 
                 window.draw(equip3.background);
                 window.draw(equip3.name);
                 window.draw(equip3.levelBg);
                 window.draw(equip3.textLevel);
+                window.draw(equip3.neededResourcesText);
+                window.draw(equip3.keyText);
 
                 window.draw(equip4.background);
                 window.draw(equip4.name);
                 window.draw(equip4.levelBg);
                 window.draw(equip4.textLevel);
+                window.draw(equip4.neededResourcesText);
+                window.draw(equip4.keyText);
 
                 // Draw the storage
                 window.draw(storage.resourcesBg);
