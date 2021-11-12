@@ -46,9 +46,7 @@ std::vector<Planet> NewLevel(int planetMax, int planetMin, float radiusMax, floa
 	return allPlanets;
 }
 
-//void AddRessources(Ship& ship, Planet planet) 
-//{
-//	sf::Text ressourcesCounter;
-//	ressourcesCounter.setString("Ressource : " + );
-//
-//}
+void PlaneteDeath(Ship& ship, std::vector<Planet>::iterator pIt) 
+{
+
+}
