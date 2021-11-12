@@ -1,6 +1,6 @@
 #pragma once
 
-struct TextEquipInfoStruct
+struct EquipStruct
 {
     sf::Text name;
 
@@ -10,19 +10,39 @@ struct TextEquipInfoStruct
     sf::Text textLevel;
     sf::RectangleShape levelBg;
 
-    sf::Text nameRessource;
-    sf::RectangleShape ressourcesBg;
-    int ownRessource = 150;
-    int neededRessources = 25;
+    sf::Text nameResource;
+    sf::RectangleShape resourcesBg;
+
+    sf::Text neededResourcesText;
+    int neededResources = 25;
 };
 
-struct TextEquipInfoStruct Equip(std::string name, sf::Vector2f posNameText, sf::Vector2f posBackground, sf::Font& arialttf);
+struct RessourcesStorage
+{
+    sf::Text storage;
+    sf::RectangleShape resourcesBg;
 
+    std::string stone = "Stone";
+    sf::Text nameResource;
+    
+    int ownResource = 15000;
+};
+
+// Fonction qui Setup un text et le place dans la fenetre 
+sf::Text SetUpText(std::string textContent, sf::Font& arialttf, int charaSize, sf::Color color, sf::Vector2f posText);
+
+// Fonction qui Setup un RectangleShape/Background et le place dans la fenetre 
+sf::RectangleShape SetupBackground(sf::Vector2f backgroundSize, sf::Color color, sf::Vector2f posBackground);
+
+// Fonction qui crée le storage
+struct RessourcesStorage Storage(sf::Font& arialttf);
+
+//Fonction qui crée les Equip
+struct EquipStruct Equip(std::string name, sf::Vector2f posNameText, sf::Vector2f posBackground, sf::Font& arialttf);
+
+//Fonction qui crée le background du Menu
 sf::RectangleShape Menu();
 
-sf::RectangleShape ShipInfo();
-
-sf::Text TextShipInfo(sf::Font& arialttf);
 
 
 

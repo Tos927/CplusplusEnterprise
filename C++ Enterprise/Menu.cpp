@@ -4,11 +4,31 @@
 #include "Menu.h"
 #include "AppPath.h"
 
+sf::Text SetUpText(std::string textContent, sf::Font& arialttf, int charaSize, sf::Color color, sf::Vector2f posText)
+{
+    sf::Text text;
+
+    text.setString(textContent);
+    text.setFont(arialttf);
+    text.setCharacterSize(charaSize);
+    text.setFillColor(color);
+    text.setPosition(posText);
+
+    return text;
+}
+
+sf::RectangleShape SetupBackground(sf::Vector2f backgroundSize, sf::Color color, sf::Vector2f posBackground)
+{
+    sf::RectangleShape background(backgroundSize);
+    background.setFillColor(color); // RGB sf::Color::Color(255, 255, 255)
+    background.setPosition(posBackground);
+
+    return background;
+}
+
 // Fond du Menu
 sf::RectangleShape Menu()
 {
-	std::cout << "test" << std::endl;
-
     sf::RectangleShape menu (sf::Vector2f(600, 300));
     menu.setFillColor(sf::Color::Color(0, 0, 94));
     menu.setPosition(400, 300);
@@ -17,67 +37,52 @@ sf::RectangleShape Menu()
     return menu;
 }
 
-// Fond des informations du ship
-sf::RectangleShape ShipInfo()
+struct EquipStruct Equip(std::string name, sf::Vector2f posNameText, sf::Vector2f posBackground, sf::Font& arialttf)
 {
-    sf::RectangleShape menu(sf::Vector2f(380, 30));
-    menu.setFillColor(sf::Color::Color(240, 240, 240));
-    menu.setPosition(120, 170);
-
-    return menu;
-}
-
-// Text des informations du ship
-sf::Text TextShipInfo(sf::Font& arialttf)
-{
-    sf::Text arialText;
-    arialText.setFont(arialttf);
-    arialText.setString("Infos : Lvl 1 / Hp : 150 / ATK : 20");
-    arialText.setCharacterSize(25);
-    arialText.setFillColor(sf::Color::Black);
-    arialText.setPosition(125, 170);
-
-    return arialText;
-}
-
-
-struct TextEquipInfoStruct Equip(std::string name, sf::Vector2f posNameText, sf::Vector2f posBackground, sf::Font& arialttf)
-{
-    TextEquipInfoStruct equip;
+    EquipStruct equip;
 
     // Equip background and name text
-    equip.name.setString(name);
-    equip.name.setFont(arialttf);
-    equip.name.setCharacterSize(15);
-    equip.name.setFillColor(sf::Color::Black);
-    equip.name.setPosition(posNameText); //125,170
+    equip.name = SetUpText(name, arialttf, 15, sf::Color::Black, posNameText);
 
-    equip.background = sf::RectangleShape(sf::Vector2f(270, 80));
-    equip.background.setPosition(posBackground);
-    equip.background.setFillColor(sf::Color::Color(240, 240, 240));
+    equip.background = SetupBackground(sf::Vector2f(270, 80), sf::Color::Color(240, 240, 240), posBackground);
 
     // Level background and text
-    equip.levelBg = sf::RectangleShape(sf::Vector2f(80, 80));
-    equip.levelBg.setPosition(posBackground + sf::Vector2f(190, 0));
-    equip.levelBg.setFillColor(sf::Color::Color(54, 54, 54));
 
-    equip.textLevel.setString("LvL" + std::to_string(equip.level));
-    equip.textLevel.setFont(arialttf);
-    equip.textLevel.setCharacterSize(25);
-    equip.textLevel.setFillColor(sf::Color::White);
-    equip.textLevel.setPosition(posNameText + sf::Vector2f(195, 40));
+    equip.levelBg = SetupBackground(sf::Vector2f(80, 80), sf::Color::Color(54, 54, 54), posBackground + sf::Vector2f(190, 0));
+
+    equip.textLevel = SetUpText("LvL" + std::to_string(equip.level), arialttf, 25, sf::Color::White, posNameText + sf::Vector2f(195, 40));
+
+    equip.neededResourcesText = SetUpText("Needed resources : " + std::to_string(equip.neededResources), arialttf, 12, sf::Color::Black, posNameText + sf::Vector2f(0, 20));
 
     return equip;
 }
 
+struct RessourcesStorage Storage(sf::Font& arialttf)
+{
+    RessourcesStorage storage;
+
+    storage.resourcesBg = SetupBackground(sf::Vector2f(100, 80), sf::Color::Color(240, 240, 240), sf::Vector2f(580, 170));
+
+    storage.storage = SetUpText("Storage", arialttf, 20, sf::Color::Black, sf::Vector2f(595, 170));
+
+    storage.nameResource = SetUpText("Stone " + std::to_string(storage.ownResource), arialttf, 15, sf::Color::Black, sf::Vector2f(585, 200));
+
+
+
+    return storage;
+}
+
+
+
+
 /*
-// Ressources background and text
-equip.ressourcesBg = sf::RectangleShape(sf::Vector2f(80, 80));
-equip.ressourcesBg.setPosition(posBackground + sf::Vector2f(190, 0));
-equip.ressourcesBg.setFillColor(sf::Color::Color(54, 54, 54));
+// Resources background and text
+equip.resourcesBg = sf::RectangleShape(sf::Vector2f(80, 80));
+equip.resourcesBg.setPosition(posBackground + sf::Vector2f(190, 0));
+equip.resourcesBg.setFillColor(sf::Color::Color(54, 54, 54));
 
 equip.nameRessource.setString("LvL" + std::to_string(equip.level));
-equip.nameRessource.setFont(arialttf);
-equip.nameRessource.setCharacterSize(25);
-equip.nameRessource.setFillColor(sf::Color::White);
-equip.nameRessource.setPosition(posNameText + sf::Vector2f(195, 40));*/
+equip.nameResource.setFont(arialttf);
+equip.nameResource.setCharacterSize(25);
+equip.nameResource.setFillColor(sf::Color::White);
+equip.nameResource.setPosition(posNameText + sf::Vector2f(195, 40));*/
