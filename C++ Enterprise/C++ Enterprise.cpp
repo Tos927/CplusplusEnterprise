@@ -111,7 +111,7 @@ int main()
                     
                     if (event.key.code == sf::Keyboard::Space)
                     {
-                        CreateBullet(allBullets, 300.0f, angle, ship);
+                        CreateBullet(allBullets, infoShip, angle, ship);
                     }
                     break;
                 default:
