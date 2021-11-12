@@ -9,6 +9,9 @@
 
 int main()
 {
+    // initialisation aléatoire
+    srand(time(NULL));
+
     //Preparation variable et autre pour le vaisseau
     Ship ship;
     float angle = 0;
@@ -36,13 +39,9 @@ int main()
     int margin = 3;
 
     EquipStruct equip1 = Equip("Equip1", posbackG + sf::Vector2f(margin, margin), posbackG, arialttf);
-
     EquipStruct equip2 = Equip("Equip2", posbackG + sf::Vector2f(pRight + margin, margin), posbackG + sf::Vector2f(pRight, 0), arialttf);
-
     EquipStruct equip3 = Equip("Equip3", posbackG + sf::Vector2f(margin, pTop + margin), posbackG + sf::Vector2f(0, pTop), arialttf);
-
     EquipStruct equip4 = Equip("Equip4", posbackG + sf::Vector2f(pRight + margin, pTop + margin), posbackG + sf::Vector2f(pRight, pTop), arialttf);
-
     RessourcesStorage storage = Storage(arialttf);
 
     sf::Clock clock;
@@ -60,7 +59,7 @@ int main()
                     break;
 
                 case sf::Event::KeyPressed:
-                    if (event.key.code == sf::Keyboard::A)
+                    if (event.key.code == sf::Keyboard::Escape)
                     {
                         displayMenu = !displayMenu;
                     }
@@ -89,12 +88,12 @@ int main()
             sf::Time elapsedTime = clock.restart();
 
             ShipMovement(ship, elapsedTime.asSeconds(), angle, vitesse);
-            ActualisationProps(level, allBullets);
+            ActualisationProps(level, allBullets, storage);
             if (IsOutOfScreen(ship.ship.getPosition(), 10.0f))
             {
                 allBullets.clear();
                 ResetToCenter(ship);
-                level = NewLevel(1, 1, 20, 2, 50);
+                level = NewLevel(2, 2, 20, 2, 50);
             }
 
             // Rendu
@@ -119,7 +118,6 @@ int main()
                 window.draw(equip1.levelBg);
                 window.draw(equip1.textLevel);
                 window.draw(equip1.neededResourcesText);
-
 
                 window.draw(equip2.background);
                 window.draw(equip2.name);
@@ -162,6 +160,5 @@ int main()
             }
 
             window.display();
-        
     }
 }

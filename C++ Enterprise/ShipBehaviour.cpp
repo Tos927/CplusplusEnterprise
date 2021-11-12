@@ -1,5 +1,7 @@
 #include "ShipBehaviour.h"
 #include "GeneratorLevel.h"
+#include "Menu.h"
+#include "AppPath.h"
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <vector>
@@ -107,7 +109,7 @@ void MouvBullet(Bullets& bullet, float deltaTime) {
 	bullet.bullet.move(move);
 }
 
-void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bullet)
+void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bullet, RessourcesStorage& ressource)
 {
 	auto bulIt = bullet.begin();
 	auto pIt = planete.begin();
@@ -129,8 +131,9 @@ void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bull
 		}
 		if ((*pIt).vie <= 0)
 		{
-
 			pIt = planete.erase(pIt);
+			ressource.ownResource += 150;
+			ressource.nameResource.setString("Stone " + std::to_string(ressource.ownResource));
 		}
 		else
 		{
