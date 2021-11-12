@@ -85,14 +85,14 @@ void ResetToCenter(Ship& ship)
 	ship.react2.setPosition(sf::Vector2f(500.0f, 500.0f));
 }
 
-void CreateBullet(std::vector<Bullets>& bullets, float bulletSpeed, float bulletAngle, const Ship& shipPosition)
+void CreateBullet(std::vector<Bullets>& bullets, InfoShip& infoShip, float bulletAngle, const Ship& shipPosition)
 {
 	Bullets newBullet;
 
 	newBullet.bullet.setSize({ 5.f, 2.f });
 
 	newBullet.position = shipPosition.ship.getPosition();
-	newBullet.bulletSpeed = bulletSpeed;
+	newBullet.bulletSpeed = infoShip.bspeedPoints;
 	newBullet.direction.x = cos(shipPosition.ship.getRotation() / 180 * PI);
 	newBullet.direction.y = sin(shipPosition.ship.getRotation() / 180 * PI);
 

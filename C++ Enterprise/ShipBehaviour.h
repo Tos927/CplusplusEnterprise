@@ -3,7 +3,6 @@
 #include "Menu.h"
 #include "AppPath.h"
 #include "GeneratorLevel.h"
-#include "Menu.h"
 #include <vector>
 
 struct Ship
