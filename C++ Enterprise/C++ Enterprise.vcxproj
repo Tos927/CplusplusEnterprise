@@ -152,12 +152,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="C++ Enterprise.cpp" />
-    <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="AppPath.cpp" />
+    <ClCompile Include="GeneratorLevel.cpp" />
+    <ClCompile Include="ShipBehaviour.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AppPath.h" />
-    <ClInclude Include="Menu.h" />
+    <ClInclude Include="GeneratorLevel.h" />
+    <ClInclude Include="ShipBehaviour.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

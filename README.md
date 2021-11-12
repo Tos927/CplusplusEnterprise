@@ -23,7 +23,7 @@ TO DO LIST :
     PRINCIPALES :
         Générateur de niveau aléatoire (struct planet, collision, dégat reçu, ressources gagnées, niveau de danger = selon le niveau du vaiseau)
         Menu d'upgrade du batiment (ressources, niveau canon, niveau équipage de chaque section, possibilité upgrade)
-        Déplacement du batiment (collision avec le bore de l'écran, type de mouvement : propulsion ou instantané, instant indestructible, ...)
+        Déplacement du batiment (collision avec le bord de l'écran, type de mouvement : propulsion ou instantané, instant indestructible, ...)
         Système d'attaque (attaque dans un rayon, dif arme : classique, torpille, rayon, ...)
 
     SCONDAIRE :
