@@ -41,7 +41,10 @@ int main()
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Space)
                     {
-                        CreatNewEnemy(allEnemies, { 500,500 }, 2);
+                        CreatNewEnemy(allEnemies, { 500,500 }, 0);
+                        CreatNewEnemy(allEnemies, { 600,500 }, 1);
+                        CreatNewEnemy(allEnemies, { 700,500 }, 2);
+                        CreatNewEnemy(allEnemies, { 800,500 }, 3);
                     }
                     break;
 

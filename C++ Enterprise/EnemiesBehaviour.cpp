@@ -3,8 +3,6 @@
 #include <vector>
 #include "EnemiesBehaviour.h"
 
-#define PI 3.141592653589793238463
-
 
 void InitializeEnemy(Enemy& enemy, int type) {
 
@@ -119,6 +117,6 @@ void MoveToPoint(sf::CircleShape& origin, const sf::Vector2f& target, const int&
 	origin.move(direction);
 
 	if (isRotate) {
-		origin.setRotation(radians * 180 / PI);
+		origin.setRotation(radians * 180 / 3.141592653589793238463);
 	}
 }
