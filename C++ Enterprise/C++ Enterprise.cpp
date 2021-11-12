@@ -79,9 +79,11 @@ int main()
                         break;
                     }
                     case 1: {
+                        StratHeavyMove(enemy, ship.ship.getPosition(), elapsedTime.asSeconds());
                         break;
                     }
                     case 2: {
+                        StratBomberMove(enemy, ship.ship.getPosition(), elapsedTime.asSeconds());
                         break;
                     }
                     case 3: {
