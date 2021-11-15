@@ -115,11 +115,9 @@ void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bull
 	{
 		while (bulIt != bullet.end())
 		{
-			float distance = std::sqrt(pIt->position.x * (*bulIt).bullet.getPosition().x + pIt->position.y * (*bulIt).bullet.getPosition().y);
-			if (pIt == planete.begin() && bulIt == bullet.begin())
-			{
-				std::cout << distance << std::endl;
-			}
+			//float distance = std::sqrt(pIt->position.x * (*bulIt).bullet.getPosition().x + pIt->position.y * (*bulIt).bullet.getPosition().y);
+			float distance = std::sqrt(pow(pIt->position.x - bulIt->position.x, 2) + pow(pIt->position.y - bulIt->position.y, 2));
+			std::cout << distance << std::endl;
 			if (distance <= pIt->radius)
 			{
 				pIt->vie -= bulIt->damage;
