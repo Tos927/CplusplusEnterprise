@@ -99,7 +99,7 @@ void CreateBullet(std::vector<Bullets>& bullets, InfoShip& infoShip, float bulle
 	newBullet.bullet.setPosition(newBullet.position);
 	newBullet.bullet.setRotation(shipPosition.ship.getRotation());
 
-	newBullet.damage = shipPosition.damagePower;
+	newBullet.damage = infoShip.atkPoints;
 
 	bullets.push_back(newBullet);
 }
