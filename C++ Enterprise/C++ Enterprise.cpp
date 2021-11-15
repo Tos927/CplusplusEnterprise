@@ -45,14 +45,15 @@ int main()
     sf::Font barcadettf = SetupAnyFont("barcade.ttf");
 
     sf::Text barcadeText = SetUpText("(C++Enterprise)", barcadettf, 80, sf::Color::White, /*pos*/sf::Vector2f(WIDTH/2, HEIGHT/5));
+    barcadeText.setOrigin((barcadeText.getGlobalBounds().width / 2), (barcadeText.getGlobalBounds().height / 2));
 
     bool displayTitle = true;
 
     //sf::Text arialText = SetUpText("Infos : Lvl 1 / Hp : 150 / ATK : 20", arialttf, 25, sf::Color::Black, /*pos*/sf::Vector2f(125, 170));
 
-    sf::Vector2f posbackG = sf::Vector2f(120, 260);
+    sf::Vector2f posbackG = sf::Vector2f(WIDTH * 0.27, HEIGHT * 0.50);
 
-    int pRight = 290;
+    int pRight = WIDTH * 0.24;
     int pTop = 90;
     int margin = 3;
 

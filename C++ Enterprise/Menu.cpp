@@ -3,6 +3,7 @@
 
 #include "Menu.h"
 #include "AppPath.h"
+#include "GeneratorLevel.h"
 
 sf::Text SetUpText(std::string textContent, sf::Font& arialttf, int charaSize, sf::Color color, sf::Vector2f posText)
 {
@@ -13,8 +14,6 @@ sf::Text SetUpText(std::string textContent, sf::Font& arialttf, int charaSize, s
     text.setCharacterSize(charaSize);
     text.setFillColor(color);
     text.setPosition(posText);
-
-    text.setOrigin((text.getGlobalBounds().width / 2), (text.getGlobalBounds().height / 2));
 
     return text;
 }
@@ -31,9 +30,9 @@ sf::RectangleShape SetupBackground(sf::Vector2f backgroundSize, sf::Color color,
 // Fond du Menu
 sf::RectangleShape Menu()
 {
-    sf::RectangleShape menu (sf::Vector2f(600, 300));
+    sf::RectangleShape menu (sf::Vector2f(WIDTH *0.50, HEIGHT*0.70));
     menu.setFillColor(sf::Color::Color(0, 0, 94));
-    menu.setPosition(400, 300);
+    menu.setPosition(WIDTH * 0.50, HEIGHT * 0.50);
     menu.setOrigin(menu.getSize().x / 2, menu.getSize().y / 2);
 
     return menu;
@@ -46,7 +45,7 @@ struct EquipStruct Equip(std::string key, std::string name, sf::Vector2f posName
     // Equip background and name text
     equip.name = SetUpText(name, arialttf, 15, sf::Color::Black, posNameText);
 
-    equip.background = SetupBackground(sf::Vector2f(270, 80), sf::Color::Color(240, 240, 240), posBackground);
+    equip.background = SetupBackground(sf::Vector2f(WIDTH * 0.20, HEIGHT * 0.10), sf::Color::Color(240, 240, 240), posBackground);
 
     // Level background and text
 

@@ -1,8 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-#define WIDTH 1000
-#define HEIGHT 1000
+#define WIDTH 1920 
+#define HEIGHT 1080
 
 
 struct Planet {
