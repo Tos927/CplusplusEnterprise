@@ -42,10 +42,10 @@ int main()
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Space)
                     {
-                        /*CreatNewEnemy(allEnemies, { 500, 500}, 0);
-                        CreatNewEnemy(allEnemies, { 600, 500 }, 1);
-                        CreatNewEnemy(allEnemies, { 700, 500 }, 2);*/
-                        CreatNewEnemy(allEnemies, { 800, 500 }, 3);
+                        //CreatNewEnemy(allEnemies, { 500, 500}, 0);
+                        //CreatNewEnemy(allEnemies, { 600, 500 }, 1);
+                        CreatNewEnemy(allEnemies, { 700, 500 }, 2);
+                        //CreatNewEnemy(allEnemies, { 800, 500 }, 3);
                     }
                     break;
 
@@ -81,26 +81,31 @@ int main()
                 window.draw(torpedo.second.shap);
             }
 
-            for (Enemy& enemy : allEnemies) {
-                switch (enemy.type)
+            std::vector<Enemy>::iterator enemyIt = allEnemies.begin();
+            while ( enemyIt != allEnemies.end()) {
+                window.draw((*enemyIt).shape);
+                switch ((*enemyIt).type)
                 {
                     case 0: {
                         break;
                     }
                     case 1: {
-                        StratHeavyMove(enemy, ship.ship.getPosition(), elapsedTime.asSeconds());
+                        StratHeavyMove(*enemyIt, ship.ship.getPosition(), elapsedTime.asSeconds());
                         break;
                     }
                     case 2: {
-                        StratBomberMove(enemy, ship.ship.getPosition(), elapsedTime.asSeconds());
+                        enemyIt = StratBomberMove(enemyIt, ship, allEnemies, elapsedTime.asSeconds());
                         break;
                     }
                     case 3: {
-                        StratTorpedoLuncherMove(enemy, enemyTorpedo, ship.ship.getPosition(), elapsedTime.asSeconds());
+                        StratTorpedoLuncherMove(*enemyIt, enemyTorpedo, ship.ship.getPosition(), elapsedTime.asSeconds());
                         break;
                     }
                 }
-                window.draw(enemy.shape);
+
+                if (enemyIt != allEnemies.end()) {
+                    enemyIt++;
+                }
             }
 
             // Whatever I want to draw goes here

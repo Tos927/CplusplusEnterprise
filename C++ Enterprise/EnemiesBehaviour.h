@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "ShipBehaviour.h"
 
 
 enum TypeOfEnemies
@@ -40,6 +41,7 @@ struct Torpedo
 	sf::CircleShape shap;
 	int damage = 5;
 	int speed = 100;
+	float timeOfBending = 20;
 };
 
 
@@ -48,7 +50,8 @@ void CreatNewEnemy(std::vector<Enemy>& allEnemies, sf::Vector2f position, const 
 void MoveToPoint(sf::CircleShape& origin, const sf::Vector2f& target, const int& speed, bool isRotate, const float& deltaTime);
 int CreatNewTorpedo(std::map<int, Torpedo>& allTorpedo, sf::Vector2f startPosition);
 void Shoot(Enemy& enemy, const float& deltaTime);
+bool UpdateEnemy(Ship& ship, sf::CircleShape origine);
 
 void StratHeavyMove(Enemy& enemy, sf::Vector2f shipPosition, const float& deltaTime);
-void StratBomberMove(Enemy& enemy, sf::Vector2f shipPosition, const float& deltaTime);
+std::vector<Enemy>::iterator StratBomberMove(std::vector<Enemy>::iterator& enemyIt, Ship& ship, std::vector<Enemy>& allEnemy, const float& deltaTime);
 void StratTorpedoLuncherMove(Enemy& enemy, std::map<int, Torpedo>& enemyTorpedo, sf::Vector2f shipPosition, const float& deltaTime);

@@ -1,12 +1,11 @@
 
 #include <iostream>
 #include "EnemiesBehaviour.h"
+#include "ShipBehaviour.h"
 #include <map>
 
 
 void InitializeEnemy(Enemy& enemy, int type) {
-	enemy.shape.setFillColor(sf::Color::Transparent);
-	enemy.shape.setOutlineThickness(2);
 
 	switch (type)
 	{
@@ -14,8 +13,11 @@ void InitializeEnemy(Enemy& enemy, int type) {
 			// Apparence
 			enemy.type = TypeOfEnemies::SimpleEnemy;
 			enemy.shape = sf::CircleShape(20, 3);
-			enemy.shape.setOutlineColor(sf::Color::Blue);
 			enemy.shape.setOrigin(20, 20);
+			enemy.shape.setFillColor(sf::Color::Transparent);
+			enemy.shape.setOutlineThickness(2);
+			enemy.shape.setOutlineColor(sf::Color::Blue);
+			
 			break;
 		}
 		
@@ -23,8 +25,11 @@ void InitializeEnemy(Enemy& enemy, int type) {
 			// Apparence
 			enemy.type = TypeOfEnemies::HeavyEnemy;
 			enemy.shape = sf::CircleShape(20, 5);
-			enemy.shape.setOutlineColor(sf::Color::Red);
 			enemy.shape.setOrigin(20, 20);
+			enemy.shape.setFillColor(sf::Color::Transparent);
+			enemy.shape.setOutlineThickness(2);
+			enemy.shape.setOutlineColor(sf::Color::Red);
+			
 
 			// Système de tire
 			enemy.rate = 3.f;
@@ -41,8 +46,11 @@ void InitializeEnemy(Enemy& enemy, int type) {
 			// Apparence
 			enemy.type = TypeOfEnemies::BomberEnemy;
 			enemy.shape.setRadius(10);
-			enemy.shape.setOutlineColor(sf::Color::Red);
 			enemy.shape.setOrigin(10, 10);
+			enemy.shape.setFillColor(sf::Color::Transparent);
+			enemy.shape.setOutlineThickness(2);
+			enemy.shape.setOutlineColor(sf::Color::Red);
+			
 
 			// Pas de tire.
 			enemy.speed = 70;
@@ -120,16 +128,28 @@ void MoveToPoint(sf::CircleShape& origin, const sf::Vector2f& target, const int&
 }
 
 
-
 void StratHeavyMove(Enemy& enemy, sf::Vector2f shipPosition, const float& deltaTime) {
 	// Système de tire par rafale
 	Shoot(enemy, deltaTime);
 }
 
 
-void StratBomberMove(Enemy& enemy, sf::Vector2f shipPosition, const float& deltaTime) {
+std::vector<Enemy>::iterator StratBomberMove(std::vector<Enemy>::iterator& enemyIt, Ship& ship, std::vector<Enemy>& allEnemy, const float& deltaTime) {
 	// L'ennemi ce dirige sur la position du vaiseau
-	MoveToPoint(enemy.shape, shipPosition, enemy.speed, false, deltaTime);
+	MoveToPoint((*enemyIt).shape, ship.ship.getPosition(), (*enemyIt).speed, false, deltaTime);
+
+	// -------------- TODO -------------- //
+	// déplacement subite lorsque le joueur fait face à l'ennemie
+	
+	if (UpdateEnemy(ship, (*enemyIt).shape)) {
+		std::cout << "BOUMMMMMM \n";
+		return allEnemy.erase(enemyIt);
+
+		// -------------- TODO -------------- //
+		// infoShip.livePoints -= (*enemyIt).damage;
+	}
+
+	return enemyIt;
 }
 
 void StratTorpedoLuncherMove(Enemy& enemy, std::map<int, Torpedo>& enemyTorpedo, sf::Vector2f shipPosition, const float& deltaTime) {
@@ -168,4 +188,16 @@ void Shoot(Enemy& enemy, const float& deltaTime) {
 			}
 		}
 	}
+}
+
+
+bool UpdateEnemy(Ship& ship, sf::CircleShape origine) {
+	sf::Vector2f shipPos = ship.ship.getPosition();
+	float distance = std::sqrt(pow(shipPos.x - origine.getPosition().x, 2) + pow(shipPos.y - origine.getPosition().y, 2));
+
+	if (distance <= origine.getRadius() + ship.ship.getRadius()) {
+		return true;
+	}
+
+	return false;
 }
