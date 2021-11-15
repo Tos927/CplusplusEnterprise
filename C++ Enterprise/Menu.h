@@ -15,7 +15,7 @@ struct EquipStruct
     sf::RectangleShape resourcesBg;
 
     sf::Text neededResourcesText;
-    int neededResources = 25;
+    int neededResources = 25; //default 25
 
     sf::Text keyText;
     std::string key;
@@ -48,3 +48,5 @@ EquipStruct Equip(std::string key, std::string name, sf::Vector2f posNameText, s
 sf::RectangleShape Menu();
 
 void DrawEquip(EquipStruct&, sf::RenderWindow&);
+
+void UpdateTextLevel(EquipStruct& equip, sf::Vector2f posbackG);

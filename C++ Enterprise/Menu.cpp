@@ -43,19 +43,28 @@ struct EquipStruct Equip(std::string key, std::string name, sf::Vector2f posName
     EquipStruct equip;
 
     // Equip background and name text
-    equip.name = SetUpText(name, arialttf, 15, sf::Color::Black, posNameText);
+    equip.name = SetUpText(name, arialttf, 20, sf::Color::Black, posNameText);
 
-    equip.background = SetupBackground(sf::Vector2f(WIDTH * 0.20, HEIGHT * 0.10), sf::Color::Color(240, 240, 240), posBackground);
+    float equipBgWidth = WIDTH * 0.22;
+    float equipBgHeight = HEIGHT * 0.12;
+
+    equip.background = SetupBackground(sf::Vector2f(equipBgWidth, equipBgHeight), sf::Color::Color(240, 240, 240), posBackground);
 
     // Level background and text
 
-    equip.levelBg = SetupBackground(sf::Vector2f(80, 80), sf::Color::Color(54, 54, 54), posBackground + sf::Vector2f(190, 0));
+    float levelBgWidth = WIDTH * 0.055;
+    
+    equip.levelBg = SetupBackground(sf::Vector2f(levelBgWidth, equipBgHeight), sf::Color::Color(54, 54, 54), posBackground + sf::Vector2f(equipBgWidth - levelBgWidth, 0)); //190 0
 
-    equip.textLevel = SetUpText("LvL" + std::to_string(equip.level), arialttf, 25, sf::Color::White, posNameText + sf::Vector2f(195, 40));
+    // Place the text Lvl1 at the center bottom of the level's background 
+    equip.textLevel = SetUpText("LvL" + std::to_string(equip.level), arialttf, 25, sf::Color::White, posBackground + sf::Vector2f(equipBgWidth - (levelBgWidth/2), levelBgWidth * 0.80));
+    equip.textLevel.setOrigin((equip.textLevel.getGlobalBounds().width / 2), (equip.textLevel.getGlobalBounds().height / 2));
 
-    equip.keyText = SetUpText("Press " + key, arialttf, 15, sf::Color::White, posNameText + sf::Vector2f(195, 0));
+    // Place the text Press E/R/T/Y at the center Top of the level's background 
+    equip.keyText = SetUpText("Press " + key, arialttf, 15, sf::Color::White, posBackground + sf::Vector2f(equipBgWidth - (levelBgWidth / 2), levelBgWidth * 0.20));
+    equip.keyText.setOrigin((equip.keyText.getGlobalBounds().width / 2), (equip.keyText.getGlobalBounds().height / 2));
 
-    equip.neededResourcesText = SetUpText("Needed resources : " + std::to_string(equip.neededResources), arialttf, 12, sf::Color::Black, posNameText + sf::Vector2f(0, 20));
+    equip.neededResourcesText = SetUpText("Needed resources : " + std::to_string(equip.neededResources), arialttf, 13, sf::Color::Black, posNameText + sf::Vector2f(0, 25));
 
     return equip;
 }
@@ -64,12 +73,17 @@ struct RessourcesStorage Storage(sf::Font& arialttf)
 {
     RessourcesStorage storage;
 
-    storage.resourcesBg = SetupBackground(sf::Vector2f(100, 80), sf::Color::Color(240, 240, 240), sf::Vector2f(580, 170));
+    float resourcesBgWidth = WIDTH * 0.110;
 
-    storage.storage = SetUpText("Storage", arialttf, 20, sf::Color::Black, sf::Vector2f(595, 170));
+    // Place the resourcesBg on top right of the menu at the same place than the equips right
+    storage.resourcesBg = SetupBackground(sf::Vector2f(resourcesBgWidth, HEIGHT * 0.10), sf::Color::Color(240,240,240), sf::Vector2f(WIDTH * 0.675 - (resourcesBgWidth/2), HEIGHT * 0.18));
 
-    storage.nameResource = SetUpText(storage.resource + std::to_string(storage.ownResource), arialttf, 11, sf::Color::Black, sf::Vector2f(585, 200));
+    // Place the text at the middle top of resourcesBg
+    storage.storage = SetUpText("Ressource Storage", arialttf, 20, sf::Color::Black, sf::Vector2f(WIDTH * 0.675 - (resourcesBgWidth/2) + (resourcesBgWidth/2), HEIGHT * (0.18 + 0.02)));
+    storage.storage.setOrigin((storage.storage.getGlobalBounds().width / 2), (storage.storage.getGlobalBounds().height / 2));
 
+    storage.nameResource = SetUpText(storage.resource + std::to_string(storage.ownResource), arialttf, 25, sf::Color::Black, sf::Vector2f(WIDTH * 0.675 - (resourcesBgWidth / 2) + (resourcesBgWidth / 2), HEIGHT * (0.18 + 0.08)));
+    storage.nameResource.setOrigin((storage.nameResource.getGlobalBounds().width / 2), (storage.nameResource.getGlobalBounds().height / 2));
 
     return storage;
 }
@@ -83,6 +97,18 @@ void DrawEquip(EquipStruct& equip, sf::RenderWindow& window)
     window.draw(equip.neededResourcesText);
     window.draw(equip.keyText);
 }
+
+void UpdateTextLevel(EquipStruct& equip, sf::Vector2f posbackG)
+{
+    equip.textLevel.setString("LvL" + std::to_string(equip.level));
+
+    equip.neededResourcesText.setString("Needed resources : " + std::to_string(equip.neededResources));
+
+    equip.textLevel.setPosition(posbackG + sf::Vector2f(WIDTH * 0.22 - (WIDTH * 0.055 / 2), (WIDTH * 0.055) * 0.80));
+    equip.textLevel.setOrigin((equip.textLevel.getGlobalBounds().width / 2), (equip.textLevel.getGlobalBounds().height / 2));
+}
+
+
 
 
 

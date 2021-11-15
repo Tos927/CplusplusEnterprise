@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
 #include "Menu.h"
 #include "AppPath.h"
 #include "ShipBehaviour.h"
@@ -9,8 +10,10 @@
 #include "Particules.h"
 
 
+
 int main()
 {
+
     // initialisation aléatoire
     srand(time(NULL));
 
@@ -30,14 +33,15 @@ int main()
     std::vector<Explosion> allExplosion;
 
     // initialisation windows
-    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "C++ Enterprise");    // WIDTH et HEIGHT sont des variable constante présent dans "GeneratorLevel.h"
+    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "C++ Enterprise", sf::Style::Fullscreen);    // WIDTH et HEIGHT sont des variable constante présent dans "GeneratorLevel.h"
     window.setVerticalSyncEnabled(true);  // Frame rate de l'écran
 
     bool displayMenu = false;
 
+
     sf::RectangleShape menu = Menu();
     // Fond des informations du ship
-    sf::RectangleShape shipInfo = SetupBackground(sf::Vector2f(380, 70), sf::Color::Color(240, 240, 240), sf::Vector2f(120, 170));
+    sf::RectangleShape shipInfo = SetupBackground(sf::Vector2f(WIDTH * 0.25, HEIGHT * 0.09), sf::Color::Color(240, 240, 240), sf::Vector2f(WIDTH * 0.27, HEIGHT * 0.18));
 
     InfoShip infoShip;
 
@@ -51,10 +55,11 @@ int main()
 
     //sf::Text arialText = SetUpText("Infos : Lvl 1 / Hp : 150 / ATK : 20", arialttf, 25, sf::Color::Black, /*pos*/sf::Vector2f(125, 170));
 
-    sf::Vector2f posbackG = sf::Vector2f(WIDTH * 0.27, HEIGHT * 0.50);
+    sf::Vector2f posbackG = sf::Vector2f(WIDTH * 0.27, HEIGHT * 0.56);
 
+    // Need to be 2% away based on the width of the Equip (might change)
     int pRight = WIDTH * 0.24;
-    int pTop = 90;
+    int pTop = WIDTH * 0.08;
     int margin = 3;
 
     EquipStruct equip1 = Equip("E", "Deflector Shield", posbackG + sf::Vector2f(margin, margin), posbackG, arialttf);
@@ -65,6 +70,7 @@ int main()
     RessourcesStorage storage = Storage(arialttf);
 
     sf::Clock clock;
+
 
     while (window.isOpen()) {
 
@@ -136,6 +142,11 @@ int main()
                         //CreatNewEnemy(allEnemies, { 700, 500 }, 2);
                         CreatNewEnemy(allEnemies, { 800, 500 }, 3);
                     }
+                    if (event.key.code == sf::Keyboard::P)
+                    {
+                        window.close();
+                        break;
+                    }
                     break;
                 default:
                     break;
@@ -148,26 +159,22 @@ int main()
 
             sf::Text InfoShipValue = SetUpText(infoShip.atkString + std::to_string(infoShip.atkPoints) +
                 infoShip.lifeString + std::to_string(infoShip.lifePoints) + infoShip.bspeedString + std::to_string((int)infoShip.bspeedPoints),
-                arialttf, 20, sf::Color::Black, /*pos*/sf::Vector2f(125, 210));
+                arialttf, 20, sf::Color::Black, /*pos*/sf::Vector2f(WIDTH * 0.275, HEIGHT * 0.235));
 
-            sf::Text InfoShipTitle = SetUpText("Ship Information : Level " + std::to_string(infoShip.shipLevel), arialttf, 25, sf::Color::Black, /*pos*/sf::Vector2f(125, 170));
+            sf::Text InfoShipTitle = SetUpText("Ship Information : Level " + std::to_string(infoShip.shipLevel), arialttf, 25, sf::Color::Black, /*pos*/sf::Vector2f(WIDTH * 0.275, HEIGHT * 0.185));
 
-            storage.nameResource.setString(storage.resource + std::to_string(storage.ownResource));
+            storage.nameResource.setString(std::to_string(storage.ownResource));
+            storage.nameResource.setPosition(sf::Vector2f(WIDTH * 0.675 - (WIDTH * 0.110 / 2) + (WIDTH * 0.110 / 2), HEIGHT * (0.18 + 0.06)));
+            storage.nameResource.setOrigin((storage.nameResource.getGlobalBounds().width / 2), (storage.nameResource.getGlobalBounds().height / 2));
 
-            equip1.textLevel.setString("LvL" + std::to_string(equip1.level));
-            equip1.neededResourcesText.setString("Needed resources : " + std::to_string(equip1.neededResources));
-
-            equip2.textLevel.setString("LvL" + std::to_string(equip2.level));
-            equip2.neededResourcesText.setString("Needed resources : " + std::to_string(equip2.neededResources));
-
-            equip3.textLevel.setString("LvL" + std::to_string(equip3.level));
-            equip3.neededResourcesText.setString("Needed resources : " + std::to_string(equip3.neededResources));
-
-            equip4.textLevel.setString("LvL" + std::to_string(equip4.level));
-            equip4.neededResourcesText.setString("Needed resources : " + std::to_string(equip4.neededResources));
+            UpdateTextLevel(equip1, posbackG);
+            UpdateTextLevel(equip2, posbackG + sf::Vector2f(pRight, 0));
+            UpdateTextLevel(equip3, posbackG + sf::Vector2f(0, pTop));
+            UpdateTextLevel(equip4, posbackG + sf::Vector2f(pRight, pTop));
 
             // Logique
             sf::Time elapsedTime = clock.restart();
+
 
             ShipMovement(ship, elapsedTime.asSeconds(), angle, vitesse);
             ActualisationProps(level, allBullets, storage);
