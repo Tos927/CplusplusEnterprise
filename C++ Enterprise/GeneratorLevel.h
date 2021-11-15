@@ -14,6 +14,7 @@ struct Planet {
 
 	//Aspect combat
 	int vie = 100;
+	int collisionDamage = 50;
 };
 
 std::vector<Planet> NewLevel(int planetMax, int planetMin, float radiusMax, float radiusMin, float security);

@@ -1,5 +1,6 @@
 
 #include "GeneratorLevel.h"
+#include "ShipBehaviour.h"
 #include <iostream>
 #include <vector>
 
@@ -54,4 +55,9 @@ std::vector<Planet> NewLevel(int planetMax, int planetMin, float radiusMax, floa
 	}
 
 	return allPlanets;
+}
+
+void PlaneteDeath(Ship& ship, std::vector<Planet>::iterator pIt) 
+{
+
 }

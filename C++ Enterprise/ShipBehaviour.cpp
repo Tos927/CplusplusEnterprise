@@ -1,6 +1,10 @@
 #include "ShipBehaviour.h"
+#include "GeneratorLevel.h"
+#include "Menu.h"
+#include "AppPath.h"
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <vector>
 #define PI 3.141592653589793238463
 
 void InitializeShip(Ship& ship) 
@@ -79,4 +83,61 @@ void ResetToCenter(Ship& ship)
 	ship.weapon.setPosition(sf::Vector2f(500.0f, 500.0f));
 	ship.react1.setPosition(sf::Vector2f(500.0f, 500.0f));
 	ship.react2.setPosition(sf::Vector2f(500.0f, 500.0f));
+}
+
+void CreateBullet(std::vector<Bullets>& bullets, InfoShip& infoShip, float bulletAngle, const Ship& shipPosition)
+{
+	Bullets newBullet;
+
+	newBullet.bullet.setSize({ 5.f, 2.f });
+
+	newBullet.position = shipPosition.ship.getPosition();
+	newBullet.bulletSpeed = infoShip.bspeedPoints;
+	newBullet.direction.x = cos(shipPosition.ship.getRotation() / 180 * PI);
+	newBullet.direction.y = sin(shipPosition.ship.getRotation() / 180 * PI);
+
+	newBullet.bullet.setPosition(newBullet.position);
+	newBullet.bullet.setRotation(shipPosition.ship.getRotation());
+
+	newBullet.damage = infoShip.atkPoints;
+
+	bullets.push_back(newBullet);
+}
+
+void MouvBullet(Bullets& bullet, float deltaTime) {
+	sf::Vector2f move = bullet.direction * bullet.bulletSpeed * deltaTime;
+	bullet.bullet.move(move);
+}
+
+void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bullet, RessourcesStorage& ressource)
+{
+	auto pIt = planete.begin();
+	while (pIt != planete.end())
+	{
+		auto bulIt = bullet.begin();
+		while (bulIt != bullet.end())
+		{
+			float distance = std::sqrt(pow(pIt->position.x - (*bulIt).bullet.getPosition().x, 2) + pow(pIt->position.y - (*bulIt).bullet.getPosition().y, 2));
+			if (distance <= pIt->radius)
+			{
+				pIt->vie -= bulIt->damage;
+				bulIt = bullet.erase(bulIt);
+				std::cout << "Touche" << std::endl;
+			}
+			else
+			{
+				bulIt++;
+			}
+		}
+		if ((*pIt).vie <= 0)
+		{
+			pIt = planete.erase(pIt);
+			ressource.ownResource += 150;
+			ressource.nameResource.setString("Stone " + std::to_string(ressource.ownResource));
+		}
+		else
+		{
+			pIt++;
+		}
+	}
 }
