@@ -44,8 +44,8 @@ int main()
                     {
                         //CreatNewEnemy(allEnemies, { 500, 500}, 0);
                         //CreatNewEnemy(allEnemies, { 600, 500 }, 1);
-                        CreatNewEnemy(allEnemies, { 700, 500 }, 2);
-                        //CreatNewEnemy(allEnemies, { 800, 500 }, 3);
+                        //CreatNewEnemy(allEnemies, { 700, 500 }, 2);
+                        CreatNewEnemy(allEnemies, { 800, 500 }, 3);
                     }
                     break;
 
@@ -76,10 +76,22 @@ int main()
                 window.draw(p.pShape);
             }
 
-            for (std::pair<const int, Torpedo>& torpedo : enemyTorpedo) {
-                MoveToPoint(torpedo.second.shap, ship.ship.getPosition(), torpedo.second.speed, true, elapsedTime.asSeconds());
-                window.draw(torpedo.second.shap);
+
+            std::map<const int, Torpedo>::iterator it = enemyTorpedo.begin();
+            while (it != enemyTorpedo.end()) {
+                MoveToPoint(it->second.shap, ship.ship.getPosition(), it->second.speed, true, elapsedTime.asSeconds());
+                window.draw(it->second.shap);
+ 
+                // Actualisation de la torpille - si il est en contacte avec le vaisseau
+                if (CollideWithShip(ship, it->second.shap)) {
+                    it = enemyTorpedo.erase(it);
+                    std::cout << "touche" << std::endl;
+                }
+                else {
+                    it++;
+                }
             }
+
 
             std::vector<Enemy>::iterator enemyIt = allEnemies.begin();
             while ( enemyIt != allEnemies.end()) {
@@ -90,15 +102,15 @@ int main()
                         break;
                     }
                     case 1: {
-                        StratHeavyMove(*enemyIt, ship.ship.getPosition(), elapsedTime.asSeconds());
+                        StratHeavyMove(enemyIt, ship.ship.getPosition(), elapsedTime.asSeconds());
                         break;
                     }
                     case 2: {
-                        enemyIt = StratBomberMove(enemyIt, ship, allEnemies, elapsedTime.asSeconds());
+                        enemyIt = StratBomberMove(enemyIt, allEnemies, ship, elapsedTime.asSeconds());
                         break;
                     }
                     case 3: {
-                        StratTorpedoLuncherMove(*enemyIt, enemyTorpedo, ship.ship.getPosition(), elapsedTime.asSeconds());
+                        StratTorpedoLuncherMove(enemyIt, enemyTorpedo, ship.ship.getPosition(), elapsedTime.asSeconds());
                         break;
                     }
                 }

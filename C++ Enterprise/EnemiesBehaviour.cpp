@@ -61,8 +61,11 @@ void InitializeEnemy(Enemy& enemy, int type) {
 			// Apparence
 			enemy.type = TypeOfEnemies::TorpedoLuncherEnemy;
 			enemy.shape = sf::CircleShape(15, 4);
-			enemy.shape.setOutlineColor(sf::Color::Cyan);
 			enemy.shape.setOrigin(15, 15);
+			enemy.shape.setFillColor(sf::Color::Transparent);
+			enemy.shape.setOutlineThickness(2);
+			enemy.shape.setOutlineColor(sf::Color::Cyan);
+			
 
 			// Tire des torpille
 			enemy.rate = 5.f;
@@ -128,42 +131,66 @@ void MoveToPoint(sf::CircleShape& origin, const sf::Vector2f& target, const int&
 }
 
 
-void StratHeavyMove(Enemy& enemy, sf::Vector2f shipPosition, const float& deltaTime) {
+std::vector<Enemy>::iterator StratHeavyMove(std::vector<Enemy>::iterator& enemyIt, sf::Vector2f shipPosition, const float& deltaTime) {
 	// Système de tire par rafale
-	Shoot(enemy, deltaTime);
+	Shoot((*enemyIt), deltaTime);
+
+
+	//if (CollideWithFrendlyBullet(allBullet, (*enemyIt).shape)) {
+	//	// -------------- TODO -------------- //
+	//	// infoShip.livePoints -= (*enemyIt).damage;
+
+	//	return allEnemy.erase(enemyIt);
+	//}
+
+	return enemyIt;
 }
 
 
-std::vector<Enemy>::iterator StratBomberMove(std::vector<Enemy>::iterator& enemyIt, Ship& ship, std::vector<Enemy>& allEnemy, const float& deltaTime) {
+std::vector<Enemy>::iterator StratBomberMove(std::vector<Enemy>::iterator& enemyIt,  std::vector<Enemy>& allEnemy, Ship& ship,const float& deltaTime) {
 	// L'ennemi ce dirige sur la position du vaiseau
 	MoveToPoint((*enemyIt).shape, ship.ship.getPosition(), (*enemyIt).speed, false, deltaTime);
 
 	// -------------- TODO -------------- //
 	// déplacement subite lorsque le joueur fait face à l'ennemie
 	
-	if (UpdateEnemy(ship, (*enemyIt).shape)) {
-		std::cout << "BOUMMMMMM \n";
-		return allEnemy.erase(enemyIt);
-
+	if (CollideWithShip(ship, (*enemyIt).shape)) {
 		// -------------- TODO -------------- //
 		// infoShip.livePoints -= (*enemyIt).damage;
+
+		return allEnemy.erase(enemyIt);
 	}
 
 	return enemyIt;
 }
 
-void StratTorpedoLuncherMove(Enemy& enemy, std::map<int, Torpedo>& enemyTorpedo, sf::Vector2f shipPosition, const float& deltaTime) {
 
-	std::map<int, Torpedo>::iterator it = enemyTorpedo.find(enemy.torpedoKey);
+std::vector<Enemy>::iterator StratTorpedoLuncherMove(std::vector<Enemy>::iterator& enemyIt, std::map<int, Torpedo>& enemyTorpedo, sf::Vector2f shipPosition, const float& deltaTime) {
+
+	std::map<int, Torpedo>::iterator it = enemyTorpedo.find((*enemyIt).torpedoKey);
 
 	if (it == enemyTorpedo.end()) {
-		enemy.rate -= deltaTime;
-		if (enemy.rate < 0) {
-			enemy.torpedoKey = CreatNewTorpedo(enemyTorpedo, enemy.shape.getPosition());
-			enemy.rate = enemy.defaultRate;
+		(*enemyIt).rate -= deltaTime;
+		if ((*enemyIt).rate < 0) {
+			(*enemyIt).torpedoKey = CreatNewTorpedo(enemyTorpedo, (*enemyIt).shape.getPosition());
+			(*enemyIt).rate = (*enemyIt).defaultRate;
 		}
 	}
+
+	//if (CollideWithFrendlyBullet(allBullet, (*enemyIt).shape)) {
+	//	// -------------- TODO -------------- //
+	//	// infoShip.livePoints -= (*enemyIt).damage;
+
+	//	return allEnemy.erase(enemyIt);
+	//}
+
+	return enemyIt;
 }
+
+
+
+
+
 
 
 void Shoot(Enemy& enemy, const float& deltaTime) {
@@ -191,7 +218,7 @@ void Shoot(Enemy& enemy, const float& deltaTime) {
 }
 
 
-bool UpdateEnemy(Ship& ship, sf::CircleShape origine) {
+bool CollideWithShip(Ship& ship, sf::CircleShape origine) {
 	sf::Vector2f shipPos = ship.ship.getPosition();
 	float distance = std::sqrt(pow(shipPos.x - origine.getPosition().x, 2) + pow(shipPos.y - origine.getPosition().y, 2));
 
@@ -201,3 +228,19 @@ bool UpdateEnemy(Ship& ship, sf::CircleShape origine) {
 
 	return false;
 }
+
+
+//bool CollideWithFrendlyBullet(std::vector<Bullet> allBullets, sf::CircleShape origine) {
+//	bool isOnContact = false;
+//
+//	for (Bullet bullet : allBullets) {
+//		sf::Vector2f shipPos = bullet.bullet.getPosition();
+//		float distance = std::sqrt(pow(shipPos.x - origine.getPosition().x, 2) + pow(shipPos.y - origine.getPosition().y, 2));
+//
+//		if (distance <= origine.getRadius()) {
+//			isOnContact = true;
+//		}
+//	}
+//
+//	return isOnContact;
+//}
