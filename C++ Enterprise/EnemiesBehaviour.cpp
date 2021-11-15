@@ -131,68 +131,6 @@ void MoveToPoint(sf::CircleShape& origin, const sf::Vector2f& target, const int&
 }
 
 
-std::vector<Enemy>::iterator StratHeavyMove(std::vector<Enemy>::iterator& enemyIt, sf::Vector2f shipPosition, const float& deltaTime) {
-	// Système de tire par rafale
-	Shoot((*enemyIt), deltaTime);
-
-
-	//if (CollideWithFrendlyBullet(allBullet, (*enemyIt).shape)) {
-	//	// -------------- TODO -------------- //
-	//	// infoShip.livePoints -= (*enemyIt).damage;
-
-	//	return allEnemy.erase(enemyIt);
-	//}
-
-	return enemyIt;
-}
-
-
-std::vector<Enemy>::iterator StratBomberMove(std::vector<Enemy>::iterator& enemyIt,  std::vector<Enemy>& allEnemy, Ship& ship,const float& deltaTime) {
-	// L'ennemi ce dirige sur la position du vaiseau
-	MoveToPoint((*enemyIt).shape, ship.ship.getPosition(), (*enemyIt).speed, false, deltaTime);
-
-	// -------------- TODO -------------- //
-	// déplacement subite lorsque le joueur fait face à l'ennemie
-	
-	if (CollideWithShip(ship, (*enemyIt).shape)) {
-		// -------------- TODO -------------- //
-		// infoShip.livePoints -= (*enemyIt).damage;
-
-		return allEnemy.erase(enemyIt);
-	}
-
-	return enemyIt;
-}
-
-
-std::vector<Enemy>::iterator StratTorpedoLuncherMove(std::vector<Enemy>::iterator& enemyIt, std::map<int, Torpedo>& enemyTorpedo, sf::Vector2f shipPosition, const float& deltaTime) {
-
-	std::map<int, Torpedo>::iterator it = enemyTorpedo.find((*enemyIt).torpedoKey);
-
-	if (it == enemyTorpedo.end()) {
-		(*enemyIt).rate -= deltaTime;
-		if ((*enemyIt).rate < 0) {
-			(*enemyIt).torpedoKey = CreatNewTorpedo(enemyTorpedo, (*enemyIt).shape.getPosition());
-			(*enemyIt).rate = (*enemyIt).defaultRate;
-		}
-	}
-
-	//if (CollideWithFrendlyBullet(allBullet, (*enemyIt).shape)) {
-	//	// -------------- TODO -------------- //
-	//	// infoShip.livePoints -= (*enemyIt).damage;
-
-	//	return allEnemy.erase(enemyIt);
-	//}
-
-	return enemyIt;
-}
-
-
-
-
-
-
-
 void Shoot(Enemy& enemy, const float& deltaTime) {
 	enemy.rate -= deltaTime;
 
@@ -230,17 +168,93 @@ bool CollideWithShip(Ship& ship, sf::CircleShape origine) {
 }
 
 
-//bool CollideWithFrendlyBullet(std::vector<Bullet> allBullets, sf::CircleShape origine) {
-//	bool isOnContact = false;
-//
-//	for (Bullet bullet : allBullets) {
-//		sf::Vector2f shipPos = bullet.bullet.getPosition();
-//		float distance = std::sqrt(pow(shipPos.x - origine.getPosition().x, 2) + pow(shipPos.y - origine.getPosition().y, 2));
-//
-//		if (distance <= origine.getRadius()) {
-//			isOnContact = true;
-//		}
-//	}
-//
-//	return isOnContact;
-//}
+bool CollideWithFrendlyBullet(std::vector<Bullets>& allBullets, sf::CircleShape origine, bool destroyBullet) {
+	bool isOnContact = false;
+
+	std::vector<Bullets>::iterator bulletIt = allBullets.begin();
+	while (bulletIt != allBullets.end()) {
+		sf::Vector2f shipPos = bulletIt->bullet.getPosition();
+		float distance = std::sqrt(pow(shipPos.x - origine.getPosition().x, 2) + pow(shipPos.y - origine.getPosition().y, 2));
+
+
+		if (distance <= origine.getRadius()) {
+			isOnContact = true;
+
+			// détruire la balle si le paramètre est true
+			if (destroyBullet) {
+				bulletIt = allBullets.erase(bulletIt);
+				continue;
+			}
+			else {
+				bulletIt++;
+				continue;
+			}
+
+
+		}
+		
+		bulletIt++;
+	}
+
+	return isOnContact;
+}
+
+
+
+// ------------------------------------------------------------------------------ //
+// ------------------------------ Enemy Mouvement  ------------------------------ //
+// ------------------------------------------------------------------------------ //
+
+
+std::vector<Enemy>::iterator StratHeavyMove(std::vector<Enemy>::iterator& enemyIt, std::vector<Enemy>& allEnemy, std::vector<Bullets>& allBullets, sf::Vector2f shipPosition, const float& deltaTime) {
+	// Système de tire par rafale
+	Shoot((*enemyIt), deltaTime);
+
+
+	if (CollideWithFrendlyBullet(allBullets, (*enemyIt).shape, true)) {
+		// -------------- TODO -------------- //
+		// infoShip.livePoints -= (*enemyIt).damage;
+
+		return allEnemy.erase(enemyIt);
+	}
+
+	return enemyIt;
+}
+
+
+std::vector<Enemy>::iterator StratBomberMove(std::vector<Enemy>::iterator& enemyIt,  std::vector<Enemy>& allEnemy, std::vector<Bullets>& allbullets, Ship& ship, InfoShip& info, const float& deltaTime) {
+	// L'ennemi ce dirige sur la position du vaiseau
+	MoveToPoint((*enemyIt).shape, ship.ship.getPosition(), (*enemyIt).speed, false, deltaTime);
+
+	// -------------- TODO -------------- //
+	// déplacement subite lorsque le joueur fait face à l'ennemie
+	
+	if (CollideWithShip(ship, (*enemyIt).shape) || CollideWithFrendlyBullet(allbullets, (*enemyIt).shape, true)) {
+		info.lifePoints -= (*enemyIt).damage;
+
+		return allEnemy.erase(enemyIt);
+	}
+
+	return enemyIt;
+}
+
+
+// pofinage : possibilité de détruire les torpille en plein vole
+std::vector<Enemy>::iterator StratTorpedoLuncherMove(std::vector<Enemy>::iterator& enemyIt, std::vector<Enemy>& allEnemy, std::map<int, Torpedo>& enemyTorpedo, std::vector<Bullets>& allBullets, sf::Vector2f shipPosition, const float& deltaTime) {
+
+	std::map<int, Torpedo>::iterator it = enemyTorpedo.find((*enemyIt).torpedoKey);
+
+	if (it == enemyTorpedo.end()) {
+		(*enemyIt).rate -= deltaTime;
+		if ((*enemyIt).rate < 0) {
+			(*enemyIt).torpedoKey = CreatNewTorpedo(enemyTorpedo, (*enemyIt).shape.getPosition());
+			(*enemyIt).rate = (*enemyIt).defaultRate;
+		}
+	}
+
+	if (CollideWithFrendlyBullet(allBullets, (*enemyIt).shape, false)) {
+		return allEnemy.erase(enemyIt);
+	}
+
+	return enemyIt;
+}

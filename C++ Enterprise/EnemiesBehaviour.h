@@ -16,6 +16,7 @@ struct Enemy {
 	// General
 	TypeOfEnemies type;
 	sf::CircleShape shape;
+	int damage = 25;
 	float speed = 5;
 	int life = 1;
 
@@ -51,8 +52,8 @@ void MoveToPoint(sf::CircleShape& origin, const sf::Vector2f& target, const int&
 int CreatNewTorpedo(std::map<int, Torpedo>& allTorpedo, sf::Vector2f startPosition);
 void Shoot(Enemy& enemy, const float& deltaTime);
 bool CollideWithShip(Ship& ship, sf::CircleShape origine);
-// bool CollideWithFrendlyBullet(std::vector<Bullet> allBullets, sf::CircleShape origine);
+bool CollideWithFrendlyBullet(std::vector<Bullets>& allBullets, sf::CircleShape origine, bool destroyBullet);
 
-std::vector<Enemy>::iterator StratHeavyMove(std::vector<Enemy>::iterator& enemyIt, sf::Vector2f shipPosition, const float& deltaTime);
-std::vector<Enemy>::iterator StratBomberMove(std::vector<Enemy>::iterator& enemyIt, std::vector<Enemy>& allEnemy, Ship& ship, const float& deltaTime);
-std::vector<Enemy>::iterator StratTorpedoLuncherMove(std::vector<Enemy>::iterator& enemyIt, std::map<int, Torpedo>& enemyTorpedo, sf::Vector2f shipPosition, const float& deltaTime);
+std::vector<Enemy>::iterator StratHeavyMove(std::vector<Enemy>::iterator& enemyIt, std::vector<Enemy>& allEnemy, std::vector<Bullets>& allBullets, sf::Vector2f shipPosition, const float& deltaTime);
+std::vector<Enemy>::iterator StratBomberMove(std::vector<Enemy>::iterator& enemyIt, std::vector<Enemy>& allEnemy, std::vector<Bullets>& allbullets, Ship& ship, InfoShip& info, const float& deltaTime);
+std::vector<Enemy>::iterator StratTorpedoLuncherMove(std::vector<Enemy>::iterator& enemyIt, std::vector<Enemy>& allEnemy, std::map<int, Torpedo>& enemyTorpedo, std::vector<Bullets>& allBullets, sf::Vector2f shipPosition, const float& deltaTime);

@@ -131,8 +131,8 @@ int main()
                     if (event.key.code ==sf::Keyboard::G)
                     {
                         //CreatNewEnemy(allEnemies, { 500, 500}, 0);
-                        //CreatNewEnemy(allEnemies, { 600, 500 }, 1);
-                        //CreatNewEnemy(allEnemies, { 700, 500 }, 2);
+                        CreatNewEnemy(allEnemies, { 600, 500 }, 1);
+                        CreatNewEnemy(allEnemies, { 700, 500 }, 2);
                         CreatNewEnemy(allEnemies, { 800, 500 }, 3);
                     }
                     break;
@@ -234,10 +234,9 @@ int main()
                     MoveToPoint(it->second.shap, ship.ship.getPosition(), it->second.speed, true, elapsedTime.asSeconds());
                     window.draw(it->second.shap);
 
-                    // Actualisation de la torpille - si il est en contacte avec le vaisseau
-                    if (CollideWithShip(ship, it->second.shap)) {
+                    // Actualisation de la torpille - si il est en contacte avec le vaisseau ou par un tir
+                    if (CollideWithShip(ship, it->second.shap) || CollideWithFrendlyBullet(allBullets, it->second.shap, true)) {
                         it = enemyTorpedo.erase(it);
-                        std::cout << "touche" << std::endl;
                     }
                     else {
                         it++;
@@ -249,21 +248,21 @@ int main()
                     window.draw((*enemyIt).shape);
                     switch ((*enemyIt).type)
                     {
-                    case 0: {
-                        break;
-                    }
-                    case 1: {
-                        StratHeavyMove(enemyIt, ship.ship.getPosition(), elapsedTime.asSeconds());
-                        break;
-                    }
-                    case 2: {
-                        enemyIt = StratBomberMove(enemyIt, allEnemies, ship, elapsedTime.asSeconds());
-                        break;
-                    }
-                    case 3: {
-                        StratTorpedoLuncherMove(enemyIt, enemyTorpedo, ship.ship.getPosition(), elapsedTime.asSeconds());
-                        break;
-                    }
+                        case 0: {
+                            break;
+                        }
+                        case 1: {
+                            enemyIt = StratHeavyMove(enemyIt, allEnemies, allBullets, ship.ship.getPosition(), elapsedTime.asSeconds());
+                            break;
+                        }
+                        case 2: {
+                            enemyIt = StratBomberMove(enemyIt, allEnemies, allBullets, ship, infoShip,  elapsedTime.asSeconds());
+                            break;
+                        }
+                        case 3: {
+                            enemyIt = StratTorpedoLuncherMove(enemyIt, allEnemies, enemyTorpedo, allBullets, ship.ship.getPosition(), elapsedTime.asSeconds());
+                            break;
+                        }
                     }
 
                     if (enemyIt != allEnemies.end()) {
