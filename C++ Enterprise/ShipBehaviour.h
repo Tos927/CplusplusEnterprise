@@ -1,5 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Menu.h"
+#include "AppPath.h"
 #include "GeneratorLevel.h"
 #include <vector>
 
@@ -29,4 +31,4 @@ bool IsOutOfScreen(sf::Vector2f shipPosition, float screenTrigger);
 void ResetToCenter(Ship& ship);
 void CreateBullet(std::vector<Bullets>& bullets, float bulletSpeed, float bulletAngle, const Ship& shipPosition);
 void MouvBullet(Bullets& bullet, float deltaTime);
-void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bullet);
+void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bullet, RessourcesStorage& ressource);
