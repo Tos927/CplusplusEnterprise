@@ -5,6 +5,7 @@
 #include "AppPath.h"
 #include "ShipBehaviour.h"
 #include "GeneratorLevel.h"
+#include "EnemiesBehaviour.h"
 #include "Particules.h"
 
 
@@ -19,14 +20,21 @@ int main()
     float vitesse = 0;
     InitializeShip(ship);
 
+    // object de la scène
     std::vector<Planet> level;
     std::vector<Bullets> allBullets;
+    
+    std::vector<Enemy> allEnemies;
+    std::map<int, Torpedo> enemyTorpedo;
+
     std::vector<Explosion> allExplosion;
 
+    // initialisation windows
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "C++ Enterprise");    // WIDTH et HEIGHT sont des variable constante présent dans "GeneratorLevel.h"
     window.setVerticalSyncEnabled(true);  // Frame rate de l'écran
 
     bool displayMenu = false;
+
     sf::RectangleShape menu = Menu();
     // Fond des informations du ship
     sf::RectangleShape shipInfo = SetupBackground(sf::Vector2f(380, 70), sf::Color::Color(240, 240, 240), sf::Vector2f(120, 170));
@@ -114,10 +122,13 @@ int main()
                     {
                         CreateBullet(allBullets, infoShip, angle, ship);
                     }
-                    /*if (event.key.code ==sf::Keyboard::G)
+                    if (event.key.code ==sf::Keyboard::G)
                     {
-                        allExplosion.push_back(CreationExplosion(sf::Color::Red));
-                    }*/
+                        //CreatNewEnemy(allEnemies, { 500, 500}, 0);
+                        //CreatNewEnemy(allEnemies, { 600, 500 }, 1);
+                        //CreatNewEnemy(allEnemies, { 700, 500 }, 2);
+                        CreatNewEnemy(allEnemies, { 800, 500 }, 3);
+                    }
                     break;
                 default:
                     break;
@@ -229,6 +240,49 @@ int main()
                     MouvBullet(bul, elapsedTime.asSeconds());
                     window.draw(bul.bullet);
                 }
+
+                std::map<const int, Torpedo>::iterator it = enemyTorpedo.begin();
+                while (it != enemyTorpedo.end()) {
+                    MoveToPoint(it->second.shap, ship.ship.getPosition(), it->second.speed, true, elapsedTime.asSeconds());
+                    window.draw(it->second.shap);
+
+                    // Actualisation de la torpille - si il est en contacte avec le vaisseau
+                    if (CollideWithShip(ship, it->second.shap)) {
+                        it = enemyTorpedo.erase(it);
+                        std::cout << "touche" << std::endl;
+                    }
+                    else {
+                        it++;
+                    }
+                }
+
+                std::vector<Enemy>::iterator enemyIt = allEnemies.begin();
+                while (enemyIt != allEnemies.end()) {
+                    window.draw((*enemyIt).shape);
+                    switch ((*enemyIt).type)
+                    {
+                    case 0: {
+                        break;
+                    }
+                    case 1: {
+                        StratHeavyMove(enemyIt, ship.ship.getPosition(), elapsedTime.asSeconds());
+                        break;
+                    }
+                    case 2: {
+                        enemyIt = StratBomberMove(enemyIt, allEnemies, ship, elapsedTime.asSeconds());
+                        break;
+                    }
+                    case 3: {
+                        StratTorpedoLuncherMove(enemyIt, enemyTorpedo, ship.ship.getPosition(), elapsedTime.asSeconds());
+                        break;
+                    }
+                    }
+
+                    if (enemyIt != allEnemies.end()) {
+                        enemyIt++;
+                    }
+                }
+
                 /*auto exploIt = allExplosion.begin();
                 while (exploIt != allExplosion.end())
                 {
