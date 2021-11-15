@@ -1,19 +1,5 @@
 #pragma once
 
-struct InfoShip
-{
-    int shipLevel = 1;
-
-    std::string atkString = "ATK : ";
-    int atkPoints = 50;
-
-    std::string lifeString = " / Life : ";
-    int lifePoints = 100;
-
-    std::string bspeedString = " / Bullet Speed : ";
-    float bspeedPoints = 300.0f;
-};
-
 struct EquipStruct
 {
     sf::Text name;
