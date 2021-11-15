@@ -37,11 +37,11 @@ void ShipMovement(Ship& ship, float deltaTime, float& angle, float& vitesse)
 	int rotationSpeed = 200;
 
 	//Rotation du vaisseau
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) 
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
 		angle -= rotationSpeed * deltaTime;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) 
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
 		angle += rotationSpeed * deltaTime;
 	}
@@ -56,7 +56,7 @@ void ShipMovement(Ship& ship, float deltaTime, float& angle, float& vitesse)
 	int minSpeed = 0;
 	sf::Vector2f direction;
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
 		direction.x = cos(angle/180 * PI) * speed * deltaTime;
 		direction.y = sin(angle/180 * PI) * speed * deltaTime;
