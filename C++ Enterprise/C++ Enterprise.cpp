@@ -84,6 +84,7 @@ int main()
                         equip1.neededResources = equip1.neededResources + (equip1.neededResources / 2);
                         equip1.level++;
                         infoShip.lifePoints += 15;
+                        ship.currentLife = infoShip.lifePoints;
 
                         std::cout << equip1.level << std::endl;
                     }

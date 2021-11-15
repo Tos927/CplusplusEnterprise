@@ -22,7 +22,7 @@ struct InfoShip
 struct Ship
 {
 	int damagePower = 50;
-	int currentLife;
+	int currentLife = 100;
 	sf::CircleShape ship;
 	sf::RectangleShape weapon;
 	sf::RectangleShape react1;
