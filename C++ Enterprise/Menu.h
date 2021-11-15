@@ -60,3 +60,5 @@ EquipStruct Equip(std::string key, std::string name, sf::Vector2f posNameText, s
 
 //Fonction qui crée le background du Menu
 sf::RectangleShape Menu();
+
+void DrawEquip(EquipStruct&, sf::RenderWindow&);

@@ -6,4 +6,4 @@ std::string getAppPath();
 
 std::string getAssetsPath();
 
-sf::Font ArialFont();
+sf::Font SetupAnyFont(std::string);
