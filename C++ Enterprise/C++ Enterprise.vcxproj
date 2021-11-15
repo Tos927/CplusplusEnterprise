@@ -155,12 +155,14 @@
     <ClCompile Include="C++ Enterprise.cpp" />
     <ClCompile Include="GeneratorLevel.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Particules.cpp" />
     <ClCompile Include="ShipBehaviour.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppPath.h" />
     <ClInclude Include="GeneratorLevel.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Particules.h" />
     <ClInclude Include="ShipBehaviour.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

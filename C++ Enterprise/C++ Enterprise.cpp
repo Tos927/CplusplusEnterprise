@@ -5,6 +5,7 @@
 #include "AppPath.h"
 #include "ShipBehaviour.h"
 #include "GeneratorLevel.h"
+#include "Particules.h"
 
 
 int main()
@@ -20,6 +21,7 @@ int main()
 
     std::vector<Planet> level;
     std::vector<Bullets> allBullets;
+    std::vector<Explosion> allExplosion;
 
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "C++ Enterprise");    // WIDTH et HEIGHT sont des variable constante présent dans "GeneratorLevel.h"
     window.setVerticalSyncEnabled(true);  // Frame rate de l'écran
@@ -112,6 +114,10 @@ int main()
                     {
                         CreateBullet(allBullets, infoShip, angle, ship);
                     }
+                    /*if (event.key.code ==sf::Keyboard::G)
+                    {
+                        allExplosion.push_back(CreationExplosion(sf::Color::Red));
+                    }*/
                     break;
                 default:
                     break;
@@ -223,6 +229,19 @@ int main()
                     MouvBullet(bul, elapsedTime.asSeconds());
                     window.draw(bul.bullet);
                 }
+                /*auto exploIt = allExplosion.begin();
+                while (exploIt != allExplosion.end())
+                {
+                    window.draw(exploIt->explosionShape);
+                    if (exploIt != allExplosion.end())
+                    {
+                        ExpendingExplosion(exploIt, allExplosion, elapsedTime.asSeconds());
+                    }
+                    else
+                    {
+                        exploIt++;
+                    }
+                }*/
             }
 
             window.display();
