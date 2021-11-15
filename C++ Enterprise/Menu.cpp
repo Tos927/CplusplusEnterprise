@@ -14,6 +14,8 @@ sf::Text SetUpText(std::string textContent, sf::Font& arialttf, int charaSize, s
     text.setFillColor(color);
     text.setPosition(posText);
 
+    text.setOrigin((text.getGlobalBounds().width / 2), (text.getGlobalBounds().height / 2));
+
     return text;
 }
 
@@ -73,6 +75,15 @@ struct RessourcesStorage Storage(sf::Font& arialttf)
     return storage;
 }
 
+void DrawEquip(EquipStruct& equip, sf::RenderWindow& window)
+{
+    window.draw(equip.background);
+    window.draw(equip.name);
+    window.draw(equip.levelBg);
+    window.draw(equip.textLevel);
+    window.draw(equip.neededResourcesText);
+    window.draw(equip.keyText);
+}
 
 
 

@@ -20,10 +20,10 @@ std::string getAssetsPath()
     return assetsPath;
 }
 
-sf::Font ArialFont()
+sf::Font SetupAnyFont(std::string font)
 {
     sf::Font arialttf;
-    arialttf.loadFromFile(getAssetsPath() + "/arial.ttf");
+    arialttf.loadFromFile(getAssetsPath() + font);
 
     return arialttf;
 }

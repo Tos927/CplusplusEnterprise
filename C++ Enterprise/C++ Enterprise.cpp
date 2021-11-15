@@ -41,7 +41,12 @@ int main()
 
     InfoShip infoShip;
 
-    sf::Font arialttf = ArialFont();
+    sf::Font arialttf = SetupAnyFont("arial.ttf");
+    sf::Font barcadettf = SetupAnyFont("barcade.ttf");
+
+    sf::Text barcadeText = SetUpText("(C++Enterprise)", barcadettf, 80, sf::Color::White, /*pos*/sf::Vector2f(WIDTH/2, HEIGHT/5));
+
+    bool displayTitle = true;
 
     //sf::Text arialText = SetUpText("Infos : Lvl 1 / Hp : 150 / ATK : 20", arialttf, 25, sf::Color::Black, /*pos*/sf::Vector2f(125, 170));
 
@@ -170,12 +175,17 @@ int main()
                 allBullets.clear();
                 ResetToCenter(ship);
                 level = NewLevel(3, 10, 20, 20, 50);
+                displayTitle = false;
             }
 
             // Rendu
             window.clear();
 
-
+            if (displayTitle)
+            {
+                window.draw(barcadeText);
+            }
+            
 
             // Whatever I want to draw goes here 
             if (displayMenu)
@@ -190,33 +200,10 @@ int main()
                 window.draw(InfoShipValue);
 
                 // Draw the different Equip struct
-                window.draw(equip1.background);
-                window.draw(equip1.name);
-                window.draw(equip1.levelBg);
-                window.draw(equip1.textLevel);
-                window.draw(equip1.neededResourcesText);
-                window.draw(equip1.keyText);
-
-                window.draw(equip2.background);
-                window.draw(equip2.name);
-                window.draw(equip2.levelBg);
-                window.draw(equip2.textLevel);
-                window.draw(equip2.neededResourcesText);
-                window.draw(equip2.keyText);
-
-                window.draw(equip3.background);
-                window.draw(equip3.name);
-                window.draw(equip3.levelBg);
-                window.draw(equip3.textLevel);
-                window.draw(equip3.neededResourcesText);
-                window.draw(equip3.keyText);
-
-                window.draw(equip4.background);
-                window.draw(equip4.name);
-                window.draw(equip4.levelBg);
-                window.draw(equip4.textLevel);
-                window.draw(equip4.neededResourcesText);
-                window.draw(equip4.keyText);
+                DrawEquip(equip1, window);
+                DrawEquip(equip2, window);
+                DrawEquip(equip3, window);
+                DrawEquip(equip4, window);
 
                 // Draw the storage
                 window.draw(storage.resourcesBg);
