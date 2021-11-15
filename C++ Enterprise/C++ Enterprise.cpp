@@ -252,15 +252,15 @@ int main()
                             break;
                         }
                         case 1: {
-                            enemyIt = StratHeavyMove(enemyIt, allEnemies, allBullets, ship.ship.getPosition(), elapsedTime.asSeconds());
+                            enemyIt = StratHeavyMove(enemyIt, allEnemies, allBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds());
                             break;
                         }
                         case 2: {
-                            enemyIt = StratBomberMove(enemyIt, allEnemies, allBullets, ship, infoShip,  elapsedTime.asSeconds());
+                            enemyIt = StratBomberMove(enemyIt, allEnemies, allBullets, ship, infoShip, storage, elapsedTime.asSeconds());
                             break;
                         }
                         case 3: {
-                            enemyIt = StratTorpedoLuncherMove(enemyIt, allEnemies, enemyTorpedo, allBullets, ship.ship.getPosition(), elapsedTime.asSeconds());
+                            enemyIt = StratTorpedoLuncherMove(enemyIt, allEnemies, enemyTorpedo, allBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds());
                             break;
                         }
                     }
