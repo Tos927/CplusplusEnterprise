@@ -23,7 +23,7 @@ int main()
     // object de la scène
     std::vector<Planet> level;
     std::vector<Bullets> allBullets;
-    
+
     std::vector<Enemy> allEnemies;
     std::map<int, Torpedo> enemyTorpedo;
 
@@ -44,7 +44,7 @@ int main()
     sf::Font arialttf = SetupAnyFont("arial.ttf");
     sf::Font barcadettf = SetupAnyFont("barcade.ttf");
 
-    sf::Text barcadeText = SetUpText("(C++Enterprise)", barcadettf, 80, sf::Color::White, /*pos*/sf::Vector2f(WIDTH/2, HEIGHT/5));
+    sf::Text barcadeText = SetUpText("(C++Enterprise)", barcadettf, 80, sf::Color::White, /*pos*/sf::Vector2f(WIDTH / 2, HEIGHT / 5));
 
     bool displayTitle = true;
 
@@ -60,7 +60,7 @@ int main()
     EquipStruct equip2 = Equip("R", "Phaser Canon", posbackG + sf::Vector2f(pRight + margin, margin), posbackG + sf::Vector2f(pRight, 0), arialttf);
     EquipStruct equip3 = Equip("T", "Artillery", posbackG + sf::Vector2f(margin, pTop + margin), posbackG + sf::Vector2f(0, pTop), arialttf);
     EquipStruct equip4 = Equip("Y", "Crew", posbackG + sf::Vector2f(pRight + margin, pTop + margin), posbackG + sf::Vector2f(pRight, pTop), arialttf);
-    
+
     RessourcesStorage storage = Storage(arialttf);
 
     sf::Clock clock;
@@ -69,173 +69,221 @@ int main()
 
         // Input
         sf::Event event;
-        while (window.pollEvent(event)) 
+        while (window.pollEvent(event))
+        {
+            switch (event.type)
             {
-                switch (event.type)
+            case sf::Event::Closed:
+                window.close();
+                break;
+
+            case sf::Event::KeyPressed:
+                if (event.key.code == sf::Keyboard::Escape)
                 {
-                case sf::Event::Closed:
-                    window.close();
-                    break;
-
-                case sf::Event::KeyPressed:
-                    if (event.key.code == sf::Keyboard::Escape)
-                    {
-                        displayMenu = !displayMenu;
-                    }
-                    // Life
-                    if (event.key.code == sf::Keyboard::E && storage.ownResource >= equip1.neededResources && displayMenu)
-                    {
-                        storage.ownResource -= equip1.neededResources;
-                        equip1.neededResources = equip1.neededResources + (equip1.neededResources / 2);
-                        equip1.level++;
-                        infoShip.lifePoints += 15;
-                        ship.currentLife = infoShip.lifePoints;
-
-                        std::cout << equip1.level << std::endl;
-                    }
-                    // ATK
-                    if (event.key.code == sf::Keyboard::R && storage.ownResource >= equip2.neededResources && displayMenu)
-                    {
-                        storage.ownResource -= equip2.neededResources;
-                        equip2.neededResources = equip2.neededResources + (equip2.neededResources / 2);
-                        equip2.level++;
-                        infoShip.atkPoints += 20;
-
-                        std::cout << equip2.level << std::endl;
-                    }
-                    // Bullet Speed
-                    if (event.key.code == sf::Keyboard::T && storage.ownResource >= equip3.neededResources && displayMenu)
-                    {
-                        storage.ownResource -= equip3.neededResources;
-                        equip3.neededResources = equip3.neededResources + (equip3.neededResources / 2);
-                        equip3.level++;
-                        infoShip.bspeedPoints += 25;
-
-                        std::cout << equip3.level << std::endl;
-                    }
-                    // Complicated
-                    if (event.key.code == sf::Keyboard::Y && storage.ownResource >= equip4.neededResources && displayMenu)
-                    {
-                        storage.ownResource -= equip4.neededResources;
-                        equip4.neededResources = equip4.neededResources + (equip4.neededResources / 2);
-                        equip4.level++;
-                        infoShip.lifePoints += 1;
-
-                        std::cout << equip4.level << std::endl;
-                    }
-
-                    if (event.key.code == sf::Keyboard::Space)
-                    {
-                        CreateBullet(allBullets, infoShip, angle, ship);
-                    }
-                    if (event.key.code ==sf::Keyboard::G)
-                    {
-                        //CreatNewEnemy(allEnemies, { 500, 500}, 0);
-                        CreatNewEnemy(allEnemies, { 600, 500 }, 1);
-                        CreatNewEnemy(allEnemies, { 700, 500 }, 2);
-                        CreatNewEnemy(allEnemies, { 800, 500 }, 3);
-                    }
-                    break;
-                default:
-                    break;
+                    displayMenu = !displayMenu;
                 }
+                // Life
+                if (event.key.code == sf::Keyboard::E && storage.ownResource >= equip1.neededResources && displayMenu)
+                {
+                    storage.ownResource -= equip1.neededResources;
+                    equip1.neededResources = equip1.neededResources + (equip1.neededResources / 2);
+                    equip1.level++;
+                    infoShip.lifePoints += 15;
+                    ship.currentLife = infoShip.lifePoints;
+
+                    std::cout << equip1.level << std::endl;
+                }
+                // ATK
+                if (event.key.code == sf::Keyboard::R && storage.ownResource >= equip2.neededResources && displayMenu)
+                {
+                    storage.ownResource -= equip2.neededResources;
+                    equip2.neededResources = equip2.neededResources + (equip2.neededResources / 2);
+                    equip2.level++;
+                    infoShip.atkPoints += 20;
+
+                    std::cout << equip2.level << std::endl;
+                }
+                // Bullet Speed
+                if (event.key.code == sf::Keyboard::T && storage.ownResource >= equip3.neededResources && displayMenu)
+                {
+                    storage.ownResource -= equip3.neededResources;
+                    equip3.neededResources = equip3.neededResources + (equip3.neededResources / 2);
+                    equip3.level++;
+                    infoShip.bspeedPoints += 25;
+
+                    std::cout << equip3.level << std::endl;
+                }
+                // Complicated
+                if (event.key.code == sf::Keyboard::Y && storage.ownResource >= equip4.neededResources && displayMenu)
+                {
+                    storage.ownResource -= equip4.neededResources;
+                    equip4.neededResources = equip4.neededResources + (equip4.neededResources / 2);
+                    equip4.level++;
+                    infoShip.lifePoints += 1;
+
+                    std::cout << equip4.level << std::endl;
+                }
+
+                if (event.key.code == sf::Keyboard::Space)
+                {
+                    CreateBullet(allBullets, infoShip, angle, ship);
+                }
+                if (event.key.code == sf::Keyboard::G)
+                {
+                    //CreatNewEnemy(allEnemies, { 500, 500}, 0);
+                    CreatNewEnemy(allEnemies, { 600, 500 }, 1);
+                    CreatNewEnemy(allEnemies, { 700, 500 }, 2);
+                    CreatNewEnemy(allEnemies, { 800, 500 }, 3);
+                }
+                break;
+            default:
+                break;
+            }
         }
 
-            // Element du menu qui sont dynamique
+        // Element du menu qui sont dynamique
 
-            infoShip.shipLevel = (equip1.level + equip2.level + equip3.level + equip4.level) / 4;
+        infoShip.shipLevel = (equip1.level + equip2.level + equip3.level + equip4.level) / 4;
 
-            sf::Text InfoShipValue = SetUpText(infoShip.atkString + std::to_string(infoShip.atkPoints) +
-                infoShip.lifeString + std::to_string(infoShip.lifePoints) + infoShip.bspeedString + std::to_string((int)infoShip.bspeedPoints),
-                arialttf, 20, sf::Color::Black, /*pos*/sf::Vector2f(125, 210));
+        sf::Text InfoShipValue = SetUpText(infoShip.atkString + std::to_string(infoShip.atkPoints) +
+            infoShip.lifeString + std::to_string(infoShip.lifePoints) + infoShip.bspeedString + std::to_string((int)infoShip.bspeedPoints),
+            arialttf, 20, sf::Color::Black, /*pos*/sf::Vector2f(125, 210));
 
-            sf::Text InfoShipTitle = SetUpText("Ship Information : Level " + std::to_string(infoShip.shipLevel), arialttf, 25, sf::Color::Black, /*pos*/sf::Vector2f(125, 170));
+        sf::Text InfoShipTitle = SetUpText("Ship Information : Level " + std::to_string(infoShip.shipLevel), arialttf, 25, sf::Color::Black, /*pos*/sf::Vector2f(125, 170));
 
-            storage.nameResource.setString(storage.resource + std::to_string(storage.ownResource));
+        storage.nameResource.setString(storage.resource + std::to_string(storage.ownResource));
 
-            equip1.textLevel.setString("LvL" + std::to_string(equip1.level));
-            equip1.neededResourcesText.setString("Needed resources : " + std::to_string(equip1.neededResources));
+        equip1.textLevel.setString("LvL" + std::to_string(equip1.level));
+        equip1.neededResourcesText.setString("Needed resources : " + std::to_string(equip1.neededResources));
 
-            equip2.textLevel.setString("LvL" + std::to_string(equip2.level));
-            equip2.neededResourcesText.setString("Needed resources : " + std::to_string(equip2.neededResources));
+        equip2.textLevel.setString("LvL" + std::to_string(equip2.level));
+        equip2.neededResourcesText.setString("Needed resources : " + std::to_string(equip2.neededResources));
 
-            equip3.textLevel.setString("LvL" + std::to_string(equip3.level));
-            equip3.neededResourcesText.setString("Needed resources : " + std::to_string(equip3.neededResources));
+        equip3.textLevel.setString("LvL" + std::to_string(equip3.level));
+        equip3.neededResourcesText.setString("Needed resources : " + std::to_string(equip3.neededResources));
 
-            equip4.textLevel.setString("LvL" + std::to_string(equip4.level));
-            equip4.neededResourcesText.setString("Needed resources : " + std::to_string(equip4.neededResources));
+        equip4.textLevel.setString("LvL" + std::to_string(equip4.level));
+        equip4.neededResourcesText.setString("Needed resources : " + std::to_string(equip4.neededResources));
 
-            // Logique
-            sf::Time elapsedTime = clock.restart();
+        // Logique
+        sf::Time elapsedTime = clock.restart();
 
-            ShipMovement(ship, elapsedTime.asSeconds(), angle, vitesse);
-            ActualisationProps(level, allBullets, storage);
-            if (IsOutOfScreen(ship.ship.getPosition(), 10.0f))
-            {
-                allBullets.clear();
-                ResetToCenter(ship);
-                level = NewLevel(3, 10, 20, 20, 50);
-                displayTitle = false;
+        ShipMovement(ship, elapsedTime.asSeconds(), angle, vitesse);
+        ActualisationProps(level, allBullets, storage);
+        if (IsOutOfScreen(ship.ship.getPosition(), 10.0f))
+        {
+            allBullets.clear();
+            ResetToCenter(ship);
+            level = NewLevel(3, 10, 20, 20, 50);
+            displayTitle = false;
+        }
+
+        // Rendu
+        window.clear();
+
+        if (displayTitle)
+        {
+            window.draw(barcadeText);
+        }
+
+
+        // Whatever I want to draw goes here 
+        if (displayMenu)
+        {
+
+            // Draw the Menu background
+            window.draw(menu);
+
+            // Draw Ship Info
+            window.draw(shipInfo);
+            window.draw(InfoShipTitle);
+            window.draw(InfoShipValue);
+
+            // Draw the different Equip struct
+            DrawEquip(equip1, window);
+            DrawEquip(equip2, window);
+            DrawEquip(equip3, window);
+            DrawEquip(equip4, window);
+
+            // Draw the storage
+            window.draw(storage.resourcesBg);
+            window.draw(storage.storage);
+            window.draw(storage.nameResource);
+
+        }
+
+        else
+        {
+            window.draw(ship.ship);
+            window.draw(ship.weapon);
+            window.draw(ship.react1);
+            window.draw(ship.react2);
+
+            for (Planet p : level) {
+                window.draw(p.pShape);
             }
 
-            // Rendu
-            window.clear();
-
-            if (displayTitle)
+            for (Bullets& bul : allBullets)
             {
-                window.draw(barcadeText);
-            }
-            
-
-            // Whatever I want to draw goes here 
-            if (displayMenu)
-            {
-
-                // Draw the Menu background
-                window.draw(menu);
-
-                // Draw Ship Info
-                window.draw(shipInfo);
-                window.draw(InfoShipTitle);
-                window.draw(InfoShipValue);
-
-                // Draw the different Equip struct
-                DrawEquip(equip1, window);
-                DrawEquip(equip2, window);
-                DrawEquip(equip3, window);
-                DrawEquip(equip4, window);
-
-                // Draw the storage
-                window.draw(storage.resourcesBg);
-                window.draw(storage.storage);
-                window.draw(storage.nameResource);
-
+                MouvBullet(bul, elapsedTime.asSeconds());
+                window.draw(bul.bullet);
             }
 
-            else
-            {
-                window.draw(ship.ship);
-                window.draw(ship.weapon);
-                window.draw(ship.react1);
-                window.draw(ship.react2);
+            std::map<const int, Torpedo>::iterator it = enemyTorpedo.begin();
+            while (it != enemyTorpedo.end()) {
+                MoveToPoint(it->second.shap, ship.ship.getPosition(), it->second.speed, true, elapsedTime.asSeconds());
+                window.draw(it->second.shap);
 
-                for (Planet p : level) {
-                    window.draw(p.pShape);
+                // Actualisation de la torpille - si il est en contacte avec le vaisseau ou par un tir
+                if (CollideWithShip(ship, it->second.shap) || CollideWithFrendlyBullet(allBullets, it->second.shap, true)) {
+                    it = enemyTorpedo.erase(it);
+                }
+                else {
+                    it++;
+                }
+            }
+
+            std::vector<Enemy>::iterator enemyIt = allEnemies.begin();
+            while (enemyIt != allEnemies.end()) {
+                window.draw((*enemyIt).shape);
+                switch ((*enemyIt).type)
+                {
+                case 0: {
+                    break;
+                }
+                case 1: {
+                    enemyIt = StratHeavyMove(enemyIt, allEnemies, allBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds());
+                    break;
+                }
+                case 2: {
+                    enemyIt = StratBomberMove(enemyIt, allEnemies, allBullets, ship, infoShip, storage, elapsedTime.asSeconds());
+                    break;
+                }
+                case 3: {
+                    enemyIt = StratTorpedoLuncherMove(enemyIt, allEnemies, enemyTorpedo, allBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds());
+                    break;
+                }
                 }
 
+                if (enemyIt != allEnemies.end()) {
+                    enemyIt++;
+                }
+                // ------------ logique ------------ //
+
+            // Déplacement des balles alliers
                 for (Bullets& bul : allBullets)
                 {
                     MouvBullet(bul, elapsedTime.asSeconds());
-                    window.draw(bul.bullet);
                 }
 
+                // Déplacement des Torpilles
                 std::map<const int, Torpedo>::iterator it = enemyTorpedo.begin();
                 while (it != enemyTorpedo.end()) {
                     MoveToPoint(it->second.shap, ship.ship.getPosition(), it->second.speed, true, elapsedTime.asSeconds());
-                    window.draw(it->second.shap);
 
                     // Actualisation de la torpille - si il est en contacte avec le vaisseau ou par un tir
                     if (CollideWithShip(ship, it->second.shap) || CollideWithFrendlyBullet(allBullets, it->second.shap, true)) {
+                        infoShip.lifePoints -= it->second.damage;
                         it = enemyTorpedo.erase(it);
                     }
                     else {
@@ -243,31 +291,58 @@ int main()
                     }
                 }
 
+                // déplacement des enemis
                 std::vector<Enemy>::iterator enemyIt = allEnemies.begin();
                 while (enemyIt != allEnemies.end()) {
-                    window.draw((*enemyIt).shape);
                     switch ((*enemyIt).type)
                     {
-                        case 0: {
-                            break;
-                        }
-                        case 1: {
-                            enemyIt = StratHeavyMove(enemyIt, allEnemies, allBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds());
-                            break;
-                        }
-                        case 2: {
-                            enemyIt = StratBomberMove(enemyIt, allEnemies, allBullets, ship, infoShip, storage, elapsedTime.asSeconds());
-                            break;
-                        }
-                        case 3: {
-                            enemyIt = StratTorpedoLuncherMove(enemyIt, allEnemies, enemyTorpedo, allBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds());
-                            break;
-                        }
+                    case 0: {
+                        break;
+                    }
+                    case 1: {
+                        enemyIt = StratHeavyMove(enemyIt, allEnemies, allBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds());
+                        break;
+                    }
+                    case 2: {
+                        enemyIt = StratBomberMove(enemyIt, allEnemies, allBullets, ship, infoShip, storage, elapsedTime.asSeconds());
+                        break;
+                    }
+                    case 3: {
+                        enemyIt = StratTorpedoLuncherMove(enemyIt, allEnemies, enemyTorpedo, allBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds());
+                        break;
+                    }
                     }
 
                     if (enemyIt != allEnemies.end()) {
                         enemyIt++;
                     }
+                }
+
+
+                // ------------ Rendu ------------ //
+
+                // Joueur
+                DrawShip(ship, window);
+
+                // Ennemis
+                for (Enemy enemy : allEnemies) {
+                    window.draw(enemy.shape);
+                }
+
+                // Planètes
+                for (Planet p : level) {
+                    window.draw(p.pShape);
+                }
+
+                // Balles alliers
+                for (Bullets& bul : allBullets)
+                {
+                    window.draw(bul.bullet);
+                }
+
+                // Torpilles ennemis
+                for (std::pair<const int, Torpedo> topedo : enemyTorpedo) {
+                    window.draw(topedo.second.shap);
                 }
 
                 /*auto exploIt = allExplosion.begin();
@@ -284,7 +359,7 @@ int main()
                     }
                 }*/
             }
-
             window.display();
+        }
     }
 }
