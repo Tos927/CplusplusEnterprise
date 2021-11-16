@@ -124,7 +124,7 @@ int main()
                     }
                     if (event.key.code ==sf::Keyboard::G)
                     {
-                        //CreatNewEnemy(allEnemies, { 500, 500}, 0);
+                        // CreatNewEnemy(allEnemies, { 500, 500}, 0);
                         CreatNewEnemy(allEnemies, { 600, 500 }, 1);
                         CreatNewEnemy(allEnemies, { 700, 500 }, 2);
                         CreatNewEnemy(allEnemies, { 800, 500 }, 3);
@@ -226,28 +226,22 @@ int main()
 
             else
             {
-                window.draw(ship.ship);
-                window.draw(ship.weapon);
-                window.draw(ship.react1);
-                window.draw(ship.react2);
+                // ------------ logique ------------ //
 
-                for (Planet p : level) {
-                    window.draw(p.pShape);
-                }
-
+                // Déplacement des balles alliers
                 for (Bullets& bul : allBullets)
                 {
                     MouvBullet(bul, elapsedTime.asSeconds());
-                    window.draw(bul.bullet);
                 }
 
+                // Déplacement des Torpilles
                 std::map<const int, Torpedo>::iterator it = enemyTorpedo.begin();
                 while (it != enemyTorpedo.end()) {
                     MoveToPoint(it->second.shap, ship.ship.getPosition(), it->second.speed, true, elapsedTime.asSeconds());
-                    window.draw(it->second.shap);
 
                     // Actualisation de la torpille - si il est en contacte avec le vaisseau ou par un tir
                     if (CollideWithShip(ship, it->second.shap) || CollideWithFrendlyBullet(allBullets, it->second.shap, true)) {
+                        infoShip.lifePoints -= it->second.damage;
                         it = enemyTorpedo.erase(it);
                     }
                     else {
@@ -255,31 +249,58 @@ int main()
                     }
                 }
 
+                // déplacement des enemis
                 std::vector<Enemy>::iterator enemyIt = allEnemies.begin();
                 while (enemyIt != allEnemies.end()) {
-                    window.draw((*enemyIt).shape);
                     switch ((*enemyIt).type)
                     {
-                        case 0: {
-                            break;
-                        }
-                        case 1: {
-                            enemyIt = StratHeavyMove(enemyIt, allEnemies, allBullets, ship.ship.getPosition(), elapsedTime.asSeconds());
-                            break;
-                        }
-                        case 2: {
-                            enemyIt = StratBomberMove(enemyIt, allEnemies, allBullets, ship, infoShip,  elapsedTime.asSeconds());
-                            break;
-                        }
-                        case 3: {
-                            enemyIt = StratTorpedoLuncherMove(enemyIt, allEnemies, enemyTorpedo, allBullets, ship.ship.getPosition(), elapsedTime.asSeconds());
-                            break;
-                        }
+                    case 0: {
+                        break;
+                    }
+                    case 1: {
+                        enemyIt = StratHeavyMove(enemyIt, allEnemies, allBullets, ship.ship.getPosition(), elapsedTime.asSeconds());
+                        break;
+                    }
+                    case 2: {
+                        enemyIt = StratBomberMove(enemyIt, allEnemies, allBullets, ship, infoShip, elapsedTime.asSeconds());
+                        break;
+                    }
+                    case 3: {
+                        enemyIt = StratTorpedoLuncherMove(enemyIt, allEnemies, enemyTorpedo, allBullets, ship.ship.getPosition(), elapsedTime.asSeconds());
+                        break;
+                    }
                     }
 
                     if (enemyIt != allEnemies.end()) {
                         enemyIt++;
                     }
+                }
+
+
+                // ------------ Rendu ------------ //
+
+                // Joueur
+                DrawShip(ship, window);
+
+                // Ennemis
+                for (Enemy enemy : allEnemies) {
+                    window.draw(enemy.shape);
+                }
+
+                // Planètes
+                for (Planet p : level) {
+                    window.draw(p.pShape);
+                }
+
+                // Balles alliers
+                for (Bullets& bul : allBullets)
+                {
+                    window.draw(bul.bullet);
+                }
+
+                // Torpilles ennemis
+                for (std::pair<const int, Torpedo> topedo : enemyTorpedo) {
+                    window.draw(topedo.second.shap);
                 }
 
                 /*auto exploIt = allExplosion.begin();

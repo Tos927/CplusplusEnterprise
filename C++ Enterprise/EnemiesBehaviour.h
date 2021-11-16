@@ -23,8 +23,6 @@ struct Enemy {
 	// -- Système de tire -- //
 	// Semi - automatique
 	float rate = 1.f;
-
-	// Par rafale
 	float semiRate = 0.f;
 	int nbBulletSemi = 1;
 
