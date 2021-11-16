@@ -1,5 +1,8 @@
 #pragma once
 
+//#include "ShipBehaviour.h"
+//#include <SFML/Graphics.hpp>
+
 struct EquipStruct
 {
     sf::Text name;
@@ -9,16 +12,23 @@ struct EquipStruct
     int level = 1;
 
     sf::Text textLevel;
+    sf::Text previewLevel;
+
     sf::RectangleShape levelBg;
 
     sf::Text nameResource;
     sf::RectangleShape resourcesBg;
 
     sf::Text neededResourcesText;
-    int neededResources = 25; //default 25
+    int neededResources = 0; //default 25
 
     sf::Text keyText;
     std::string key;
+
+    sf::Text definition;
+
+    sf::Text currentBonus;
+    int currentStatsBonus = 0;
 };
 
 struct RessourcesStorage
@@ -49,4 +59,6 @@ sf::RectangleShape Menu();
 
 void DrawEquip(EquipStruct&, sf::RenderWindow&);
 
-void UpdateTextLevel(EquipStruct& equip, sf::Vector2f posbackG);
+void UpdateTextLevel(EquipStruct& equip, sf::Vector2f posbackG, std::string bonusType);
+
+//void UpdateEquipOnLevelUp(EquipStruct& equip, RessourcesStorage& storage, InfoShip& infoShip, Ship& ship);

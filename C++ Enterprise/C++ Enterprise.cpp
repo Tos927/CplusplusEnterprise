@@ -95,10 +95,15 @@ int main()
                         storage.ownResource -= equip1.neededResources;
                         equip1.neededResources = equip1.neededResources + (equip1.neededResources / 2);
                         equip1.level++;
-                        infoShip.lifePoints += 15;
+
+                        int lifePointsBonus = 15;
+                        infoShip.lifePoints += lifePointsBonus, equip1.currentStatsBonus += lifePointsBonus;
+
                         ship.currentLife = infoShip.lifePoints;
 
                         std::cout << equip1.level << std::endl;
+
+                        //UpdateEquipOnLevelUp(equip1, storage, infoShip, ship);
                     }
                     // ATK
                     if (event.key.code == sf::Keyboard::R && storage.ownResource >= equip2.neededResources && displayMenu)
@@ -106,7 +111,9 @@ int main()
                         storage.ownResource -= equip2.neededResources;
                         equip2.neededResources = equip2.neededResources + (equip2.neededResources / 2);
                         equip2.level++;
-                        infoShip.atkPoints += 20;
+
+                        int atkPointsBonus = 20;
+                        infoShip.atkPoints += atkPointsBonus, equip2.currentStatsBonus += atkPointsBonus;
 
                         std::cout << equip2.level << std::endl;
                     }
@@ -116,7 +123,9 @@ int main()
                         storage.ownResource -= equip3.neededResources;
                         equip3.neededResources = equip3.neededResources + (equip3.neededResources / 2);
                         equip3.level++;
-                        infoShip.bspeedPoints += 25;
+
+                        int atkPointsBonus = 25;
+                        infoShip.bspeedPoints += atkPointsBonus, equip3.currentStatsBonus += atkPointsBonus;
 
                         std::cout << equip3.level << std::endl;
                     }
@@ -126,7 +135,7 @@ int main()
                         storage.ownResource -= equip4.neededResources;
                         equip4.neededResources = equip4.neededResources + (equip4.neededResources / 2);
                         equip4.level++;
-                        infoShip.lifePoints += 1;
+                        infoShip.lifePoints += 1, equip4.currentStatsBonus += 1;
 
                         std::cout << equip4.level << std::endl;
                     }
@@ -167,10 +176,10 @@ int main()
             storage.nameResource.setPosition(sf::Vector2f(WIDTH * 0.675 - (WIDTH * 0.110 / 2) + (WIDTH * 0.110 / 2), HEIGHT * (0.18 + 0.06)));
             storage.nameResource.setOrigin((storage.nameResource.getGlobalBounds().width / 2), (storage.nameResource.getGlobalBounds().height / 2));
 
-            UpdateTextLevel(equip1, posbackG);
-            UpdateTextLevel(equip2, posbackG + sf::Vector2f(pRight, 0));
-            UpdateTextLevel(equip3, posbackG + sf::Vector2f(0, pTop));
-            UpdateTextLevel(equip4, posbackG + sf::Vector2f(pRight, pTop));
+            UpdateTextLevel(equip1, posbackG, " HP");
+            UpdateTextLevel(equip2, posbackG + sf::Vector2f(pRight, 0), " Attack");
+            UpdateTextLevel(equip3, posbackG + sf::Vector2f(0, pTop), " Bullet Speed");
+            UpdateTextLevel(equip4, posbackG + sf::Vector2f(pRight, pTop), " HP");
 
             // Logique
             sf::Time elapsedTime = clock.restart();

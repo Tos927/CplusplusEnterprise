@@ -4,6 +4,7 @@
 #include "Menu.h"
 #include "AppPath.h"
 #include "GeneratorLevel.h"
+#include "ShipBehaviour.h"
 
 sf::Text SetUpText(std::string textContent, sf::Font& arialttf, int charaSize, sf::Color color, sf::Vector2f posText)
 {
@@ -60,11 +61,19 @@ struct EquipStruct Equip(std::string key, std::string name, sf::Vector2f posName
     equip.textLevel = SetUpText("LvL" + std::to_string(equip.level), arialttf, 25, sf::Color::White, posBackground + sf::Vector2f(equipBgWidth - (levelBgWidth/2), levelBgWidth * 0.80));
     equip.textLevel.setOrigin((equip.textLevel.getGlobalBounds().width / 2), (equip.textLevel.getGlobalBounds().height / 2));
 
+    // Place the preview level 
+    equip.previewLevel = SetUpText("LvL" + std::to_string(equip.level) + " --> LvL" + std::to_string(equip.level + 1), arialttf, 12, sf::Color::White, posBackground + sf::Vector2f(equipBgWidth - (levelBgWidth / 2), levelBgWidth * 0.40));
+    equip.previewLevel.setOrigin((equip.previewLevel.getGlobalBounds().width / 2), (equip.previewLevel.getGlobalBounds().height / 2));
+
     // Place the text Press E/R/T/Y at the center Top of the level's background 
     equip.keyText = SetUpText("Press " + key, arialttf, 15, sf::Color::White, posBackground + sf::Vector2f(equipBgWidth - (levelBgWidth / 2), levelBgWidth * 0.20));
     equip.keyText.setOrigin((equip.keyText.getGlobalBounds().width / 2), (equip.keyText.getGlobalBounds().height / 2));
 
     equip.neededResourcesText = SetUpText("Needed resources : " + std::to_string(equip.neededResources), arialttf, 13, sf::Color::Black, posNameText + sf::Vector2f(0, 25));
+    
+    equip.definition = SetUpText("Energy shield that protects spacecraft from laser fire,\nin-flight projectiles and accidental space debris\ninteraction.", arialttf, 13, sf::Color::Black, posNameText + sf::Vector2f(0, 45));
+    
+    equip.currentBonus = SetUpText("Current bonus stats : " + std::to_string(equip.currentStatsBonus), arialttf, 13, sf::Color::Black, posNameText + sf::Vector2f(0, 100));
 
     return equip;
 }
@@ -94,32 +103,39 @@ void DrawEquip(EquipStruct& equip, sf::RenderWindow& window)
     window.draw(equip.name);
     window.draw(equip.levelBg);
     window.draw(equip.textLevel);
+    window.draw(equip.previewLevel);
     window.draw(equip.neededResourcesText);
     window.draw(equip.keyText);
+    window.draw(equip.definition); 
+    window.draw(equip.currentBonus);
+
 }
 
-void UpdateTextLevel(EquipStruct& equip, sf::Vector2f posbackG)
+void UpdateTextLevel(EquipStruct& equip, sf::Vector2f posbackG, std::string bonusType)
 {
     equip.textLevel.setString("LvL" + std::to_string(equip.level));
+    equip.textLevel.setPosition(posbackG + sf::Vector2f(WIDTH * 0.22 - (WIDTH * 0.055 / 2), (WIDTH * 0.055) * 0.80));
+    equip.textLevel.setOrigin((equip.textLevel.getGlobalBounds().width / 2), (equip.textLevel.getGlobalBounds().height / 2));
+
+    equip.previewLevel.setString("LvL" + std::to_string(equip.level) + " --> LvL" + std::to_string(equip.level + 1));
+    equip.previewLevel.setPosition(posbackG + sf::Vector2f(WIDTH * 0.22 - (WIDTH * 0.055 / 2), (WIDTH * 0.055) * 0.40));
+    equip.previewLevel.setOrigin((equip.previewLevel.getGlobalBounds().width / 2), (equip.previewLevel.getGlobalBounds().height / 2));
 
     equip.neededResourcesText.setString("Needed resources : " + std::to_string(equip.neededResources));
 
-    equip.textLevel.setPosition(posbackG + sf::Vector2f(WIDTH * 0.22 - (WIDTH * 0.055 / 2), (WIDTH * 0.055) * 0.80));
-    equip.textLevel.setOrigin((equip.textLevel.getGlobalBounds().width / 2), (equip.textLevel.getGlobalBounds().height / 2));
+    
+
+    equip.currentBonus.setString("Current bonus stats : " + std::to_string(equip.currentStatsBonus) + bonusType);
 }
 
-
-
-
-
-/*
-// Resources background and text
-equip.resourcesBg = sf::RectangleShape(sf::Vector2f(80, 80));
-equip.resourcesBg.setPosition(posBackground + sf::Vector2f(190, 0));
-equip.resourcesBg.setFillColor(sf::Color::Color(54, 54, 54));
-
-equip.nameRessource.setString("LvL" + std::to_string(equip.level));
-equip.nameResource.setFont(arialttf);
-equip.nameResource.setCharacterSize(25);
-equip.nameResource.setFillColor(sf::Color::White);
-equip.nameResource.setPosition(posNameText + sf::Vector2f(195, 40));*/
+//void UpdateEquipOnLevelUp(EquipStruct& equip, RessourcesStorage& storage, InfoShip& infoShip, Ship& ship)
+//{
+//    storage.ownResource -= equip.neededResources;
+//    equip.neededResources = equip.neededResources + (equip.neededResources / 2);
+//    equip.level++;
+//
+//    int lifePointsBonus = 15;
+//    infoShip.lifePoints += lifePointsBonus, equip.currentStatsBonus += lifePointsBonus;
+//
+//    ship.currentLife = infoShip.lifePoints;
+//}
