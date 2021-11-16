@@ -141,3 +141,10 @@ void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bull
 		}
 	}
 }
+
+void DrawShip(const Ship& ship, sf::RenderWindow& window) {
+	window.draw(ship.ship);
+	window.draw(ship.weapon);
+	window.draw(ship.react1);
+	window.draw(ship.react2);
+}

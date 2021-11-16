@@ -46,3 +46,4 @@ void ResetToCenter(Ship& ship);
 void CreateBullet(std::vector<Bullets>& bullets, InfoShip& infoShip, float bulletAngle, const Ship& shipPosition);
 void MouvBullet(Bullets& bullet, float deltaTime);
 void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bullet, RessourcesStorage& ressource);
+void DrawShip(const Ship& ship, sf::RenderWindow& window);
