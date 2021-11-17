@@ -43,7 +43,7 @@ void InitializeShip(Ship& ship);
 void ShipMovement(Ship& ship, float deltaTime, float& angle, float& vitesse);
 bool IsOutOfScreen(sf::Vector2f shipPosition, float screenTrigger);
 void ResetToCenter(Ship& ship);
-void CreateBullet(std::vector<Bullets>& bullets, InfoShip& infoShip, float bulletAngle, const Ship& shipPosition);
+void CreateBullet(std::vector<Bullets>& bullets, int speed, int damage, const sf::CircleShape& origineShape, float angleInDeg); //void CreateBullet(std::vector<Bullets>& bullets, InfoShip& infoShip, float bulletAngle, const Ship& shipPosition);
 void MouvBullet(Bullets& bullet, float deltaTime);
 void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bullet, RessourcesStorage& ressource);
 void DrawShip(const Ship& ship, sf::RenderWindow& window);
