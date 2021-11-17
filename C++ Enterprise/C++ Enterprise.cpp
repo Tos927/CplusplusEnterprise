@@ -169,6 +169,9 @@ int main()
         // Logique
         sf::Time elapsedTime = clock.restart();
 
+
+        //TODO//
+        //bouger le code d'en dessous dans else pour pas que le vaisseau bouge dans le menu
         ShipMovement(ship, elapsedTime.asSeconds(), angle, vitesse);
         ActualisationProps(level, allBullets, storage);
         if (IsOutOfScreen(ship.ship.getPosition(), 10.0f))
