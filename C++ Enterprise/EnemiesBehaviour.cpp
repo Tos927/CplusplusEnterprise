@@ -202,13 +202,25 @@ bool CollideWithFrendlyBullet(std::vector<Bullets>& allBullets, sf::CircleShape 
 }
 
 
+void TakeDamage(Ship& ship, int damage) {
+	ship.currentLife -= damage;
+	// actualiser UI
+}
+
+
+void GainResources(RessourcesStorage& ressource, int gain) {
+	ressource.ownResource += gain;
+	ressource.nameResource.setString(ressource.resource + std::to_string(ressource.ownResource));
+}
+
+
 
 // ------------------------------------------------------------------------------ //
 // ------------------------------ Enemy Mouvement  ------------------------------ //
 // ------------------------------------------------------------------------------ //
 
 
-std::vector<Enemy>::iterator StratHeavyMove(std::vector<Enemy>::iterator& enemyIt, std::vector<Enemy>& allEnemy, std::vector<Bullets>& shipBullets, std::vector<Bullets>& enemyBullets, sf::Vector2f shipPosition, RessourcesStorage& ressource, const float& deltaTime) {
+std::vector<Enemy>::iterator StratHeavyMove(std::vector<Enemy>::iterator& enemyIt, std::vector<Enemy>& allEnemy, std::vector<Bullets>& shipBullets, Ship& ship, std::vector<Bullets>& enemyBullets, sf::Vector2f shipPosition, RessourcesStorage& ressource, const float& deltaTime) {
 	// Système de tire par rafale
 	double radians = atan2(shipPosition.y - enemyIt->shape.getPosition().y, shipPosition.x - enemyIt->shape.getPosition().x);
 
@@ -216,9 +228,13 @@ std::vector<Enemy>::iterator StratHeavyMove(std::vector<Enemy>::iterator& enemyI
 
 
 	if (CollideWithFrendlyBullet(shipBullets, (*enemyIt).shape, true)) {
+		GainResources(ressource, 150);
+		return allEnemy.erase(enemyIt);
+	}
 
-		ressource.ownResource += 150;
-		ressource.nameResource.setString(ressource.resource + std::to_string(ressource.ownResource));
+	if (CollideWithShip(ship, (*enemyIt).shape.getPosition(), (*enemyIt).shape.getRadius())) {
+		GainResources(ressource, 150);
+		TakeDamage(ship, (*enemyIt).damage);
 		return allEnemy.erase(enemyIt);
 	}
 
@@ -233,11 +249,13 @@ std::vector<Enemy>::iterator StratBomberMove(std::vector<Enemy>::iterator& enemy
 	// -------------- TODO -------------- //
 	// déplacement subite lorsque le joueur fait face à l'ennemie
 	
-	if ((CollideWithShip(ship, (*enemyIt).shape.getPosition(), (*enemyIt).shape.getRadius()) && ship.canTakeDamage) || CollideWithFrendlyBullet(allbullets, (*enemyIt).shape, true)) {
-		info.lifePoints -= (*enemyIt).damage;
+	if (CollideWithShip(ship, (*enemyIt).shape.getPosition(), (*enemyIt).shape.getRadius()) && ship.canTakeDamage) {
+		TakeDamage(ship, (*enemyIt).damage);
+		return allEnemy.erase(enemyIt);
+	}
 
-		ressource.ownResource += 150;
-		ressource.nameResource.setString(ressource.resource + std::to_string(ressource.ownResource));
+	if (CollideWithFrendlyBullet(allbullets, (*enemyIt).shape, true)) {
+		GainResources(ressource, 150);
 		return allEnemy.erase(enemyIt);
 	}
 
@@ -245,7 +263,6 @@ std::vector<Enemy>::iterator StratBomberMove(std::vector<Enemy>::iterator& enemy
 }
 
 
-// pofinage : possibilité de détruire les torpille en plein vole
 std::vector<Enemy>::iterator StratTorpedoLuncherMove(std::vector<Enemy>::iterator& enemyIt, std::vector<Enemy>& allEnemy, std::map<int, Torpedo>& enemyTorpedo, std::vector<Bullets>& allBullets, sf::Vector2f shipPosition, RessourcesStorage& ressource, const float& deltaTime) {
 
 	std::map<int, Torpedo>::iterator it = enemyTorpedo.find((*enemyIt).torpedoKey);
@@ -259,8 +276,7 @@ std::vector<Enemy>::iterator StratTorpedoLuncherMove(std::vector<Enemy>::iterato
 	}
 
 	if (CollideWithFrendlyBullet(allBullets, (*enemyIt).shape, false)) {
-		ressource.ownResource += 150;
-		ressource.nameResource.setString(ressource.resource + std::to_string(ressource.ownResource));
+		GainResources(ressource, 150);
 		return allEnemy.erase(enemyIt);
 	}
 

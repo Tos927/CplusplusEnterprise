@@ -235,6 +235,7 @@ int main()
             {
                 MouvBullet((*enemyBulletIt), elapsedTime.asSeconds());
                 if (CollideWithShip(ship, (*enemyBulletIt).bullet.getPosition(), 0) && ship.canTakeDamage) {
+                    TakeDamage(ship, (*enemyBulletIt).damage);
                     enemyBulletIt = enemyBullets.erase(enemyBulletIt);
                 }
                 else {
@@ -246,8 +247,9 @@ int main()
             while (planetIt != level.end())
             {
                 if (CollideWithShip(ship, (*planetIt).pShape.getPosition(), (*planetIt).radius) && ship.canTakeDamage) {
-                    planetIt = level.erase(planetIt);
                     ship.canTakeDamage = false;
+                    TakeDamage(ship, infoShip.lifePoints / 4);
+                    planetIt = level.erase(planetIt);
                 }
                 else {
                     planetIt++;
@@ -260,13 +262,20 @@ int main()
                 MoveToPoint(it->second.shap, ship.ship.getPosition(), it->second.speed, true, elapsedTime.asSeconds());
 
                 // Actualisation de la torpille - si il est en contacte avec le vaisseau ou par un tir
-                if ((CollideWithShip(ship, it->second.shap.getPosition(), it->second.shap.getRadius())  && ship.canTakeDamage) || CollideWithFrendlyBullet(allBullets, it->second.shap, true)) {
+                if (CollideWithShip(ship, it->second.shap.getPosition(), it->second.shap.getRadius())  && ship.canTakeDamage) {
+                    infoShip.lifePoints -= it->second.damage;
+                    TakeDamage(ship, it->second.damage);
+
+                    it = enemyTorpedo.erase(it);
+                    continue;
+
+                }
+                if (CollideWithFrendlyBullet(allBullets, it->second.shap, true)) {
                     infoShip.lifePoints -= it->second.damage;
                     it = enemyTorpedo.erase(it);
+                    continue;
                 }
-                else {
-                    it++;
-                }
+                it++;
             }
 
             // déplacement des enemis
@@ -278,7 +287,7 @@ int main()
                     break;
                 }
                 case 1: {
-                    enemyIt = StratHeavyMove(enemyIt, allEnemies, allBullets, enemyBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds());
+                    enemyIt = StratHeavyMove(enemyIt, allEnemies, allBullets, ship, enemyBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds());
                     break;
                 }
                 case 2: {
@@ -296,7 +305,6 @@ int main()
                 }
             }
             
-
             if (!ship.canTakeDamage) {
                 InvincibilityShip(ship, elapsedTime.asSeconds());
             }

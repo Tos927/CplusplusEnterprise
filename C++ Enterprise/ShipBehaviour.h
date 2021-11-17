@@ -26,6 +26,8 @@ struct Ship
 	int currentLife = 100;
 	float invicibilityTime = 3.f;
 	float currentInvicibilityTime = 0.f;
+	float alternanceTime = 0.3f;          // si changement : besoin de le changer aussi dans InvincibilityShip
+	bool isInvisibleDisplay = false;
 	sf::CircleShape ship;
 	sf::RectangleShape weapon;
 	sf::RectangleShape react1;
