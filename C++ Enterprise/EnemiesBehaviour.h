@@ -51,7 +51,7 @@ void CreatNewEnemy(std::vector<Enemy>& allEnemies, sf::Vector2f position, const 
 void MoveToPoint(sf::CircleShape& origin, const sf::Vector2f& target, const int& speed, bool isRotate, const float& deltaTime);
 int CreatNewTorpedo(std::map<int, Torpedo>& allTorpedo, sf::Vector2f startPosition);
 void Shoot(Enemy& enemy, std::vector<Bullets>& enemyBullets, float angle, const float& deltaTime);
-bool CollideWithShip(Ship& ship, sf::CircleShape origine);
+bool CollideWithShip(Ship& ship, sf::Vector2f originePos, int radius);
 bool CollideWithFrendlyBullet(std::vector<Bullets>& allBullets, sf::CircleShape origine, bool destroyBullet);
 
 std::vector<Enemy>::iterator StratHeavyMove(std::vector<Enemy>::iterator& enemyIt, std::vector<Enemy>& allEnemy, std::vector<Bullets>& shipBullets, std::vector<Bullets>& enemyBullets, sf::Vector2f shipPosition, RessourcesStorage& ressource, const float& deltaTime);

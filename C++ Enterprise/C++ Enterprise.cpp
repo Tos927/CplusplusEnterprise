@@ -224,9 +224,16 @@ int main()
                 MouvBullet(bul, elapsedTime.asSeconds());
             }
 
-            for (Bullets& bul : enemyBullets)
+            std::vector<Bullets>::iterator enemyBulletIt = enemyBullets.begin();
+            while (enemyBulletIt != enemyBullets.end())
             {
-                MouvBullet(bul, elapsedTime.asSeconds());
+                MouvBullet((*enemyBulletIt), elapsedTime.asSeconds());
+                if (CollideWithShip(ship, (*enemyBulletIt).bullet.getPosition(), 0)) {
+                    enemyBulletIt = enemyBullets.erase(enemyBulletIt);
+                }
+                else {
+                    enemyBulletIt++;
+                }
             }
 
             // Déplacement des Torpilles
@@ -235,7 +242,7 @@ int main()
                 MoveToPoint(it->second.shap, ship.ship.getPosition(), it->second.speed, true, elapsedTime.asSeconds());
 
                 // Actualisation de la torpille - si il est en contacte avec le vaisseau ou par un tir
-                if (CollideWithShip(ship, it->second.shap) || CollideWithFrendlyBullet(allBullets, it->second.shap, true)) {
+                if (CollideWithShip(ship, it->second.shap.getPosition(), it->second.shap.getRadius()) || CollideWithFrendlyBullet(allBullets, it->second.shap, true)) {
                     infoShip.lifePoints -= it->second.damage;
                     it = enemyTorpedo.erase(it);
                 }

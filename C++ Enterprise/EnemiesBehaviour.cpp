@@ -158,11 +158,11 @@ void Shoot(Enemy& enemy, std::vector<Bullets>& enemyBullets, float angle , const
 }
 
 
-bool CollideWithShip(Ship& ship, sf::CircleShape origine) {
+bool CollideWithShip(Ship& ship, sf::Vector2f originePos, int radius) {
 	sf::Vector2f shipPos = ship.ship.getPosition();
-	float distance = std::sqrt(pow(shipPos.x - origine.getPosition().x, 2) + pow(shipPos.y - origine.getPosition().y, 2));
+	float distance = std::sqrt(pow(shipPos.x - originePos.x, 2) + pow(shipPos.y - originePos.y, 2));
 
-	if (distance <= origine.getRadius() + ship.ship.getRadius()) {
+	if (distance <= radius + ship.ship.getRadius()) {
 		return true;
 	}
 
@@ -233,7 +233,7 @@ std::vector<Enemy>::iterator StratBomberMove(std::vector<Enemy>::iterator& enemy
 	// -------------- TODO -------------- //
 	// déplacement subite lorsque le joueur fait face à l'ennemie
 	
-	if (CollideWithShip(ship, (*enemyIt).shape) || CollideWithFrendlyBullet(allbullets, (*enemyIt).shape, true)) {
+	if (CollideWithShip(ship, (*enemyIt).shape.getPosition(), (*enemyIt).shape.getRadius()) || CollideWithFrendlyBullet(allbullets, (*enemyIt).shape, true)) {
 		info.lifePoints -= (*enemyIt).damage;
 
 		ressource.ownResource += 150;
