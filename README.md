@@ -1,4 +1,4 @@
-08.11.2021  -  Projet Géométrie  -  LECLERCQ Jérôme
+08.11.2021  -  Projet Géométrie  -  LECLERCQ Jérôme - COCHETEUX Fabien
 
 
 ----------------------------------------------------------------------------------
@@ -21,12 +21,19 @@ Membres:
 
 TO DO LIST :
     PRINCIPALES :
-        Générateur de niveau aléatoire (struct planet, collision, dégat reçu, ressources gagnées, niveau de danger = selon le niveau du vaiseau)
-        Menu d'upgrade du batiment (ressources, niveau canon, niveau équipage de chaque section, possibilité upgrade)
-        Déplacement du batiment (collision avec le bord de l'écran, type de mouvement : propulsion ou instantané, instant indestructible, ...)
-        Système d'attaque (attaque dans un rayon, dif arme : classique, torpille, rayon, ...)
+        V Générateur de niveau aléatoire (struct planet, collision, dégat reçu, ressources gagnées, niveau de danger = selon le niveau du vaiseau)
+        V Menu d'upgrade du batiment (ressources, niveau canon, niveau équipage de chaque section, possibilité upgrade)
+        V Déplacement du batiment (collision avec le bord de l'écran, type de mouvement : propulsion ou instantané, instant indestructible, ...)
+        V Système d'attaque (attaque dans un rayon, dif arme : classique, torpille, rayon, ...)
+	X Systeme de mort du joueur(Game Over)
+	X Systeme de victoire (fin du jeu)
+	X IA enemie (tourne autour du joueur, le suivre si il bouge, kamikaze, reste à distance, differente taille et type d'arme, ...)
+	X Collision avec les planetes
+
 
     SCONDAIRE :
-        IA enemie (tourne autour du joueur, le suivre si il bouge, kamikaze, reste à distance, differente taille et type d'arme, ...)
+	Ajouter un ecran touches/tuto
+        Tuer tout les enemies pour continuer
         Evenements (peut avoir des misions autre que les planetes : sauvetage, pilleur, entretient, sécurisation, ...)
+	Ajout de sons
 
