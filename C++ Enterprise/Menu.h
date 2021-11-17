@@ -1,10 +1,11 @@
 #pragma once
 
-//#include "ShipBehaviour.h"
-//#include <SFML/Graphics.hpp>
+struct InfoShip;
+struct Ship;
 
 struct EquipStruct
 {
+    int equipID;
     sf::Text name;
 
     sf::RectangleShape background;
@@ -20,7 +21,7 @@ struct EquipStruct
     sf::RectangleShape resourcesBg;
 
     sf::Text neededResourcesText;
-    int neededResources = 0; //default 25
+    int neededResources = 25; //default 25
 
     sf::Text keyText;
     std::string key;
@@ -29,6 +30,7 @@ struct EquipStruct
 
     sf::Text currentBonus;
     int currentStatsBonus = 0;
+    int statsBonusOnLevelUp = 0;
 };
 
 struct RessourcesStorage
@@ -39,7 +41,7 @@ struct RessourcesStorage
     std::string resource = "Resources ";
     sf::Text nameResource;
     
-    int ownResource = 0;
+    int ownResource = 1000000;
 };
 
 // Fonction qui Setup un text et le place dans la fenetre 
@@ -52,13 +54,13 @@ sf::RectangleShape SetupBackground(sf::Vector2f backgroundSize, sf::Color color,
 RessourcesStorage Storage(sf::Font& arialttf);
 
 //Fonction qui crée les Equip
-EquipStruct Equip(std::string key, std::string name, sf::Vector2f posNameText, sf::Vector2f posBackground, sf::Font& arialttf);
+EquipStruct Equip(int equipID, std::string key, std::string name, sf::Vector2f posNameText, sf::Vector2f posBackground, sf::Font& arialttf, int statsBonusOnLevelUp, std::string description);
 
 //Fonction qui crée le background du Menu
-sf::RectangleShape Menu();
+sf::RectangleShape Menu(sf::Vector2f rectangleSize, sf::Color color, sf::Vector2f position);
 
 void DrawEquip(EquipStruct&, sf::RenderWindow&);
 
 void UpdateTextLevel(EquipStruct& equip, sf::Vector2f posbackG, std::string bonusType);
 
-//void UpdateEquipOnLevelUp(EquipStruct& equip, RessourcesStorage& storage, InfoShip& infoShip, Ship& ship);
+void UpdateEquipOnLevelUp(EquipStruct& equip, RessourcesStorage& storage, InfoShip& infoShip, Ship& ship);

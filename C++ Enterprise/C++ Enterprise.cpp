@@ -39,7 +39,9 @@ int main()
     bool displayMenu = false;
 
 
-    sf::RectangleShape menu = Menu();
+    sf::RectangleShape menu = Menu(sf::Vector2f(WIDTH * 0.50, HEIGHT * 0.70), sf::Color::Color(0, 0, 94), sf::Vector2f(WIDTH * 0.50, HEIGHT * 0.50));
+    sf::RectangleShape menu2 = Menu(sf::Vector2f(WIDTH * 0.51125, HEIGHT * 0.725), sf::Color::White, sf::Vector2f(WIDTH * 0.50, HEIGHT * 0.50));
+    sf::RectangleShape menu3 = Menu(sf::Vector2f(WIDTH * 0.525, HEIGHT * 0.75), sf::Color::Color(54, 54, 54), sf::Vector2f(WIDTH * 0.50, HEIGHT * 0.50));
     // Fond des informations du ship
     sf::RectangleShape shipInfo = SetupBackground(sf::Vector2f(WIDTH * 0.25, HEIGHT * 0.09), sf::Color::Color(240, 240, 240), sf::Vector2f(WIDTH * 0.27, HEIGHT * 0.18));
 
@@ -62,10 +64,10 @@ int main()
     int pTop = WIDTH * 0.08;
     int margin = 3;
 
-    EquipStruct equip1 = Equip("E", "Deflector Shield", posbackG + sf::Vector2f(margin, margin), posbackG, arialttf);
-    EquipStruct equip2 = Equip("R", "Phaser Canon", posbackG + sf::Vector2f(pRight + margin, margin), posbackG + sf::Vector2f(pRight, 0), arialttf);
-    EquipStruct equip3 = Equip("T", "Artillery", posbackG + sf::Vector2f(margin, pTop + margin), posbackG + sf::Vector2f(0, pTop), arialttf);
-    EquipStruct equip4 = Equip("Y", "Crew", posbackG + sf::Vector2f(pRight + margin, pTop + margin), posbackG + sf::Vector2f(pRight, pTop), arialttf);
+    EquipStruct equip1 = Equip(1, "E", "Deflector Shield", posbackG + sf::Vector2f(margin, margin), posbackG, arialttf, 15, "Energy shield that protects spacecraft from laser fire,\nin-flight projectiles and accidental space debris\ninteraction.");
+    EquipStruct equip2 = Equip(2, "R", "Photon Torpedo", posbackG + sf::Vector2f(pRight + margin, margin), posbackG + sf::Vector2f(pRight, 0), arialttf, 20, "Upgrading your ship's crew increases the firepower\nof your ship as well as the number of resources you\ncan harvest and other bonuses depending on the level.");
+    EquipStruct equip3 = Equip(3, "T", "Artillery", posbackG + sf::Vector2f(margin, pTop + margin), posbackG + sf::Vector2f(0, pTop), arialttf, 25, "Energy shield that protects spacecraft from laser fire,\nin-flight projectiles and accidental space debris\ninteraction.");
+    EquipStruct equip4 = Equip(4, "Y", "Crew", posbackG + sf::Vector2f(pRight + margin, pTop + margin), posbackG + sf::Vector2f(pRight, pTop), arialttf, 1, "Upgrading your ship's crew increases the firepower\nof your ship as well as the number of resources you\nwill harvest and other bonuses depending on the level.");
     
     RessourcesStorage storage = Storage(arialttf);
 
@@ -92,52 +94,22 @@ int main()
                     // Life
                     if (event.key.code == sf::Keyboard::E && storage.ownResource >= equip1.neededResources && displayMenu)
                     {
-                        storage.ownResource -= equip1.neededResources;
-                        equip1.neededResources = equip1.neededResources + (equip1.neededResources / 2);
-                        equip1.level++;
-
-                        int lifePointsBonus = 15;
-                        infoShip.lifePoints += lifePointsBonus, equip1.currentStatsBonus += lifePointsBonus;
-
-                        ship.currentLife = infoShip.lifePoints;
-
-                        std::cout << equip1.level << std::endl;
-
-                        //UpdateEquipOnLevelUp(equip1, storage, infoShip, ship);
+                        UpdateEquipOnLevelUp(equip1, storage, infoShip, ship);
                     }
                     // ATK
                     if (event.key.code == sf::Keyboard::R && storage.ownResource >= equip2.neededResources && displayMenu)
                     {
-                        storage.ownResource -= equip2.neededResources;
-                        equip2.neededResources = equip2.neededResources + (equip2.neededResources / 2);
-                        equip2.level++;
-
-                        int atkPointsBonus = 20;
-                        infoShip.atkPoints += atkPointsBonus, equip2.currentStatsBonus += atkPointsBonus;
-
-                        std::cout << equip2.level << std::endl;
+                        UpdateEquipOnLevelUp(equip2, storage, infoShip, ship);
                     }
                     // Bullet Speed
                     if (event.key.code == sf::Keyboard::T && storage.ownResource >= equip3.neededResources && displayMenu)
                     {
-                        storage.ownResource -= equip3.neededResources;
-                        equip3.neededResources = equip3.neededResources + (equip3.neededResources / 2);
-                        equip3.level++;
-
-                        int atkPointsBonus = 25;
-                        infoShip.bspeedPoints += atkPointsBonus, equip3.currentStatsBonus += atkPointsBonus;
-
-                        std::cout << equip3.level << std::endl;
+                        UpdateEquipOnLevelUp(equip3, storage, infoShip, ship);
                     }
                     // Complicated
                     if (event.key.code == sf::Keyboard::Y && storage.ownResource >= equip4.neededResources && displayMenu)
                     {
-                        storage.ownResource -= equip4.neededResources;
-                        equip4.neededResources = equip4.neededResources + (equip4.neededResources / 2);
-                        equip4.level++;
-                        infoShip.lifePoints += 1, equip4.currentStatsBonus += 1;
-
-                        std::cout << equip4.level << std::endl;
+                        UpdateEquipOnLevelUp(equip4, storage, infoShip, ship);
                     }
 
                     if (event.key.code == sf::Keyboard::Space)
@@ -179,7 +151,7 @@ int main()
             UpdateTextLevel(equip1, posbackG, " HP");
             UpdateTextLevel(equip2, posbackG + sf::Vector2f(pRight, 0), " Attack");
             UpdateTextLevel(equip3, posbackG + sf::Vector2f(0, pTop), " Bullet Speed");
-            UpdateTextLevel(equip4, posbackG + sf::Vector2f(pRight, pTop), " HP");
+            UpdateTextLevel(equip4, posbackG + sf::Vector2f(pRight, pTop), " Attack");
 
             // Logique
             sf::Time elapsedTime = clock.restart();
@@ -209,6 +181,8 @@ int main()
             {
 
                 // Draw the Menu background
+                window.draw(menu3);
+                window.draw(menu2);
                 window.draw(menu);
 
                 // Draw Ship Info

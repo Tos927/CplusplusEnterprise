@@ -29,19 +29,23 @@ sf::RectangleShape SetupBackground(sf::Vector2f backgroundSize, sf::Color color,
 }
 
 // Fond du Menu
-sf::RectangleShape Menu()
+sf::RectangleShape Menu(sf::Vector2f rectangleSize, sf::Color color, sf::Vector2f position)
 {
-    sf::RectangleShape menu (sf::Vector2f(WIDTH *0.50, HEIGHT*0.70));
-    menu.setFillColor(sf::Color::Color(0, 0, 94));
-    menu.setPosition(WIDTH * 0.50, HEIGHT * 0.50);
+    sf::RectangleShape menu (rectangleSize);
+    menu.setFillColor(color);
+    menu.setPosition(position);
     menu.setOrigin(menu.getSize().x / 2, menu.getSize().y / 2);
 
     return menu;
 }
 
-struct EquipStruct Equip(std::string key, std::string name, sf::Vector2f posNameText, sf::Vector2f posBackground, sf::Font& arialttf)
+struct EquipStruct Equip(int equipID, std::string key, std::string name, sf::Vector2f posNameText, sf::Vector2f posBackground, sf::Font& arialttf, int statsBonusOnLevelUp, std::string description)
 {
     EquipStruct equip;
+
+    equip.equipID = equipID;
+
+    equip.statsBonusOnLevelUp = statsBonusOnLevelUp;
 
     // Equip background and name text
     equip.name = SetUpText(name, arialttf, 20, sf::Color::Black, posNameText);
@@ -54,7 +58,7 @@ struct EquipStruct Equip(std::string key, std::string name, sf::Vector2f posName
     // Level background and text
 
     float levelBgWidth = WIDTH * 0.055;
-    
+
     equip.levelBg = SetupBackground(sf::Vector2f(levelBgWidth, equipBgHeight), sf::Color::Color(54, 54, 54), posBackground + sf::Vector2f(equipBgWidth - levelBgWidth, 0)); //190 0
 
     // Place the text Lvl1 at the center bottom of the level's background 
@@ -71,9 +75,9 @@ struct EquipStruct Equip(std::string key, std::string name, sf::Vector2f posName
 
     equip.neededResourcesText = SetUpText("Needed resources : " + std::to_string(equip.neededResources), arialttf, 13, sf::Color::Black, posNameText + sf::Vector2f(0, 25));
     
-    equip.definition = SetUpText("Energy shield that protects spacecraft from laser fire,\nin-flight projectiles and accidental space debris\ninteraction.", arialttf, 13, sf::Color::Black, posNameText + sf::Vector2f(0, 45));
-    
-    equip.currentBonus = SetUpText("Current bonus stats : " + std::to_string(equip.currentStatsBonus), arialttf, 13, sf::Color::Black, posNameText + sf::Vector2f(0, 100));
+    equip.definition = SetUpText(description, arialttf, 12, sf::Color::Black, posNameText + sf::Vector2f(0, 45));
+
+    equip.currentBonus = SetUpText("Current bonus stats : " + std::to_string(equip.currentStatsBonus) + "Current bonus stats : " + std::to_string(equip.currentStatsBonus + equip.statsBonusOnLevelUp), arialttf, 13, sf::Color::Black, posNameText + sf::Vector2f(0, 100));
 
     return equip;
 }
@@ -108,7 +112,6 @@ void DrawEquip(EquipStruct& equip, sf::RenderWindow& window)
     window.draw(equip.keyText);
     window.draw(equip.definition); 
     window.draw(equip.currentBonus);
-
 }
 
 void UpdateTextLevel(EquipStruct& equip, sf::Vector2f posbackG, std::string bonusType)
@@ -123,19 +126,35 @@ void UpdateTextLevel(EquipStruct& equip, sf::Vector2f posbackG, std::string bonu
 
     equip.neededResourcesText.setString("Needed resources : " + std::to_string(equip.neededResources));
 
-    
-
-    equip.currentBonus.setString("Current bonus stats : " + std::to_string(equip.currentStatsBonus) + bonusType);
+    equip.currentBonus.setString("Current bonus stats : " + std::to_string(equip.currentStatsBonus) + " --> " + std::to_string(equip.currentStatsBonus + equip.statsBonusOnLevelUp) + bonusType);
 }
 
-//void UpdateEquipOnLevelUp(EquipStruct& equip, RessourcesStorage& storage, InfoShip& infoShip, Ship& ship)
-//{
-//    storage.ownResource -= equip.neededResources;
-//    equip.neededResources = equip.neededResources + (equip.neededResources / 2);
-//    equip.level++;
-//
-//    int lifePointsBonus = 15;
-//    infoShip.lifePoints += lifePointsBonus, equip.currentStatsBonus += lifePointsBonus;
-//
-//    ship.currentLife = infoShip.lifePoints;
-//}
+void UpdateEquipOnLevelUp(EquipStruct& equip, RessourcesStorage& storage, InfoShip& infoShip, Ship& ship)
+{
+    storage.ownResource -= equip.neededResources;
+    equip.neededResources = equip.neededResources + (equip.neededResources * 0.10);
+    equip.level++;
+
+    equip.currentStatsBonus += equip.statsBonusOnLevelUp;
+
+    switch (equip.equipID)
+    {
+        case 1:
+            // Increases the maximum life of the ship 
+            infoShip.lifePoints += equip.statsBonusOnLevelUp;
+            // Add the stats bonus on lpppevelup at the current life
+            ship.currentLife += equip.statsBonusOnLevelUp;
+            break;
+        case 2:
+            // Increases the attack of the ship 
+            infoShip.atkPoints += equip.statsBonusOnLevelUp;
+            break;
+        case 3:
+            // Increases the bullet speed of the ship
+            infoShip.bspeedPoints += equip.statsBonusOnLevelUp;
+            break;
+        case 4:
+            infoShip.atkPoints += equip.statsBonusOnLevelUp;
+            break;
+    }
+}
