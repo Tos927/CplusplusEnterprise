@@ -148,3 +148,43 @@ void DrawShip(const Ship& ship, sf::RenderWindow& window) {
 	window.draw(ship.react1);
 	window.draw(ship.react2);
 }
+
+
+void InvincibilityShip(Ship& ship, const float& deltaTime) {
+
+	if (ship.currentInvicibilityTime < ship.invicibilityTime) {
+		ship.currentInvicibilityTime += deltaTime;
+
+		ship.ship.setFillColor(sf::Color::Transparent);
+		ship.ship.setOutlineThickness(1);
+		ship.ship.setOutlineColor(sf::Color::White);
+
+		ship.react1.setFillColor(sf::Color::Transparent);
+		ship.react1.setOutlineThickness(1);
+		ship.react1.setOutlineColor(sf::Color::White);
+
+		ship.react2.setFillColor(sf::Color::Transparent);
+		ship.react2.setOutlineThickness(1);
+		ship.react2.setOutlineColor(sf::Color::White);
+
+		ship.weapon.setFillColor(sf::Color::Transparent);
+		ship.weapon.setOutlineThickness(1);
+		ship.weapon.setOutlineColor(sf::Color::White);
+
+	}
+	else {
+		std::cout << "end of invisibility" << std::endl;
+		ship.currentInvicibilityTime = ship.invicibilityTime;
+		ship.canTakeDamage = true;
+		ship.currentInvicibilityTime = 0.f;
+
+		ship.ship.setFillColor(sf::Color::Blue);
+		ship.ship.setOutlineThickness(0);
+		ship.react1.setFillColor(sf::Color::Green);
+		ship.react1.setOutlineThickness(0);
+		ship.react2.setFillColor(sf::Color::Green);
+		ship.react2.setOutlineThickness(0);
+		ship.weapon.setFillColor(sf::Color::Red);
+		ship.weapon.setOutlineThickness(0);
+	}
+}

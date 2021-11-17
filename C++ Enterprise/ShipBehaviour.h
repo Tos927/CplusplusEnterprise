@@ -21,8 +21,11 @@ struct InfoShip
 
 struct Ship
 {
+	bool canTakeDamage = true;
 	int damagePower = 50;
 	int currentLife = 100;
+	float invicibilityTime = 3.f;
+	float currentInvicibilityTime = 0.f;
 	sf::CircleShape ship;
 	sf::RectangleShape weapon;
 	sf::RectangleShape react1;
@@ -47,3 +50,4 @@ void CreateBullet(std::vector<Bullets>& bullets, int speed, int damage, const sf
 void MouvBullet(Bullets& bullet, float deltaTime);
 void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bullet, RessourcesStorage& ressource);
 void DrawShip(const Ship& ship, sf::RenderWindow& window);
+void InvincibilityShip(Ship& ship, const float& deltaTime);

@@ -223,6 +223,7 @@ int main()
         {
             // ------------ logique ------------ //
 
+            
             // Déplacement des balles alliers
             for (Bullets& bul : allBullets)
             {
@@ -233,11 +234,23 @@ int main()
             while (enemyBulletIt != enemyBullets.end())
             {
                 MouvBullet((*enemyBulletIt), elapsedTime.asSeconds());
-                if (CollideWithShip(ship, (*enemyBulletIt).bullet.getPosition(), 0)) {
+                if (CollideWithShip(ship, (*enemyBulletIt).bullet.getPosition(), 0) && ship.canTakeDamage) {
                     enemyBulletIt = enemyBullets.erase(enemyBulletIt);
                 }
                 else {
                     enemyBulletIt++;
+                }
+            }
+            
+            std::vector<Planet>::iterator planetIt = level.begin();
+            while (planetIt != level.end())
+            {
+                if (CollideWithShip(ship, (*planetIt).pShape.getPosition(), (*planetIt).radius) && ship.canTakeDamage) {
+                    planetIt = level.erase(planetIt);
+                    ship.canTakeDamage = false;
+                }
+                else {
+                    planetIt++;
                 }
             }
 
@@ -247,7 +260,7 @@ int main()
                 MoveToPoint(it->second.shap, ship.ship.getPosition(), it->second.speed, true, elapsedTime.asSeconds());
 
                 // Actualisation de la torpille - si il est en contacte avec le vaisseau ou par un tir
-                if (CollideWithShip(ship, it->second.shap.getPosition(), it->second.shap.getRadius()) || CollideWithFrendlyBullet(allBullets, it->second.shap, true)) {
+                if ((CollideWithShip(ship, it->second.shap.getPosition(), it->second.shap.getRadius())  && ship.canTakeDamage) || CollideWithFrendlyBullet(allBullets, it->second.shap, true)) {
                     infoShip.lifePoints -= it->second.damage;
                     it = enemyTorpedo.erase(it);
                 }
@@ -281,6 +294,11 @@ int main()
                 if (enemyIt != allEnemies.end()) {
                     enemyIt++;
                 }
+            }
+            
+
+            if (!ship.canTakeDamage) {
+                InvincibilityShip(ship, elapsedTime.asSeconds());
             }
 
 

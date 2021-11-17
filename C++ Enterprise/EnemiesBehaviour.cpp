@@ -233,7 +233,7 @@ std::vector<Enemy>::iterator StratBomberMove(std::vector<Enemy>::iterator& enemy
 	// -------------- TODO -------------- //
 	// déplacement subite lorsque le joueur fait face à l'ennemie
 	
-	if (CollideWithShip(ship, (*enemyIt).shape.getPosition(), (*enemyIt).shape.getRadius()) || CollideWithFrendlyBullet(allbullets, (*enemyIt).shape, true)) {
+	if ((CollideWithShip(ship, (*enemyIt).shape.getPosition(), (*enemyIt).shape.getRadius()) && ship.canTakeDamage) || CollideWithFrendlyBullet(allbullets, (*enemyIt).shape, true)) {
 		info.lifePoints -= (*enemyIt).damage;
 
 		ressource.ownResource += 150;
