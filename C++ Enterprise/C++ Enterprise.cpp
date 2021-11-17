@@ -176,6 +176,8 @@ int main()
             ResetToCenter(ship);
             level = NewLevel(3, 10, 20, 20, 50);
             displayTitle = false;
+            //TODO//
+            //Créer une variable pour le nombre de ressoucres gagner par planete et enemies, et l'augmenter a chaque nouvel ecran
         }
 
         // Rendu
