@@ -26,6 +26,7 @@ int main()
 
     std::vector<Enemy> allEnemies;
     std::map<int, Torpedo> enemyTorpedo;
+    std::vector<Bullets> enemyBullets;
 
     std::vector<Explosion> allExplosion;
 
@@ -126,7 +127,7 @@ int main()
 
                 if (event.key.code == sf::Keyboard::Space)
                 {
-                    CreateBullet(allBullets, infoShip, angle, ship);
+                    CreateBullet(allBullets, infoShip.bspeedPoints, infoShip.atkPoints,ship.ship, ship.ship.getRotation());
                 }
                 if (event.key.code == sf::Keyboard::G)
                 {
@@ -178,6 +179,8 @@ int main()
             displayTitle = false;
         }
 
+
+
         // Rendu
         window.clear();
 
@@ -221,6 +224,11 @@ int main()
                 MouvBullet(bul, elapsedTime.asSeconds());
             }
 
+            for (Bullets& bul : enemyBullets)
+            {
+                MouvBullet(bul, elapsedTime.asSeconds());
+            }
+
             // Déplacement des Torpilles
             std::map<const int, Torpedo>::iterator it = enemyTorpedo.begin();
             while (it != enemyTorpedo.end()) {
@@ -245,7 +253,7 @@ int main()
                     break;
                 }
                 case 1: {
-                    enemyIt = StratHeavyMove(enemyIt, allEnemies, allBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds());
+                    enemyIt = StratHeavyMove(enemyIt, allEnemies, allBullets, enemyBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds());
                     break;
                 }
                 case 2: {
@@ -281,6 +289,11 @@ int main()
 
             // Balles alliers
             for (Bullets& bul : allBullets)
+            {
+                window.draw(bul.bullet);
+            }
+
+            for (Bullets& bul : enemyBullets)
             {
                 window.draw(bul.bullet);
             }

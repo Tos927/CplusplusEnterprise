@@ -33,6 +33,7 @@ void InitializeEnemy(Enemy& enemy, int type) {
 			
 
 			// Système de tire
+			enemy.speedBullet = 200.f;
 			enemy.rate = 3.f;
 			enemy.defaultRate = 3.f;
 			enemy.semiRate = 0.2f;
@@ -132,7 +133,7 @@ void MoveToPoint(sf::CircleShape& origin, const sf::Vector2f& target, const int&
 }
 
 
-void Shoot(Enemy& enemy, const float& deltaTime) {
+void Shoot(Enemy& enemy, std::vector<Bullets>& enemyBullets, float angle , const float& deltaTime) {
 	enemy.rate -= deltaTime;
 
 	if (enemy.rate < 0) {
@@ -142,7 +143,7 @@ void Shoot(Enemy& enemy, const float& deltaTime) {
 
 			if (enemy.nbBulletSemi > 0) {
 
-				std::cout << "shoot" << std::endl;
+				CreateBullet(enemyBullets, enemy.speedBullet, enemy.damage, enemy.shape, angle);
 
 				enemy.semiRate = enemy.defaultSemiRate;
 				enemy.nbBulletSemi--;
@@ -207,12 +208,14 @@ bool CollideWithFrendlyBullet(std::vector<Bullets>& allBullets, sf::CircleShape 
 // ------------------------------------------------------------------------------ //
 
 
-std::vector<Enemy>::iterator StratHeavyMove(std::vector<Enemy>::iterator& enemyIt, std::vector<Enemy>& allEnemy, std::vector<Bullets>& allBullets, sf::Vector2f shipPosition, RessourcesStorage& ressource, const float& deltaTime) {
+std::vector<Enemy>::iterator StratHeavyMove(std::vector<Enemy>::iterator& enemyIt, std::vector<Enemy>& allEnemy, std::vector<Bullets>& shipBullets, std::vector<Bullets>& enemyBullets, sf::Vector2f shipPosition, RessourcesStorage& ressource, const float& deltaTime) {
 	// Système de tire par rafale
-	Shoot((*enemyIt), deltaTime);
+	double radians = atan2(shipPosition.y - enemyIt->shape.getPosition().y, shipPosition.x - enemyIt->shape.getPosition().x);
+
+	Shoot((*enemyIt), enemyBullets, radians * 180 / 3.141592653589793238463, deltaTime);
 
 
-	if (CollideWithFrendlyBullet(allBullets, (*enemyIt).shape, true)) {
+	if (CollideWithFrendlyBullet(shipBullets, (*enemyIt).shape, true)) {
 
 		ressource.ownResource += 150;
 		ressource.nameResource.setString(ressource.resource + std::to_string(ressource.ownResource));
