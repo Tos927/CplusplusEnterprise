@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "ShipBehaviour.h"
+#include "Menu.h"
 
 
 enum TypeOfEnemies

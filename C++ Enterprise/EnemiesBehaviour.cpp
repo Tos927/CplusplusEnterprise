@@ -2,6 +2,7 @@
 #include <iostream>
 #include "EnemiesBehaviour.h"
 #include "ShipBehaviour.h"
+#include "Menu.h"
 #include <map>
 
 
@@ -212,11 +213,10 @@ std::vector<Enemy>::iterator StratHeavyMove(std::vector<Enemy>::iterator& enemyI
 
 
 	if (CollideWithFrendlyBullet(allBullets, (*enemyIt).shape, true)) {
-		// -------------- TODO -------------- //
-		// infoShip.livePoints -= (*enemyIt).damage;
 
-		return allEnemy.erase(enemyIt);
 		ressource.ownResource += 150;
+		ressource.nameResource.setString(ressource.resource + std::to_string(ressource.ownResource));
+		return allEnemy.erase(enemyIt);
 	}
 
 	return enemyIt;
@@ -233,8 +233,9 @@ std::vector<Enemy>::iterator StratBomberMove(std::vector<Enemy>::iterator& enemy
 	if (CollideWithShip(ship, (*enemyIt).shape) || CollideWithFrendlyBullet(allbullets, (*enemyIt).shape, true)) {
 		info.lifePoints -= (*enemyIt).damage;
 
-		return allEnemy.erase(enemyIt);
 		ressource.ownResource += 150;
+		ressource.nameResource.setString(ressource.resource + std::to_string(ressource.ownResource));
+		return allEnemy.erase(enemyIt);
 	}
 
 	return enemyIt;
@@ -255,8 +256,9 @@ std::vector<Enemy>::iterator StratTorpedoLuncherMove(std::vector<Enemy>::iterato
 	}
 
 	if (CollideWithFrendlyBullet(allBullets, (*enemyIt).shape, false)) {
-		return allEnemy.erase(enemyIt);
 		ressource.ownResource += 150;
+		ressource.nameResource.setString(ressource.resource + std::to_string(ressource.ownResource));
+		return allEnemy.erase(enemyIt);
 	}
 
 	return enemyIt;
