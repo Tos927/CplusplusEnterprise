@@ -9,7 +9,7 @@
 #include "EnemiesBehaviour.h"
 #include "Particules.h"
 
-
+float oneSecondElapsed = 0;
 
 int main()
 {
@@ -36,43 +36,50 @@ int main()
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "C++ Enterprise", sf::Style::Fullscreen);    // WIDTH et HEIGHT sont des variable constante présent dans "GeneratorLevel.h"
     window.setVerticalSyncEnabled(true);  // Frame rate de l'écran
 
+    // ------------------------------------ Start - Initialization Menu  ------------------------------------ //
+
     bool displayMenu = false;
+    bool displayTitle = true;
 
+    // Setup fonts
+    sf::Font aAtmospheric_ttf = SetupAnyFont("aAtmospheric.ttf");
+    sf::Font barcadettf = SetupAnyFont("barcade.ttf");
 
-    sf::RectangleShape menu = Menu(sf::Vector2f(WIDTH * 0.50, HEIGHT * 0.70), sf::Color::Color(0, 0, 94), sf::Vector2f(WIDTH * 0.50, HEIGHT * 0.50));
-    sf::RectangleShape menu2 = Menu(sf::Vector2f(WIDTH * 0.51125, HEIGHT * 0.725), sf::Color::White, sf::Vector2f(WIDTH * 0.50, HEIGHT * 0.50));
-    sf::RectangleShape menu3 = Menu(sf::Vector2f(WIDTH * 0.525, HEIGHT * 0.75), sf::Color::Color(54, 54, 54), sf::Vector2f(WIDTH * 0.50, HEIGHT * 0.50));
-    // Fond des informations du ship
+    sf::Text barcadeText = SetUpText("(C++Enterprise)", barcadettf, 80, sf::Color::White, /*pos*/sf::Vector2f(WIDTH / 2, HEIGHT / 5));
+    SetOriginText(barcadeText);
+
+    // Initialization all background menu
+    sf::RectangleShape menu = Menu(sf::Vector2f(WIDTH * 0.50, HEIGHT * 0.70), sf::Color::Color(0, 0, 53), sf::Vector2f(WIDTH * 0.50, HEIGHT * 0.50));
+    sf::RectangleShape menu2 = Menu(sf::Vector2f(WIDTH * 0.50625, HEIGHT * 0.7125), sf::Color::White, sf::Vector2f(WIDTH * 0.50, HEIGHT * 0.50));
+    menu2.setOutlineThickness(7);
+    menu2.setOutlineColor(sf::Color::Color(54, 54, 54));
+
+    // Background information of the ship 
     sf::RectangleShape shipInfo = SetupBackground(sf::Vector2f(WIDTH * 0.25, HEIGHT * 0.09), sf::Color::Color(240, 240, 240), sf::Vector2f(WIDTH * 0.27, HEIGHT * 0.18));
+    shipInfo.setOutlineThickness(3);
+    shipInfo.setOutlineColor(sf::Color::Color(54, 54, 54));
 
     InfoShip infoShip;
 
-    sf::Font arialttf = SetupAnyFont("arial.ttf");
-    sf::Font barcadettf = SetupAnyFont("barcade.ttf");
-
-    sf::Text barcadeText = SetUpText("(C++Enterprise)", barcadettf, 80, sf::Color::White, /*pos*/sf::Vector2f(WIDTH/2, HEIGHT/5));
-    barcadeText.setOrigin((barcadeText.getGlobalBounds().width / 2), (barcadeText.getGlobalBounds().height / 2));
-
-    bool displayTitle = true;
-
-    //sf::Text arialText = SetUpText("Infos : Lvl 1 / Hp : 150 / ATK : 20", arialttf, 25, sf::Color::Black, /*pos*/sf::Vector2f(125, 170));
-
+    // Position of the first background equip which determines the position of the others later 
     sf::Vector2f posbackG = sf::Vector2f(WIDTH * 0.27, HEIGHT * 0.56);
 
     // Need to be 2% away based on the width of the Equip (might change)
     int pRight = WIDTH * 0.24;
     int pTop = WIDTH * 0.08;
+    // margin for the equip text
     int margin = 3;
 
-    EquipStruct equip1 = Equip(1, "E", "Deflector Shield", posbackG + sf::Vector2f(margin, margin), posbackG, arialttf, 15, "Energy shield that protects spacecraft from laser fire,\nin-flight projectiles and accidental space debris\ninteraction.");
-    EquipStruct equip2 = Equip(2, "R", "Photon Torpedo", posbackG + sf::Vector2f(pRight + margin, margin), posbackG + sf::Vector2f(pRight, 0), arialttf, 20, "Upgrading your ship's crew increases the firepower\nof your ship as well as the number of resources you\ncan harvest and other bonuses depending on the level.");
-    EquipStruct equip3 = Equip(3, "T", "Artillery", posbackG + sf::Vector2f(margin, pTop + margin), posbackG + sf::Vector2f(0, pTop), arialttf, 25, "Energy shield that protects spacecraft from laser fire,\nin-flight projectiles and accidental space debris\ninteraction.");
-    EquipStruct equip4 = Equip(4, "Y", "Crew", posbackG + sf::Vector2f(pRight + margin, pTop + margin), posbackG + sf::Vector2f(pRight, pTop), arialttf, 1, "Upgrading your ship's crew increases the firepower\nof your ship as well as the number of resources you\nwill harvest and other bonuses depending on the level.");
+    EquipStruct equip1 = Equip(1, "E", "Deflector Shield", posbackG + sf::Vector2f(margin, margin), posbackG, aAtmospheric_ttf, 15, "Energy shield that protects spacecraft\nfrom laser fire, in-flight projectiles and\naccidental space debris interaction.");
+    EquipStruct equip2 = Equip(2, "R", "Photon Torpedo", posbackG + sf::Vector2f(pRight + margin, margin), posbackG + sf::Vector2f(pRight, 0), aAtmospheric_ttf, 20, "Improvement of the technology contained in\nthe cannons in order to have a firepower\nthat can cause massive damage to the enemy\nstructures.");
+    EquipStruct equip3 = Equip(3, "T", "Artillery", posbackG + sf::Vector2f(margin, pTop + margin), posbackG + sf::Vector2f(0, pTop), aAtmospheric_ttf, 25, "The artillery's upgrade increases the power\nof the ship's cannons, thus increasing the\nspeed at which the projectiles advance\nthrough space.");
+    EquipStruct equip4 = Equip(4, "Y", "Crew", posbackG + sf::Vector2f(pRight + margin, pTop + margin), posbackG + sf::Vector2f(pRight, pTop), aAtmospheric_ttf, 1, "Upgrading your ship's crew increases the\nfirepower of your ship as well as the number\nof resources you can harvest and other\nbonuses depending on the level.");
     
-    RessourcesStorage storage = Storage(arialttf);
+    RessourcesStorage storage = Storage(aAtmospheric_ttf);
+
+    // ------------------------------------ End - Initialization Menu  ------------------------------------ //
 
     sf::Clock clock;
-
 
     while (window.isOpen()) {
 
@@ -87,30 +94,35 @@ int main()
                     break;
 
                 case sf::Event::KeyPressed:
+
+                    // ------------------------------------ Start - Input Menu  ------------------------------------ //
+
                     if (event.key.code == sf::Keyboard::Escape)
                     {
                         displayMenu = !displayMenu;
                     }
-                    // Life
+                    // Increase the Life of the Ship 
                     if (event.key.code == sf::Keyboard::E && storage.ownResource >= equip1.neededResources && displayMenu)
                     {
                         UpdateEquipOnLevelUp(equip1, storage, infoShip, ship);
                     }
-                    // ATK
+                    // Increase the ATK of the Ship 
                     if (event.key.code == sf::Keyboard::R && storage.ownResource >= equip2.neededResources && displayMenu)
                     {
                         UpdateEquipOnLevelUp(equip2, storage, infoShip, ship);
                     }
-                    // Bullet Speed
+                    // Increase the Bullet Speed of the Ship's bullet
                     if (event.key.code == sf::Keyboard::T && storage.ownResource >= equip3.neededResources && displayMenu)
                     {
                         UpdateEquipOnLevelUp(equip3, storage, infoShip, ship);
                     }
-                    // Complicated
+                    // Does many things
                     if (event.key.code == sf::Keyboard::Y && storage.ownResource >= equip4.neededResources && displayMenu)
                     {
                         UpdateEquipOnLevelUp(equip4, storage, infoShip, ship);
                     }
+
+                    // ------------------------------------ End - Input Menu  ------------------------------------ //
 
                     if (event.key.code == sf::Keyboard::Space)
                     {
@@ -134,28 +146,34 @@ int main()
                 }
         }
 
-            // Element du menu qui sont dynamique
-
-            infoShip.shipLevel = (equip1.level + equip2.level + equip3.level + equip4.level) / 4;
-
-            sf::Text InfoShipValue = SetUpText(infoShip.atkString + std::to_string(infoShip.atkPoints) +
-                infoShip.lifeString + std::to_string(infoShip.lifePoints) + infoShip.bspeedString + std::to_string((int)infoShip.bspeedPoints),
-                arialttf, 20, sf::Color::Black, /*pos*/sf::Vector2f(WIDTH * 0.275, HEIGHT * 0.235));
-
-            sf::Text InfoShipTitle = SetUpText("Ship Information : Level " + std::to_string(infoShip.shipLevel), arialttf, 25, sf::Color::Black, /*pos*/sf::Vector2f(WIDTH * 0.275, HEIGHT * 0.185));
-
-            storage.nameResource.setString(std::to_string(storage.ownResource));
-            storage.nameResource.setPosition(sf::Vector2f(WIDTH * 0.675 - (WIDTH * 0.110 / 2) + (WIDTH * 0.110 / 2), HEIGHT * (0.18 + 0.06)));
-            storage.nameResource.setOrigin((storage.nameResource.getGlobalBounds().width / 2), (storage.nameResource.getGlobalBounds().height / 2));
-
-            UpdateTextLevel(equip1, posbackG, " HP");
-            UpdateTextLevel(equip2, posbackG + sf::Vector2f(pRight, 0), " Attack");
-            UpdateTextLevel(equip3, posbackG + sf::Vector2f(0, pTop), " Bullet Speed");
-            UpdateTextLevel(equip4, posbackG + sf::Vector2f(pRight, pTop), " Attack");
-
             // Logique
             sf::Time elapsedTime = clock.restart();
 
+            // ------------------------------------ Start - Dynamic/Update Menu Item ------------------------------------ //
+
+            // Change the current level of the ship according to the average of the Equips 
+            infoShip.shipLevel = (equip1.level + equip2.level + equip3.level + equip4.level) / 4;
+
+            // Update ship information
+            sf::Text InfoShipTitle = SetUpText("Ship Information : Level " + std::to_string(infoShip.shipLevel), aAtmospheric_ttf, 20, sf::Color::Black, /*pos*/sf::Vector2f(WIDTH * 0.275, HEIGHT * 0.185));
+
+            sf::Text InfoShipValue = SetUpText(infoShip.atkString + std::to_string(infoShip.atkPoints) +
+                infoShip.lifeString + std::to_string(infoShip.lifePoints) + infoShip.bspeedString + std::to_string((int)infoShip.bspeedPoints),
+                aAtmospheric_ttf, 15, sf::Color::Black, /*pos*/sf::Vector2f(WIDTH * 0.275, HEIGHT * 0.235));
+
+            UpdateStorage(storage);
+
+            UpdateTextLevel(equip1, posbackG, " HP", storage);
+            UpdateTextLevel(equip2, posbackG + sf::Vector2f(pRight, 0), " Attack", storage);
+            UpdateTextLevel(equip3, posbackG + sf::Vector2f(0, pTop), " Bullet Speed", storage);
+            UpdateTextLevel(equip4, posbackG + sf::Vector2f(pRight, pTop), " Attack", storage);
+
+            // Duplicate the storage after updating for the In-Game Storage
+            RessourcesStorage storageInGame = storage;
+            UpdateStorageInGame(storageInGame);
+
+            // ------------------------------------ End - Dynamic/Update Menu Item ------------------------------------ //
+            
 
             ShipMovement(ship, elapsedTime.asSeconds(), angle, vitesse);
             ActualisationProps(level, allBullets, storage);
@@ -177,11 +195,11 @@ int main()
             
 
             // Whatever I want to draw goes here 
+
             if (displayMenu)
             {
 
                 // Draw the Menu background
-                window.draw(menu3);
                 window.draw(menu2);
                 window.draw(menu);
 
@@ -196,15 +214,15 @@ int main()
                 DrawEquip(equip3, window);
                 DrawEquip(equip4, window);
 
-                // Draw the storage
-                window.draw(storage.resourcesBg);
-                window.draw(storage.storage);
-                window.draw(storage.nameResource);
-
+                // Draw the menu storage
+                DrawOneStorage(storage, window);
             }
 
             else
             {
+                // Draw the In-Game storage
+                DrawOneStorage(storageInGame, window);
+
                 window.draw(ship.ship);
                 window.draw(ship.weapon);
                 window.draw(ship.react1);

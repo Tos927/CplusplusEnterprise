@@ -41,7 +41,7 @@ struct RessourcesStorage
     std::string resource = "Resources ";
     sf::Text nameResource;
     
-    int ownResource = 1000000;
+    int ownResource = 2272118;// Need 2 272 118 to Lvl99
 };
 
 // Fonction qui Setup un text et le place dans la fenetre 
@@ -61,6 +61,14 @@ sf::RectangleShape Menu(sf::Vector2f rectangleSize, sf::Color color, sf::Vector2
 
 void DrawEquip(EquipStruct&, sf::RenderWindow&);
 
-void UpdateTextLevel(EquipStruct& equip, sf::Vector2f posbackG, std::string bonusType);
+void UpdateTextLevel(EquipStruct& equip, sf::Vector2f posbackG, std::string bonusType, RessourcesStorage& storage);
 
 void UpdateEquipOnLevelUp(EquipStruct& equip, RessourcesStorage& storage, InfoShip& infoShip, Ship& ship);
+
+void UpdateStorage(RessourcesStorage& storage);
+
+void UpdateStorageInGame(RessourcesStorage& storageInGame);
+
+void DrawOneStorage(RessourcesStorage& storage, sf::RenderWindow& window);
+
+void SetOriginText(sf::Text& text);
