@@ -1,7 +1,11 @@
 #pragma once
 
+struct InfoShip;
+struct Ship;
+
 struct EquipStruct
 {
+    int equipID;
     sf::Text name;
 
     sf::RectangleShape background;
@@ -9,16 +13,24 @@ struct EquipStruct
     int level = 1;
 
     sf::Text textLevel;
+    sf::Text previewLevel;
+
     sf::RectangleShape levelBg;
 
     sf::Text nameResource;
     sf::RectangleShape resourcesBg;
 
     sf::Text neededResourcesText;
-    int neededResources = 25;
+    int neededResources = 25; //default 25
 
     sf::Text keyText;
     std::string key;
+
+    sf::Text definition;
+
+    sf::Text currentBonus;
+    int currentStatsBonus = 0;
+    int statsBonusOnLevelUp = 0;
 };
 
 struct RessourcesStorage
@@ -29,7 +41,7 @@ struct RessourcesStorage
     std::string resource = "Resources ";
     sf::Text nameResource;
     
-    int ownResource = 0;
+    int ownResource = 2272118;// Need 2 272 118 to Lvl99
 };
 
 // Fonction qui Setup un text et le place dans la fenetre 
@@ -42,9 +54,21 @@ sf::RectangleShape SetupBackground(sf::Vector2f backgroundSize, sf::Color color,
 RessourcesStorage Storage(sf::Font& arialttf);
 
 //Fonction qui crée les Equip
-EquipStruct Equip(std::string key, std::string name, sf::Vector2f posNameText, sf::Vector2f posBackground, sf::Font& arialttf);
+EquipStruct Equip(int equipID, std::string key, std::string name, sf::Vector2f posNameText, sf::Vector2f posBackground, sf::Font& arialttf, int statsBonusOnLevelUp, std::string description);
 
 //Fonction qui crée le background du Menu
-sf::RectangleShape Menu();
+sf::RectangleShape Menu(sf::Vector2f rectangleSize, sf::Color color, sf::Vector2f position);
 
 void DrawEquip(EquipStruct&, sf::RenderWindow&);
+
+void UpdateTextLevel(EquipStruct& equip, sf::Vector2f posbackG, std::string bonusType, RessourcesStorage& storage);
+
+void UpdateEquipOnLevelUp(EquipStruct& equip, RessourcesStorage& storage, InfoShip& infoShip, Ship& ship);
+
+void UpdateStorage(RessourcesStorage& storage);
+
+void UpdateStorageInGame(RessourcesStorage& storageInGame);
+
+void DrawOneStorage(RessourcesStorage& storage, sf::RenderWindow& window);
+
+void SetOriginText(sf::Text& text);
