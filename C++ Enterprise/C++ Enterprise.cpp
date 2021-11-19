@@ -225,7 +225,7 @@ int main()
                 {
                     allBullets.clear();
                     ResetToCenter(ship);
-                    level = NewLevel(3, 10, 20, 20, 50);
+                    level = NewLevel(3, 10, 20, 20, 50, 3, 0, 2, 0, 2, 0, allEnemies);
                     displayTitle = false;
                     tableaux += 1;
                 }

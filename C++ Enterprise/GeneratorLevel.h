@@ -1,5 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <vector>
+#include "EnemiesBehaviour.h"
 
 #define WIDTH 1920 
 #define HEIGHT 1080
@@ -17,4 +19,4 @@ struct Planet {
 	int collisionDamage = 50;
 };
 
-std::vector<Planet> NewLevel(int planetMax, int planetMin, float radiusMax, float radiusMin, float security);
+std::vector<Planet> NewLevel(int planetMax, int planetMin, float radiusMax, float radiusMin, float security, int bomberMax, int bomberMin, int torpedoMax, int torpedoMin, int heavyMax, int heavyMin, std::vector<Enemy>& allEnemies);
