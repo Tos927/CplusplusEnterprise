@@ -36,7 +36,7 @@ sf::RectangleShape SetupBackground(sf::Vector2f backgroundSize, sf::Color color,
 // Fond du Menu
 sf::RectangleShape Menu(sf::Vector2f rectangleSize, sf::Color color, sf::Vector2f position)
 {
-    sf::RectangleShape menu (rectangleSize);
+    sf::RectangleShape menu(rectangleSize);
     menu.setFillColor(color);
     menu.setPosition(position);
     menu.setOrigin(menu.getSize().x / 2, menu.getSize().y / 2);
@@ -67,7 +67,7 @@ struct EquipStruct Equip(int equipID, std::string key, std::string name, sf::Vec
     equip.levelBg = SetupBackground(sf::Vector2f(levelBgWidth, equipBgHeight), sf::Color::Color(54, 54, 54), posBackground + sf::Vector2f(equipBgWidth - levelBgWidth, 0)); //190 0
 
     // Place the text Lvl1 at the center bottom of the level's background 
-    equip.textLevel = SetUpText("LvL" + std::to_string(equip.level), arialttf, 20, sf::Color::White, posBackground + sf::Vector2f(equipBgWidth - (levelBgWidth/2), levelBgWidth * 0.80));
+    equip.textLevel = SetUpText("LvL" + std::to_string(equip.level), arialttf, 20, sf::Color::White, posBackground + sf::Vector2f(equipBgWidth - (levelBgWidth / 2), levelBgWidth * 0.80));
     SetOriginText(equip.textLevel);
 
     // Place the preview level 
@@ -79,7 +79,7 @@ struct EquipStruct Equip(int equipID, std::string key, std::string name, sf::Vec
     SetOriginText(equip.keyText);
 
     equip.neededResourcesText = SetUpText("Needed resources : " + std::to_string(equip.neededResources), arialttf, 10, sf::Color::Black, posNameText + sf::Vector2f(0, 25));
-    
+
     equip.definition = SetUpText(description, arialttf, 8, sf::Color::Black, posNameText + sf::Vector2f(0, 45));
 
     equip.currentBonus = SetUpText("Current bonus stats : " + std::to_string(equip.currentStatsBonus) + "Current bonus stats : " + std::to_string(equip.currentStatsBonus + equip.statsBonusOnLevelUp), arialttf, 9, sf::Color::Black, posNameText + sf::Vector2f(0, 110));
@@ -97,14 +97,14 @@ struct RessourcesStorage Storage(sf::Font& arialttf)
     float resourcesBgWidth = WIDTH * 0.110;
 
     // Place the resourcesBg on top right of the menu at the same place than the equips right
-    storage.resourcesBg = SetupBackground(sf::Vector2f(resourcesBgWidth, HEIGHT * 0.10), sf::Color::Color(240,240,240), sf::Vector2f(WIDTH * 0.675 - (resourcesBgWidth/2), HEIGHT * 0.18));
+    storage.resourcesBg = SetupBackground(sf::Vector2f(resourcesBgWidth, HEIGHT * 0.10), sf::Color::Color(240, 240, 240), sf::Vector2f(WIDTH * 0.675 - (resourcesBgWidth / 2), HEIGHT * 0.18));
 
     // Place the text at the middle top of resourcesBg
-    storage.storage = SetUpText("Ressource Storage", arialttf, 13, sf::Color::Black, sf::Vector2f(WIDTH * 0.675 - (resourcesBgWidth/2) + (resourcesBgWidth/2), HEIGHT * (0.18 + 0.02)));
+    storage.storage = SetUpText("Ressource Storage", arialttf, 13, sf::Color::Black, sf::Vector2f(WIDTH * 0.675 - (resourcesBgWidth / 2) + (resourcesBgWidth / 2), HEIGHT * (0.18 + 0.02)));
     SetOriginText(storage.storage);
 
     storage.nameResource = SetUpText(storage.resource + std::to_string(storage.ownResource), arialttf, 25, sf::Color::Black, sf::Vector2f(WIDTH * 0.675 - (resourcesBgWidth / 2) + (resourcesBgWidth / 2), HEIGHT * (0.18 + 0.08)));
-    
+
 
     storage.resourcesBg.setOutlineThickness(3);
     storage.resourcesBg.setOutlineColor(sf::Color::Color(54, 54, 54));
@@ -122,7 +122,7 @@ void DrawEquip(EquipStruct& equip, sf::RenderWindow& window)
     window.draw(equip.previewLevel);
     window.draw(equip.neededResourcesText);
     window.draw(equip.keyText);
-    window.draw(equip.definition); 
+    window.draw(equip.definition);
     window.draw(equip.currentBonus);
 }
 
@@ -228,3 +228,14 @@ void DrawOneStorage(RessourcesStorage& storage, sf::RenderWindow& window)
     window.draw(storage.nameResource);
 }
 
+void UpdateLifeBar(Ship& ship, InfoShip& infoShip, sf::RectangleShape& lifeBar, int maxlifeWidth, int maxLifeHeight, sf::Text& lifeInGame)
+{
+    // Create a float that contains the current percentage of life 
+    float currentPercentageOfLife = ((float)ship.currentLife / (float)infoShip.lifePoints);
+
+    // Set the life bar on the current percentage of life
+    lifeBar.setSize(sf::Vector2f(maxlifeWidth * currentPercentageOfLife, maxLifeHeight));
+
+    // Update the Text of life on the life bar
+    lifeInGame.setString(std::to_string(ship.currentLife) + "/" + std::to_string(infoShip.lifePoints));
+}

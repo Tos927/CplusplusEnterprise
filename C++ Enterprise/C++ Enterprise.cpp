@@ -76,9 +76,20 @@ int main()
     EquipStruct equip2 = Equip(2, "R", "Photon Torpedo", posbackG + sf::Vector2f(pRight + margin, margin), posbackG + sf::Vector2f(pRight, 0), aAtmospheric_ttf, 20, "Improvement of the technology contained in\nthe cannons in order to have a firepower\nthat can cause massive damage to the enemy\nstructures.");
     EquipStruct equip3 = Equip(3, "T", "Artillery", posbackG + sf::Vector2f(margin, pTop + margin), posbackG + sf::Vector2f(0, pTop), aAtmospheric_ttf, 25, "The artillery's upgrade increases the power\nof the ship's cannons, thus increasing the\nspeed at which the projectiles advance\nthrough space.");
     EquipStruct equip4 = Equip(4, "Y", "Crew", posbackG + sf::Vector2f(pRight + margin, pTop + margin), posbackG + sf::Vector2f(pRight, pTop), aAtmospheric_ttf, 1, "Upgrading your ship's crew increases the\nfirepower of your ship as well as the number\nof resources you can harvest and other\nbonuses depending on the level.");
-    
+
     RessourcesStorage storage = Storage(aAtmospheric_ttf);
 
+    // width and height of the LifeBar's RectangleShape
+    int maxlifeWidth(WIDTH * 0.25);
+    int maxLifeHeight(HEIGHT * 0.025);
+
+    sf::RectangleShape lifeBar = SetupBackground(sf::Vector2f(maxlifeWidth, maxLifeHeight), sf::Color::Color(255, 45, 0), sf::Vector2f(WIDTH * 0.02, HEIGHT * 0.05));
+    sf::RectangleShape lifeBarOutline = SetupBackground(sf::Vector2f(maxlifeWidth, maxLifeHeight), sf::Color::Transparent, sf::Vector2f(WIDTH * 0.02, HEIGHT * 0.05));
+    lifeBarOutline.setOutlineColor(sf::Color::White);
+    lifeBarOutline.setOutlineThickness(1);
+
+    // Text life on the life bar 
+    sf::Text lifeInGame = SetUpText(std::to_string(ship.currentLife) + "/" + std::to_string(infoShip.lifePoints), aAtmospheric_ttf, 15, sf::Color::White, sf::Vector2f(maxlifeWidth, maxLifeHeight) - sf::Vector2f(maxlifeWidth / 2, -32.5));
     sf::Text GameOverText = SetUpText("(GAME-OVER)", barcadettf, 100, sf::Color::Red, sf::Vector2f(WIDTH / 2, HEIGHT / 2));
     SetOriginText(GameOverText);
 
@@ -156,11 +167,11 @@ int main()
         infoShip.shipLevel = (equip1.level + equip2.level + equip3.level + equip4.level) / 4;
 
         // Update ship information
-        sf::Text InfoShipTitle = SetUpText("Ship Information : Level " + std::to_string(infoShip.shipLevel), aAtmospheric_ttf, 20, sf::Color::Black, /*pos*/sf::Vector2f(WIDTH * 0.275, HEIGHT * 0.185));
+        sf::Text InfoShipTitle = SetUpText("Ship Information : Level " + std::to_string(infoShip.shipLevel), aAtmospheric_ttf, 20, sf::Color::Black, /*pos*/ sf::Vector2f(WIDTH * 0.275, HEIGHT * 0.185));
 
         sf::Text InfoShipValue = SetUpText(infoShip.atkString + std::to_string(infoShip.atkPoints) +
             infoShip.lifeString + std::to_string(ship.currentLife) + "/" + std::to_string(infoShip.lifePoints) + infoShip.bspeedString + std::to_string((int)infoShip.bspeedPoints),
-            aAtmospheric_ttf, 15, sf::Color::Black, /*pos*/sf::Vector2f(WIDTH * 0.275, HEIGHT * 0.235));
+            aAtmospheric_ttf, 15, sf::Color::Black, /*pos*/ sf::Vector2f(WIDTH * 0.275, HEIGHT * 0.235));
 
         UpdateStorage(storage);
 
@@ -173,11 +184,12 @@ int main()
         RessourcesStorage storageInGame = storage;
         UpdateStorageInGame(storageInGame);
 
-        // Logique
-        sf::Time elapsedTime = clock.restart();
+
+        UpdateLifeBar(ship, infoShip, lifeBar, maxlifeWidth, maxLifeHeight, lifeInGame);
 
         // ------------------------------------ End - Dynamic/Update Menu Item ------------------------------------ //
-
+        // Logique
+        sf::Time elapsedTime = clock.restart();
         // Rendu
         window.clear();
 
@@ -213,6 +225,9 @@ int main()
 
         else
         {
+            window.draw(lifeBar);
+            window.draw(lifeBarOutline);
+            window.draw(lifeInGame);
             isLost = !IsShipAlive(ship);
 
             if (!isLost) 

@@ -40,8 +40,8 @@ struct RessourcesStorage
 
     std::string resource = "Resources ";
     sf::Text nameResource;
-    
-    int ownResource = 0/*2272118*/;// Need 2 272 118 to Lvl99
+
+    int ownResource = 2272118;// Need 2 272 118 to Lvl99
 };
 
 // Fonction qui Setup un text et le place dans la fenetre 
@@ -72,3 +72,5 @@ void UpdateStorageInGame(RessourcesStorage& storageInGame);
 void DrawOneStorage(RessourcesStorage& storage, sf::RenderWindow& window);
 
 void SetOriginText(sf::Text& text);
+
+void UpdateLifeBar(Ship& ship, InfoShip& infoShip, sf::RectangleShape& lifeBar, int maxlifeWidth, int maxLifeHeight, sf::Text& lifeInGame);
