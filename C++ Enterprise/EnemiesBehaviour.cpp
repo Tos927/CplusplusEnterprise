@@ -203,8 +203,8 @@ bool CollideWithFrendlyBullet(std::vector<Bullets>& allBullets, sf::CircleShape 
 	return isOnContact;
 }
 
-void TakeDamage(Ship& ship, int damage) {
-	ship.currentLife -= damage;
+void TakeDamage(Ship& ship, int damage, int tableaux) {
+	ship.currentLife -= damage + (5*tableaux);
 	// actualiser UI
 }
 
@@ -238,7 +238,7 @@ std::vector<Enemy>::iterator StratHeavyMove(std::vector<Enemy>::iterator& enemyI
 		(*enemyIt).life -= 50;
 		if ((*enemyIt).life <= 0) {
 			GainResources(ressource, 150, tableaux);
-			TakeDamage(ship, (*enemyIt).damage);
+			TakeDamage(ship, (*enemyIt).damage, tableaux);
 			return allEnemy.erase(enemyIt);
 		}
 		else {
@@ -258,7 +258,7 @@ std::vector<Enemy>::iterator StratBomberMove(std::vector<Enemy>::iterator& enemy
 	// déplacement subite lorsque le joueur fait face à l'ennemie
 	
 	if (CollideWithShip(ship, (*enemyIt).shape.getPosition(), (*enemyIt).shape.getRadius()) && ship.canTakeDamage) {
-		TakeDamage(ship, (*enemyIt).damage);
+		TakeDamage(ship, (*enemyIt).damage, tableaux);
 		return allEnemy.erase(enemyIt);
 	}
 

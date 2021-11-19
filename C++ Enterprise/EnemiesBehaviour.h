@@ -53,7 +53,7 @@ int CreatNewTorpedo(std::map<int, Torpedo>& allTorpedo, sf::Vector2f startPositi
 void Shoot(Enemy& enemy, std::vector<Bullets>& enemyBullets, float angle, const float& deltaTime);
 bool CollideWithShip(Ship& ship, sf::Vector2f originePos, int radius);
 bool CollideWithFrendlyBullet(std::vector<Bullets>& allBullets, sf::CircleShape origine, bool destroyBullet);
-void TakeDamage(Ship& ship, int damage);
+void TakeDamage(Ship& ship, int damage, int tableaux);
 void GainResources(RessourcesStorage& ressource, int gain, int tableaux);
 
 std::vector<Enemy>::iterator StratHeavyMove(std::vector<Enemy>::iterator& enemyIt, std::vector<Enemy>& allEnemy, std::vector<Bullets>& shipBullets, Ship& ship, InfoShip& info, std::vector<Bullets>& enemyBullets, sf::Vector2f shipPosition, RessourcesStorage& ressource, const float& deltaTime, int tableaux);

@@ -241,7 +241,7 @@ int main()
                 {
                     MouvBullet((*enemyBulletIt), elapsedTime.asSeconds());
                     if (CollideWithShip(ship, (*enemyBulletIt).bullet.getPosition(), 0) && ship.canTakeDamage) {
-                        TakeDamage(ship, (*enemyBulletIt).damage);
+                        TakeDamage(ship, (*enemyBulletIt).damage, tableaux);
                         enemyBulletIt = enemyBullets.erase(enemyBulletIt);
                     }
                     else {
@@ -254,7 +254,7 @@ int main()
                 {
                     if (CollideWithShip(ship, (*planetIt).pShape.getPosition(), (*planetIt).radius) && ship.canTakeDamage) {
                         ship.canTakeDamage = false;
-                        TakeDamage(ship, infoShip.lifePoints / 4);
+                        TakeDamage(ship, infoShip.lifePoints / 4, 0);
                         planetIt = level.erase(planetIt);
                     }
                     else {
@@ -270,7 +270,7 @@ int main()
                     // Actualisation de la torpille - si il est en contacte avec le vaisseau ou par un tir
                     if (CollideWithShip(ship, it->second.shap.getPosition(), it->second.shap.getRadius()) && ship.canTakeDamage) {
                         infoShip.lifePoints -= it->second.damage;
-                        TakeDamage(ship, it->second.damage);
+                        TakeDamage(ship, it->second.damage, tableaux);
 
                         it = enemyTorpedo.erase(it);
                         continue;
@@ -293,15 +293,15 @@ int main()
                         break;
                     }
                     case 1: {
-                        enemyIt = StratHeavyMove(enemyIt, allEnemies, allBullets, ship, infoShip, enemyBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds());
+                        enemyIt = StratHeavyMove(enemyIt, allEnemies, allBullets, ship, infoShip, enemyBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds(), tableaux);
                         break;
                     }
                     case 2: {
-                        enemyIt = StratBomberMove(enemyIt, allEnemies, allBullets, ship, infoShip, storage, elapsedTime.asSeconds());
+                        enemyIt = StratBomberMove(enemyIt, allEnemies, allBullets, ship, infoShip, storage, elapsedTime.asSeconds(), tableaux);
                         break;
                     }
                     case 3: {
-                        enemyIt = StratTorpedoLuncherMove(enemyIt, allEnemies, enemyTorpedo, infoShip, allBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds());
+                        enemyIt = StratTorpedoLuncherMove(enemyIt, allEnemies, enemyTorpedo, infoShip, allBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds(),tableaux);
                         break;
                     }
                     }
