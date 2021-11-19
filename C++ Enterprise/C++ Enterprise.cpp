@@ -20,6 +20,7 @@ int main()
     Ship ship;
     float angle = 0;
     float vitesse = 0;
+    int tableaux = -1;
     InitializeShip(ship);
 
     // object de la scène
@@ -219,15 +220,14 @@ int main()
                 //TODO//
                 //bouger le code d'en dessous dans else pour pas que le vaisseau bouge dans le menu
                 ShipMovement(ship, elapsedTime.asSeconds(), angle, vitesse);
-                ActualisationProps(level, allBullets, storage);
+                ActualisationProps(level, allBullets, storage, tableaux);
                 if (IsOutOfScreen(ship.ship.getPosition(), 10.0f))
                 {
                     allBullets.clear();
                     ResetToCenter(ship);
                     level = NewLevel(3, 10, 20, 20, 50);
                     displayTitle = false;
-                    //TODO//
-                    //Créer une variable pour le nombre de ressoucres gagner par planete et enemies, et l'augmenter a chaque nouvel ecran
+                    tableaux += 1;
                 }
 
                 // Déplacement des balles alliers

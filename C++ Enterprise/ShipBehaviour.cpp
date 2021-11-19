@@ -109,7 +109,7 @@ void MouvBullet(Bullets& bullet, float deltaTime) {
 	bullet.bullet.move(move);
 }
 
-void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bullet, RessourcesStorage& ressource)
+void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bullet, RessourcesStorage& ressource, int tableaux)
 {
 	auto pIt = planete.begin();
 	while (pIt != planete.end())
@@ -132,7 +132,7 @@ void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bull
 		if ((*pIt).vie <= 0)
 		{
 			pIt = planete.erase(pIt);
-			ressource.ownResource += 150;
+			ressource.ownResource += 150 + (5 * tableaux);
 		}
 		else
 		{
