@@ -11,6 +11,7 @@
 
 int main()
 {
+    
     // initialisation aléatoire
     srand(time(NULL));
 
@@ -31,7 +32,9 @@ int main()
     std::vector<Explosion> allExplosion;
 
     // initialisation windows
-    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "C++ Enterprise", sf::Style::Fullscreen);    // WIDTH et HEIGHT sont des variable constante présent dans "GeneratorLevel.h"
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8;
+    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "C++ Enterprise", sf::Style::Fullscreen, settings);    // WIDTH et HEIGHT sont des variable constante présent dans "GeneratorLevel.h"
     window.setVerticalSyncEnabled(true);  // Frame rate de l'écran
     // ------------------------------------ Start - Initialization Menu  ------------------------------------ //
 

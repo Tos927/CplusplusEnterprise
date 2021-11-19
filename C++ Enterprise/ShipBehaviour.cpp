@@ -133,7 +133,6 @@ void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bull
 		{
 			pIt = planete.erase(pIt);
 			ressource.ownResource += 150;
-			ressource.nameResource.setString("Stone " + std::to_string(ressource.ownResource));
 		}
 		else
 		{
