@@ -228,3 +228,14 @@ void DrawOneStorage(RessourcesStorage& storage, sf::RenderWindow& window)
     window.draw(storage.nameResource);
 }
 
+void UpdateLifeBar(Ship& ship, InfoShip& infoShip, sf::RectangleShape& lifeBar, int maxlifeWidth, int maxLifeHeight, sf::Text& lifeInGame)
+{
+    // Create a float that contains the current percentage of life 
+    float currentPercentageOfLife = ((float)ship.currentLife / (float)infoShip.lifePoints);
+
+    // Set the life bar on the current percentage of life
+    lifeBar.setSize(sf::Vector2f(maxlifeWidth * currentPercentageOfLife, maxLifeHeight));
+
+    // Update the Text of life on the life bar
+    lifeInGame.setString(std::to_string(ship.currentLife) + "/" + std::to_string(infoShip.lifePoints));
+}
