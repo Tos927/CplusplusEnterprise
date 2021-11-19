@@ -53,3 +53,4 @@ void MouvBullet(Bullets& bullet, float deltaTime);
 void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bullet, RessourcesStorage& ressource);
 void DrawShip(const Ship& ship, sf::RenderWindow& window);
 void InvincibilityShip(Ship& ship, const float& deltaTime);
+bool IsShipAlive(Ship& ship);

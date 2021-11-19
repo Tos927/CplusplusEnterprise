@@ -79,10 +79,10 @@ bool IsOutOfScreen(sf::Vector2f shipPosition, float screenTrigger)
 
 void ResetToCenter(Ship& ship) 
 {
-	ship.ship.setPosition(sf::Vector2f(500.0f, 500.0f));
-	ship.weapon.setPosition(sf::Vector2f(500.0f, 500.0f));
-	ship.react1.setPosition(sf::Vector2f(500.0f, 500.0f));
-	ship.react2.setPosition(sf::Vector2f(500.0f, 500.0f));
+	ship.ship.setPosition(sf::Vector2f(WIDTH / 2, HEIGHT / 2));
+	ship.weapon.setPosition(sf::Vector2f(WIDTH / 2, HEIGHT / 2));
+	ship.react1.setPosition(sf::Vector2f(WIDTH / 2, HEIGHT / 2));
+	ship.react2.setPosition(sf::Vector2f(WIDTH / 2, HEIGHT / 2));
 }
 
 void CreateBullet(std::vector<Bullets>& bullets, int speed, int damage, const sf::CircleShape& origineShape, float angleInDeg)
@@ -191,4 +191,13 @@ void InvincibilityShip(Ship& ship, const float& deltaTime) {
 		ship.weapon.setFillColor(sf::Color::Black);
 		ship.weapon.setOutlineThickness(1);
 	}
+}
+
+bool IsShipAlive(Ship& ship) 
+{
+	if (ship.currentLife <= 0)
+	{
+		return(false);
+	}
+	return(true);
 }

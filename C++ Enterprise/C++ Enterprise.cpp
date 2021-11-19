@@ -11,7 +11,8 @@
 
 int main()
 {
-    
+    // Initialisation GameOver
+    bool isLost = false;
     // initialisation aléatoire
     srand(time(NULL));
 
@@ -76,6 +77,9 @@ int main()
     EquipStruct equip4 = Equip(4, "Y", "Crew", posbackG + sf::Vector2f(pRight + margin, pTop + margin), posbackG + sf::Vector2f(pRight, pTop), aAtmospheric_ttf, 1, "Upgrading your ship's crew increases the\nfirepower of your ship as well as the number\nof resources you can harvest and other\nbonuses depending on the level.");
     
     RessourcesStorage storage = Storage(aAtmospheric_ttf);
+
+    sf::Text GameOverText = SetUpText("(GAME-OVER)", barcadettf, 100, sf::Color::Red, sf::Vector2f(WIDTH / 2, HEIGHT / 2));
+    SetOriginText(GameOverText);
 
     // ------------------------------------ End - Initialization Menu  ------------------------------------ //
 
@@ -173,23 +177,6 @@ int main()
         // Logique
         sf::Time elapsedTime = clock.restart();
 
-
-        //TODO//
-        //bouger le code d'en dessous dans else pour pas que le vaisseau bouge dans le menu
-        ShipMovement(ship, elapsedTime.asSeconds(), angle, vitesse);
-        ActualisationProps(level, allBullets, storage);
-        if (IsOutOfScreen(ship.ship.getPosition(), 10.0f))
-        {
-            allBullets.clear();
-            ResetToCenter(ship);
-            level = NewLevel(3, 10, 20, 20, 50);
-            displayTitle = false;
-            //TODO//
-            //Créer une variable pour le nombre de ressoucres gagner par planete et enemies, et l'augmenter a chaque nouvel ecran
-        }
-
-
-
         // Rendu
         window.clear();
 
@@ -225,99 +212,112 @@ int main()
 
         else
         {
-            
+            isLost = !IsShipAlive(ship);
 
-            
-            // Déplacement des balles alliers
-            for (Bullets& bul : allBullets)
+            if (!isLost) 
             {
-                MouvBullet(bul, elapsedTime.asSeconds());
-            }
-
-            std::vector<Bullets>::iterator enemyBulletIt = enemyBullets.begin();
-            while (enemyBulletIt != enemyBullets.end())
-            {
-                MouvBullet((*enemyBulletIt), elapsedTime.asSeconds());
-                if (CollideWithShip(ship, (*enemyBulletIt).bullet.getPosition(), 0) && ship.canTakeDamage) {
-                    TakeDamage(ship, (*enemyBulletIt).damage);
-                    enemyBulletIt = enemyBullets.erase(enemyBulletIt);
-                }
-                else {
-                    enemyBulletIt++;
-                }
-            }
-            
-            std::vector<Planet>::iterator planetIt = level.begin();
-            while (planetIt != level.end())
-            {
-                if (CollideWithShip(ship, (*planetIt).pShape.getPosition(), (*planetIt).radius) && ship.canTakeDamage) {
-                    ship.canTakeDamage = false;
-                    TakeDamage(ship, infoShip.lifePoints / 4);
-                    planetIt = level.erase(planetIt);
-                }
-                else {
-                    planetIt++;
-                }
-            }
-
-            // Déplacement des Torpilles
-            std::map<const int, Torpedo>::iterator it = enemyTorpedo.begin();
-            while (it != enemyTorpedo.end()) {
-                MoveToPoint(it->second.shap, ship.ship.getPosition(), it->second.speed, true, elapsedTime.asSeconds());
-
-                // Actualisation de la torpille - si il est en contacte avec le vaisseau ou par un tir
-                if (CollideWithShip(ship, it->second.shap.getPosition(), it->second.shap.getRadius())  && ship.canTakeDamage) {
-                    infoShip.lifePoints -= it->second.damage;
-                    TakeDamage(ship, it->second.damage);
-
-                    it = enemyTorpedo.erase(it);
-                    continue;
-
-                }
-                if (CollideWithFrendlyBullet(allBullets, it->second.shap, true)) {
-                    infoShip.lifePoints -= it->second.damage;
-                    it = enemyTorpedo.erase(it);
-                    continue;
-                }
-                it++;
-            }
-
-            // déplacement des enemis
-            std::vector<Enemy>::iterator enemyIt = allEnemies.begin();
-            while (enemyIt != allEnemies.end()) {
-                switch ((*enemyIt).type)
+                //TODO//
+                //bouger le code d'en dessous dans else pour pas que le vaisseau bouge dans le menu
+                ShipMovement(ship, elapsedTime.asSeconds(), angle, vitesse);
+                ActualisationProps(level, allBullets, storage);
+                if (IsOutOfScreen(ship.ship.getPosition(), 10.0f))
                 {
-                case 0: {
-                    break;
-                }
-                case 1: {
-                    enemyIt = StratHeavyMove(enemyIt, allEnemies, allBullets, ship, infoShip, enemyBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds());
-                    break;
-                }
-                case 2: {
-                    enemyIt = StratBomberMove(enemyIt, allEnemies, allBullets, ship, infoShip, storage, elapsedTime.asSeconds());
-                    break;
-                }
-                case 3: {
-                    enemyIt = StratTorpedoLuncherMove(enemyIt, allEnemies, enemyTorpedo,infoShip, allBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds());
-                    break;
-                }
+                    allBullets.clear();
+                    ResetToCenter(ship);
+                    level = NewLevel(3, 10, 20, 20, 50);
+                    displayTitle = false;
+                    //TODO//
+                    //Créer une variable pour le nombre de ressoucres gagner par planete et enemies, et l'augmenter a chaque nouvel ecran
                 }
 
-                if (enemyIt != allEnemies.end()) {
-                    enemyIt++;
+                // Déplacement des balles alliers
+                for (Bullets& bul : allBullets)
+                {
+                    MouvBullet(bul, elapsedTime.asSeconds());
                 }
-            }
-            
-            if (!ship.canTakeDamage) {
-                InvincibilityShip(ship, elapsedTime.asSeconds());
-            }
 
+                std::vector<Bullets>::iterator enemyBulletIt = enemyBullets.begin();
+                while (enemyBulletIt != enemyBullets.end())
+                {
+                    MouvBullet((*enemyBulletIt), elapsedTime.asSeconds());
+                    if (CollideWithShip(ship, (*enemyBulletIt).bullet.getPosition(), 0) && ship.canTakeDamage) {
+                        TakeDamage(ship, (*enemyBulletIt).damage);
+                        enemyBulletIt = enemyBullets.erase(enemyBulletIt);
+                    }
+                    else {
+                        enemyBulletIt++;
+                    }
+                }
+
+                std::vector<Planet>::iterator planetIt = level.begin();
+                while (planetIt != level.end())
+                {
+                    if (CollideWithShip(ship, (*planetIt).pShape.getPosition(), (*planetIt).radius) && ship.canTakeDamage) {
+                        ship.canTakeDamage = false;
+                        TakeDamage(ship, infoShip.lifePoints / 4);
+                        planetIt = level.erase(planetIt);
+                    }
+                    else {
+                        planetIt++;
+                    }
+                }
+
+                // Déplacement des Torpilles
+                std::map<const int, Torpedo>::iterator it = enemyTorpedo.begin();
+                while (it != enemyTorpedo.end()) {
+                    MoveToPoint(it->second.shap, ship.ship.getPosition(), it->second.speed, true, elapsedTime.asSeconds());
+
+                    // Actualisation de la torpille - si il est en contacte avec le vaisseau ou par un tir
+                    if (CollideWithShip(ship, it->second.shap.getPosition(), it->second.shap.getRadius()) && ship.canTakeDamage) {
+                        infoShip.lifePoints -= it->second.damage;
+                        TakeDamage(ship, it->second.damage);
+
+                        it = enemyTorpedo.erase(it);
+                        continue;
+
+                    }
+                    if (CollideWithFrendlyBullet(allBullets, it->second.shap, true)) {
+                        infoShip.lifePoints -= it->second.damage;
+                        it = enemyTorpedo.erase(it);
+                        continue;
+                    }
+                    it++;
+                }
+
+                // déplacement des enemis
+                std::vector<Enemy>::iterator enemyIt = allEnemies.begin();
+                while (enemyIt != allEnemies.end()) {
+                    switch ((*enemyIt).type)
+                    {
+                    case 0: {
+                        break;
+                    }
+                    case 1: {
+                        enemyIt = StratHeavyMove(enemyIt, allEnemies, allBullets, ship, infoShip, enemyBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds());
+                        break;
+                    }
+                    case 2: {
+                        enemyIt = StratBomberMove(enemyIt, allEnemies, allBullets, ship, infoShip, storage, elapsedTime.asSeconds());
+                        break;
+                    }
+                    case 3: {
+                        enemyIt = StratTorpedoLuncherMove(enemyIt, allEnemies, enemyTorpedo, infoShip, allBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds());
+                        break;
+                    }
+                    }
+
+                    if (enemyIt != allEnemies.end()) {
+                        enemyIt++;
+                    }
+                }
+
+                if (!ship.canTakeDamage) {
+                    InvincibilityShip(ship, elapsedTime.asSeconds());
+                }
+
+            }
 
             // ------------ Rendu ------------ //
-
-            // Joueur
-            DrawShip(ship, window);
 
             // Ennemis
             for (Enemy enemy : allEnemies) {
@@ -346,6 +346,15 @@ int main()
             // Torpilles ennemis
             for (std::pair<const int, Torpedo> topedo : enemyTorpedo) {
                 window.draw(topedo.second.shap);
+            }
+            // Joueur
+            if (!isLost)
+            {
+                DrawShip(ship, window);
+            }
+            else
+            {
+                window.draw(GameOverText);
             }
         }
         window.display();
