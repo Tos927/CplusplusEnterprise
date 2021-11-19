@@ -175,9 +175,6 @@ int main()
 
         // ------------------------------------ End - Dynamic/Update Menu Item ------------------------------------ //
 
-        // Logique
-        sf::Time elapsedTime = clock.restart();
-
         // Rendu
         window.clear();
 
