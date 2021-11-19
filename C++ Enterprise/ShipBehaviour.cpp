@@ -70,7 +70,7 @@ void ShipMovement(Ship& ship, float deltaTime, float& angle, float& vitesse)
 
 bool IsOutOfScreen(sf::Vector2f shipPosition, float screenTrigger)
 {
-	if (shipPosition.x + screenTrigger >= 1000 || shipPosition.x + screenTrigger <= 0 || shipPosition.y + screenTrigger >= 1000 || shipPosition.y + screenTrigger <= 0)
+	if (shipPosition.x + screenTrigger >= 1920 || shipPosition.x + screenTrigger <= 0 || shipPosition.y + screenTrigger >= 1080 || shipPosition.y + screenTrigger <= 0)
 	{
 		return true;
 	}

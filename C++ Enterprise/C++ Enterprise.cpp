@@ -117,6 +117,11 @@ int main()
                 {
                     UpdateEquipOnLevelUp(equip4, storage, infoShip, ship);
                 }
+                if (event.key.code == sf::Keyboard::P)
+                {
+                    window.close();
+                    break;
+                }
 
                 // ------------------------------------ End - Input Menu  ------------------------------------ //
 
@@ -217,8 +222,7 @@ int main()
 
         else
         {
-            // Draw the In-Game storage
-            DrawOneStorage(storageInGame, window);
+            
 
             
             // Déplacement des balles alliers
@@ -321,6 +325,9 @@ int main()
             for (Planet p : level) {
                 window.draw(p.pShape);
             }
+            
+            // Draw the In-Game storage
+            DrawOneStorage(storageInGame, window);
 
             // Balles alliers
             for (Bullets& bul : allBullets)

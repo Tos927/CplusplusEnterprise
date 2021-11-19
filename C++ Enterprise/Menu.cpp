@@ -212,9 +212,13 @@ void UpdateStorageInGame(RessourcesStorage& storageInGame)
     storageInGame.resourcesBg.setPosition(sf::Vector2f(WIDTH * 5, HEIGHT * 5));
     storageInGame.storage.setPosition(sf::Vector2f(WIDTH * 0.925, HEIGHT * 0.04));
     storageInGame.storage.setFillColor(sf::Color::White);
+    storageInGame.storage.setOutlineColor(sf::Color::Black);
+    storageInGame.storage.setOutlineThickness(1);
 
     storageInGame.nameResource.setPosition(sf::Vector2f(WIDTH * 0.925, HEIGHT * 0.08));
     storageInGame.nameResource.setFillColor(sf::Color::White);
+    storageInGame.nameResource.setOutlineColor(sf::Color::Black);
+    storageInGame.nameResource.setOutlineThickness(1);
 }
 
 void DrawOneStorage(RessourcesStorage& storage, sf::RenderWindow& window)
