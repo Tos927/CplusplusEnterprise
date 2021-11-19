@@ -62,7 +62,7 @@ std::vector<Planet> NewLevel(int planetMax, int planetMin, float radiusMax, floa
 		std::cout << "Succet !" << std::endl;
 	}
 
-	for (int i = 0; i < heavyNbr; i++)
+	/*for (int i = 0; i < heavyNbr; i++)
 	{
 		posX = ((double)rand() / RAND_MAX) * ((double(WIDTH) - double(radius)) - double(radius)) + double(radius);
 		posY = ((double)rand() / RAND_MAX) * ((double(HEIGHT) - double(radius)) - double(radius)) + double(radius);
@@ -82,6 +82,6 @@ std::vector<Planet> NewLevel(int planetMax, int planetMin, float radiusMax, floa
 		posY = ((double)rand() / RAND_MAX) * ((double(HEIGHT) - double(radius)) - double(radius)) + double(radius);
 		CreatNewEnemy(allEnemies, sf::Vector2f(posX + radius + 15, posY + radius + 15), 3);
 		std::cout << "ennemy create" << std::endl;
-	}
+	}*/
 	return allPlanets;
 }

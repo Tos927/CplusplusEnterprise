@@ -173,6 +173,9 @@ int main()
         RessourcesStorage storageInGame = storage;
         UpdateStorageInGame(storageInGame);
 
+        // Logique
+        sf::Time elapsedTime = clock.restart();
+
         // ------------------------------------ End - Dynamic/Update Menu Item ------------------------------------ //
 
         // Rendu
