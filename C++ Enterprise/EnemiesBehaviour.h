@@ -3,7 +3,7 @@
 #include "ShipBehaviour.h"
 #include "Menu.h"
 
-
+struct Bullets;
 enum TypeOfEnemies
 {
 	SimpleEnemy,

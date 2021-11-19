@@ -4,7 +4,7 @@
 #include "AppPath.h"
 #include "GeneratorLevel.h"
 #include <vector>
-
+struct Planet;
 struct InfoShip
 {
 	int shipLevel = 1;

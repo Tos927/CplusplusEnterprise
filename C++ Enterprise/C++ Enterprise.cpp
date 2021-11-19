@@ -223,9 +223,11 @@ int main()
                 ActualisationProps(level, allBullets, storage, tableaux);
                 if (IsOutOfScreen(ship.ship.getPosition(), 10.0f))
                 {
+                    allEnemies.clear();
+                    enemyBullets.clear();
                     allBullets.clear();
                     ResetToCenter(ship);
-                    level = NewLevel(3, 10, 20, 20, 50);
+                    level = NewLevel(3, 10, 20, 20, 50, 4, 0, 3, 0, 3, 0, allEnemies);
                     displayTitle = false;
                     tableaux += 1;
                 }
