@@ -154,7 +154,7 @@ int main()
         sf::Text InfoShipTitle = SetUpText("Ship Information : Level " + std::to_string(infoShip.shipLevel), aAtmospheric_ttf, 20, sf::Color::Black, /*pos*/sf::Vector2f(WIDTH * 0.275, HEIGHT * 0.185));
 
         sf::Text InfoShipValue = SetUpText(infoShip.atkString + std::to_string(infoShip.atkPoints) +
-            infoShip.lifeString + std::to_string(infoShip.lifePoints) + infoShip.bspeedString + std::to_string((int)infoShip.bspeedPoints),
+            infoShip.lifeString + std::to_string(ship.currentLife) + "/" + std::to_string(infoShip.lifePoints) + infoShip.bspeedString + std::to_string((int)infoShip.bspeedPoints),
             aAtmospheric_ttf, 15, sf::Color::Black, /*pos*/sf::Vector2f(WIDTH * 0.275, HEIGHT * 0.235));
 
         UpdateStorage(storage);
