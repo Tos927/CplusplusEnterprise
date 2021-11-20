@@ -40,9 +40,10 @@ struct Enemy {
 struct Torpedo
 {
 	sf::CircleShape shap;
-	int damage = 5;
+	int damage = 25;
 	int speed = 100;
 	float timeOfBending = 20;
+	float timeTrail = 0.1f;
 };
 
 

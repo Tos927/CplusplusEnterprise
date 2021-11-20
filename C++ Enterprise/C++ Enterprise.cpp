@@ -31,7 +31,9 @@ int main()
     std::map<int, Torpedo> enemyTorpedo;
     std::vector<Bullets> enemyBullets;
 
+    // effets
     std::vector<Explosion> allExplosion;
+    std::vector<TrailParticule> allTrailParticules;
 
     // initialisation windows
     sf::ContextSettings settings;
@@ -151,9 +153,11 @@ int main()
                 if (event.key.code == sf::Keyboard::G)
                 {
                     //CreatNewEnemy(allEnemies, { 500, 500}, 0);
-                    CreatNewEnemy(allEnemies, { 600, 500 }, 1);
-                    CreatNewEnemy(allEnemies, { 700, 500 }, 2);
+                    //CreatNewEnemy(allEnemies, { 600, 500 }, 1);
+                    //CreatNewEnemy(allEnemies, { 700, 500 }, 2);
                     CreatNewEnemy(allEnemies, { 800, 500 }, 3);
+                    //allExplosion.push_back(CreationExplosion(sf::Color::Yellow, sf::Vector2f(500, 500)));
+                    //allTrailParticules.push_back(CreatParticuleTrail(sf::Vector2f(500, 500), 0));
                 }
                 break;
             default:
@@ -232,8 +236,6 @@ int main()
 
             if (!isLost) 
             {
-                //TODO//
-                //bouger le code d'en dessous dans else pour pas que le vaisseau bouge dans le menu
                 ShipMovement(ship, elapsedTime.asSeconds(), angle, vitesse);
                 ActualisationProps(level, allBullets, storage, tableaux);
                 if (IsOutOfScreen(ship.ship.getPosition(), 10.0f))
@@ -283,18 +285,18 @@ int main()
                 std::map<const int, Torpedo>::iterator it = enemyTorpedo.begin();
                 while (it != enemyTorpedo.end()) {
                     MoveToPoint(it->second.shap, ship.ship.getPosition(), it->second.speed, true, elapsedTime.asSeconds());
+                    CreatTrail(it, allTrailParticules, elapsedTime.asSeconds());
 
                     // Actualisation de la torpille - si il est en contacte avec le vaisseau ou par un tir
                     if (CollideWithShip(ship, it->second.shap.getPosition(), it->second.shap.getRadius()) && ship.canTakeDamage) {
-                        infoShip.lifePoints -= it->second.damage;
                         TakeDamage(ship, it->second.damage, tableaux);
-
+                        allExplosion.push_back(CreationExplosion(sf::Color::Yellow, it->second.shap.getPosition()));
                         it = enemyTorpedo.erase(it);
                         continue;
 
                     }
                     if (CollideWithFrendlyBullet(allBullets, it->second.shap, true)) {
-                        infoShip.lifePoints -= it->second.damage;
+                        allExplosion.push_back(CreationExplosion(sf::Color::Yellow, it->second.shap.getPosition()));
                         it = enemyTorpedo.erase(it);
                         continue;
                     }
@@ -328,6 +330,30 @@ int main()
                     }
                 }
 
+                std::vector<Explosion>::iterator explosionIt = allExplosion.begin();
+                while (explosionIt != allExplosion.end()) {
+                    ExpendingExplosion(explosionIt, elapsedTime.asSeconds());
+
+                    if (!explosionIt->isValid) {
+                        explosionIt = allExplosion.erase(explosionIt);
+                    }
+                    else {
+                        explosionIt++;
+                    }
+                }
+
+                std::vector<TrailParticule>::iterator trailIt = allTrailParticules.begin();
+                while (trailIt != allTrailParticules.end()) {
+                    UpdateTrail(trailIt, elapsedTime.asSeconds());
+
+                    if (!trailIt->isValid) {
+                        trailIt = allTrailParticules.erase(trailIt);
+                    }
+                    else {
+                        trailIt++;
+                    }
+                }
+
                 if (!ship.canTakeDamage) {
                     InvincibilityShip(ship, elapsedTime.asSeconds());
                 }
@@ -335,6 +361,15 @@ int main()
             }
 
             // ------------ Rendu ------------ //
+
+            for (Explosion explosion : allExplosion) {
+                window.draw(explosion.explosionShape);
+                window.draw(explosion.explosionShape2);
+            }
+
+            for (TrailParticule particule : allTrailParticules) {
+                window.draw(particule.shape);
+            }
 
             // Ennemis
             for (Enemy enemy : allEnemies) {
@@ -364,6 +399,7 @@ int main()
             for (std::pair<const int, Torpedo> topedo : enemyTorpedo) {
                 window.draw(topedo.second.shap);
             }
+
             // Joueur
             if (!isLost)
             {
@@ -373,6 +409,7 @@ int main()
             {
                 window.draw(GameOverText);
             }
+
         }
         window.display();
     }

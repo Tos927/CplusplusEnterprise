@@ -1,17 +1,30 @@
 #pragma once
-#include "ShipBehaviour.h"
-#include "GeneratorLevel.h"
-#include "Menu.h"
-#include "AppPath.h"
+#include "EnemiesBehaviour.h"
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
 struct Explosion
 {
+	bool isValid = true;
 	sf::CircleShape explosionShape;
-	float timeToExpend = 1.0f;
+	sf::CircleShape explosionShape2;
+	float timeToExpend = 0.7f;
+
 	float currentExpension = 0.0f;
+	float currentSecondExpension = 0.0f;
+
+	float startSecondShape = 0.14f;
+	int expentionSpeed = 80;
 };
 
-Explosion CreationExplosion(sf::Color color);
-void ExpendingExplosion(std::vector<Explosion>::iterator& explosionIt, std::vector<Explosion>& explosion, float deltaTime);
+struct TrailParticule {
+	bool isValid = true;
+	sf::CircleShape shape;
+	float timeDisplay = 2.0f;
+};
+
+Explosion CreationExplosion(sf::Color color, sf::Vector2f position);
+void ExpendingExplosion(std::vector<Explosion>::iterator& explosionIt,const float& deltaTime);
+TrailParticule CreatParticuleTrail(sf::Vector2f position, float angle);
+void UpdateTrail(std::vector<TrailParticule>::iterator& trailIt,const float& deltaTime);
+void CreatTrail(std::map<int, Torpedo>::iterator& torpedoIt, std::vector<TrailParticule>& allTrailParticules, const float& deltaTime);
