@@ -24,8 +24,10 @@ int main()
     int tableaux = -1;
     InitializeShip(ship);
 
-    //Preparation au scoreboard
+    //Preparation au scoreboard et augmentation difficulté
     Points points;
+    Torpedo torpedo;
+    Enemy enemy;
 
     // object de la scène
     std::vector<Planet> level;
@@ -252,10 +254,13 @@ int main()
                     enemyTorpedo.clear();
                     allTrailParticules.clear();
                     ResetToCenter(ship);
-                    level = NewLevel(3, 10, 20, 20, 50, 4, 0, 3, 0, 3, 0, allEnemies);
-                    displayTitle = false;
                     tableaux += 1;
                     points.levelMultiplicator += tableaux;
+                    torpedo.damage += (points.levelMultiplicator / 10);
+                    enemy.damage += (points.levelMultiplicator / 10);
+                    level = NewLevel(3, 10, 40, 60, 80, 4, 0, 3, 0, 3, 0, allEnemies);
+                    //level = NewLevel(3, 10, 40, 60, 80, (4+(points.levelMultiplicator/10)), 0, (3 + (points.levelMultiplicator / 10)), 0, (3 + (points.levelMultiplicator / 10)), 0, allEnemies);
+                    displayTitle = false;
                 }
 
                 // Déplacement des balles alliers
