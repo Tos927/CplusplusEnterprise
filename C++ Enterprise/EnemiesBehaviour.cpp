@@ -175,7 +175,6 @@ bool CollideWithShip(Ship& ship, sf::Vector2f originePos, int radius) {
 	return false;
 }
 
-
 bool CollideWithFrendlyBullet(std::vector<Bullets>& allBullets, sf::CircleShape origine, bool destroyBullet) {
 	bool isOnContact = false;
 

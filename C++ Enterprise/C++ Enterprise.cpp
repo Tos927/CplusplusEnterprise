@@ -102,6 +102,8 @@ int main()
     // Text GameOver and Scoreboard
     sf::Text GameOverText = SetUpText("(GAME-OVER)", barcadettf, 100, sf::Color::Red, sf::Vector2f(WIDTH / 2, HEIGHT / 2));
     SetOriginText(GameOverText);
+    sf::Text ToucheP = SetUpText("Appuyer sur P pour quitter", aAtmospheric_ttf, 50, sf::Color::White, sf::Vector2f(WIDTH / 2, HEIGHT / 3));
+    SetOriginText(ToucheP);
     sf::Text ScoreBoardText = SetUpText("Score : " + std::to_string(points.totalPoints), aAtmospheric_ttf, 20, sf::Color::White, sf::Vector2f(WIDTH/2, HEIGHT * 0.05));
     SetOriginText(ScoreBoardText);
 
@@ -430,6 +432,7 @@ int main()
             else
             {
                 window.draw(GameOverText);
+                window.draw(ToucheP);
             }
 
         }
