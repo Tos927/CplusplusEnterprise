@@ -7,6 +7,7 @@
 #define HEIGHT 1080
 
 struct Enemy;
+
 struct Planet {
 	sf::CircleShape pShape;
 	bool isValide = false;

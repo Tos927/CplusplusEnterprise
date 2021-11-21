@@ -18,6 +18,7 @@ int main()
 
     //Preparation variable et autre pour le vaisseau
     Ship ship;
+    Planet planet;
     float angle = 0;
     float vitesse = 0;
     int tableaux = -1;
@@ -248,7 +249,7 @@ int main()
 
             if (!isLost) 
             {
-                ShipMovement(ship, elapsedTime.asSeconds(), angle, vitesse);
+                ShipMovement(ship, elapsedTime.asSeconds(), angle, vitesse, infoShip);
                 ActualisationProps(level, allBullets, storage, tableaux, points.totalPoints, points.levelMultiplicator);
                 if (IsOutOfScreen(ship.ship.getPosition(), 10.0f))
                 {
@@ -259,9 +260,14 @@ int main()
                     allTrailParticules.clear();
                     ResetToCenter(ship);
                     tableaux += 1;
+                    if (tableaux % 5 == 0) // Augmentation de la difficulté au cours du jeu
+                    {
+                        planet.vie += 100;
+                        torpedo.damage += 10;
+                        enemy.damage += 10;
+                        enemy.life += 50;
+                    }
                     points.levelMultiplicator += tableaux;
-                    torpedo.damage += (points.levelMultiplicator / 5);
-                    enemy.damage += (points.levelMultiplicator / 5);
                     level = NewLevel(3, 10, 40, 60, 80, 4, 0, 3, 0, 3, 0, allEnemies);
                     //level = NewLevel(3, 10, 40, 60, 80, (4+(points.levelMultiplicator/10)), 0, (3 + (points.levelMultiplicator / 10)), 0, (3 + (points.levelMultiplicator / 10)), 0, allEnemies);
                     displayTitle = false;

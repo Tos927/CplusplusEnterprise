@@ -12,24 +12,35 @@ void InitializeShip(Ship& ship)
 	ship.weapon.setSize({ 50.0f, 10.0f });
 	ship.react1.setSize(test);
 	ship.react2.setSize(test);
+	ship.centreG.setRadius(21.0f);
+	ship.centreR.setRadius(6.0f);
 
 	//Initialisation des origines de chaques parties du vaisseau
 	ship.ship.setOrigin(30.0f, 30.0f);
 	ship.weapon.setOrigin(0.0f, 5.0f);
 	ship.react1.setOrigin(45.0f, -5.0f);
 	ship.react2.setOrigin(45.0f, 20.0f);
+	ship.centreG.setOrigin(21.0f, 21.0f);
+	ship.centreR.setOrigin(6.0f, 6.0f);
+
 
 	//Initialisation de la position du vaisseau
 	ResetToCenter(ship);
 
 	//Colorisation elements
-	ship.ship.setFillColor(sf::Color::Blue);
-	ship.weapon.setFillColor(sf::Color::Red);
-	ship.react1.setFillColor(sf::Color::Green);
-	ship.react2.setFillColor(sf::Color::Green);
+	ship.ship.setFillColor(sf::Color::Color(169, 169, 169));
+	ship.weapon.setFillColor(sf::Color::Color(169, 169, 169));
+	ship.weapon.setOutlineColor(sf::Color::Black);
+	ship.weapon.setOutlineThickness(1);
+	ship.react1.setFillColor(sf::Color::Color(105, 105, 105));
+	ship.react2.setFillColor(sf::Color::Color(105, 105, 105));
+	ship.centreG.setFillColor(sf::Color::Color(169, 169, 169));
+	ship.centreG.setOutlineColor(sf::Color::Black);
+	ship.centreG.setOutlineThickness(1);
+	ship.centreR.setFillColor(sf::Color::Red);
 }
 
-void ShipMovement(Ship& ship, float deltaTime, float& angle, float& vitesse) 
+void ShipMovement(Ship& ship, float deltaTime, float& angle, float& vitesse, InfoShip& infoShip) 
 {
 	int rotationSpeed = 200;
 
@@ -46,21 +57,24 @@ void ShipMovement(Ship& ship, float deltaTime, float& angle, float& vitesse)
 	ship.weapon.setRotation(angle);
 	ship.react1.setRotation(angle);
 	ship.react2.setRotation(angle);
+	ship.centreG.setRotation(angle);
+	ship.centreR.setRotation(angle);
 
 	//Propultion du vaisseau
-	int speed = 300;
 	int maxSpeed = 300;
 	int minSpeed = 0;
 	sf::Vector2f direction;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		direction.x = cos(angle/180 * PI) * speed * deltaTime;
-		direction.y = sin(angle/180 * PI) * speed * deltaTime;
+		direction.x = cos(angle/180 * PI) * infoShip.speed * deltaTime;
+		direction.y = sin(angle/180 * PI) * infoShip.speed * deltaTime;
 		ship.ship.move(direction);
 		ship.weapon.move(direction);
 		ship.react1.move(direction);
 		ship.react2.move(direction);
+		ship.centreG.move(direction);
+		ship.centreR.move(direction);
 
 	}
 }
@@ -80,6 +94,8 @@ void ResetToCenter(Ship& ship)
 	ship.weapon.setPosition(sf::Vector2f(WIDTH / 2, HEIGHT / 2));
 	ship.react1.setPosition(sf::Vector2f(WIDTH / 2, HEIGHT / 2));
 	ship.react2.setPosition(sf::Vector2f(WIDTH / 2, HEIGHT / 2));
+	ship.centreG.setPosition(sf::Vector2f(WIDTH / 2, HEIGHT / 2));
+	ship.centreR.setPosition(sf::Vector2f(WIDTH / 2, HEIGHT / 2));
 }
 
 void CreateBullet(std::vector<Bullets>& bullets, int speed, int damage, const sf::CircleShape& origineShape, float angleInDeg)
@@ -145,6 +161,8 @@ void DrawShip(const Ship& ship, sf::RenderWindow& window) {
 	window.draw(ship.weapon);
 	window.draw(ship.react1);
 	window.draw(ship.react2);
+	window.draw(ship.centreG);
+	window.draw(ship.centreR);
 }
 
 
