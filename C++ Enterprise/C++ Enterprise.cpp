@@ -65,7 +65,7 @@ int main()
     menu2.setOutlineColor(sf::Color::Color(54, 54, 54));
 
     // Background information of the ship 
-    sf::RectangleShape shipInfo = SetupBackground(sf::Vector2f(WIDTH * 0.25, HEIGHT * 0.09), sf::Color::Color(240, 240, 240), sf::Vector2f(WIDTH * 0.27, HEIGHT * 0.18));
+    sf::RectangleShape shipInfo = SetupBackground(sf::Vector2f(WIDTH * 0.24, HEIGHT * 0.12), sf::Color::Color(240, 240, 240), sf::Vector2f(WIDTH * 0.27, HEIGHT * 0.18));
     shipInfo.setOutlineThickness(3);
     shipInfo.setOutlineColor(sf::Color::Color(54, 54, 54));
 
@@ -82,9 +82,9 @@ int main()
 
     EquipStruct equip1 = Equip(1, "E", "Deflector Shield", posbackG + sf::Vector2f(margin, margin), posbackG, aAtmospheric_ttf, 15, "Energy shield that protects spacecraft\nfrom laser fire, in-flight projectiles and\naccidental space debris interaction.");
     EquipStruct equip2 = Equip(2, "R", "Photon Torpedo", posbackG + sf::Vector2f(pRight + margin, margin), posbackG + sf::Vector2f(pRight, 0), aAtmospheric_ttf, 20, "Improvement of the technology contained in\nthe cannons in order to have a firepower\nthat can cause massive damage to the enemy\nstructures.");
-    EquipStruct equip3 = Equip(3, "T", "Artillery", posbackG + sf::Vector2f(margin, pTop + margin), posbackG + sf::Vector2f(0, pTop), aAtmospheric_ttf, 25, "The artillery's upgrade increases the power\nof the ship's cannons, thus increasing the\nspeed at which the projectiles advance\nthrough space.");
-    EquipStruct equip4 = Equip(4, "Y", "Crew", posbackG + sf::Vector2f(pRight + margin, pTop + margin), posbackG + sf::Vector2f(pRight, pTop), aAtmospheric_ttf, 1, "Upgrading your ship's crew increases the\nfirepower of your ship as well as the number\nof resources you can harvest and other\nbonuses depending on the level.");
-
+    EquipStruct equip3 = Equip(3, "T", "Artillery", posbackG + sf::Vector2f(margin, pTop + margin), posbackG + sf::Vector2f(0, pTop), aAtmospheric_ttf, 1, "The artillery's upgrade increases the power\nof the ship's cannons, thus increasing the\nspeed at which the projectiles advance\nthrough space.");
+    EquipStruct equip4 = Equip(4, "Y", "Thruster", posbackG + sf::Vector2f(pRight + margin, pTop + margin), posbackG + sf::Vector2f(pRight, pTop), aAtmospheric_ttf, 1, "Improved ship's thrusters improve your\nspeed of movement in space to cross the\ngalaxy faster");
+    
     RessourcesStorage storage = Storage(aAtmospheric_ttf);
 
     // width and height of the LifeBar's RectangleShape
