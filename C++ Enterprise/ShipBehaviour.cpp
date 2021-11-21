@@ -109,8 +109,9 @@ void MouvBullet(Bullets& bullet, float deltaTime) {
 	bullet.bullet.move(move);
 }
 
-void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bullet, RessourcesStorage& ressource, int tableaux)
+void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bullet, RessourcesStorage& ressource, int tableaux, int& totalScore, int& levelMultiplicator)
 {
+	int planetPoints = 10;
 	auto pIt = planete.begin();
 	while (pIt != planete.end())
 	{
@@ -133,6 +134,8 @@ void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bull
 		{
 			pIt = planete.erase(pIt);
 			ressource.ownResource += 150 + (5 * tableaux);
+			totalScore += planetPoints * levelMultiplicator;
+			std::cout << "Le score totale est de : " << totalScore << "Le multiplicateur est de : " << levelMultiplicator << std::endl;
 		}
 		else
 		{

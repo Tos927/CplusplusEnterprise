@@ -156,6 +156,7 @@
     <ClCompile Include="GeneratorLevel.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Particules.cpp" />
+    <ClCompile Include="ScoreBoard.cpp" />
     <ClCompile Include="ShipBehaviour.cpp" />
     <ClCompile Include="EnemiesBehaviour.cpp" />
   </ItemGroup>
@@ -164,6 +165,7 @@
     <ClInclude Include="GeneratorLevel.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Particules.h" />
+    <ClInclude Include="ScoreBoard.h" />
     <ClInclude Include="ShipBehaviour.h" />
     <ClInclude Include="EnemiesBehaviour.h" />
   </ItemGroup>

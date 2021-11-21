@@ -3,8 +3,8 @@
 #include "EnemiesBehaviour.h"
 #include "ShipBehaviour.h"
 #include "Menu.h"
+#include "ScoreBoard.h"
 #include <map>
-
 
 void InitializeEnemy(Enemy& enemy, int type) {
 
@@ -208,10 +208,13 @@ void TakeDamage(Ship& ship, int damage, int tableaux) {
 	// actualiser UI
 }
 
-void GainResources(RessourcesStorage& ressource, int gain, int tableaux) 
+void GainResources(RessourcesStorage& ressource, int gain, int tableaux, int& totalScore, int& levelMultiplicator)
 {
+	int enemyPoint = 10;
 	ressource.ownResource += gain + (5 * tableaux);
 	ressource.nameResource.setString(ressource.resource + std::to_string(ressource.ownResource));
+	totalScore += enemyPoint * levelMultiplicator;
+	std::cout << "Le score totale est de : " << totalScore << "Le multiplicateur est de : " << levelMultiplicator << std::endl;
 }
 
 // ------------------------------------------------------------------------------ //
@@ -219,7 +222,7 @@ void GainResources(RessourcesStorage& ressource, int gain, int tableaux)
 // ------------------------------------------------------------------------------ //
 
 
-std::vector<Enemy>::iterator StratHeavyMove(std::vector<Enemy>::iterator& enemyIt, std::vector<Enemy>& allEnemy, std::vector<Bullets>& shipBullets, Ship& ship, InfoShip& info, std::vector<Bullets>& enemyBullets, sf::Vector2f shipPosition, RessourcesStorage& ressource, const float& deltaTime, int tableaux) {
+std::vector<Enemy>::iterator StratHeavyMove(std::vector<Enemy>::iterator& enemyIt, std::vector<Enemy>& allEnemy, std::vector<Bullets>& shipBullets, Ship& ship, InfoShip& info, std::vector<Bullets>& enemyBullets, sf::Vector2f shipPosition, RessourcesStorage& ressource, const float& deltaTime, int tableaux, Points& points) {
 	// Système de tire par rafale
 	double radians = atan2(shipPosition.y - enemyIt->shape.getPosition().y, shipPosition.x - enemyIt->shape.getPosition().x);
 
@@ -229,7 +232,7 @@ std::vector<Enemy>::iterator StratHeavyMove(std::vector<Enemy>::iterator& enemyI
 	if (CollideWithFrendlyBullet(shipBullets, (*enemyIt).shape, true)) {
 		(*enemyIt).life -= info.atkPoints;
 		if ((*enemyIt).life <= 0) {
-			GainResources(ressource, 150, tableaux);
+			GainResources(ressource, 150, tableaux, points.totalPoints, points.levelMultiplicator);
 			return allEnemy.erase(enemyIt);
 		}
 	}
@@ -237,7 +240,7 @@ std::vector<Enemy>::iterator StratHeavyMove(std::vector<Enemy>::iterator& enemyI
 	if (CollideWithShip(ship, (*enemyIt).shape.getPosition(), (*enemyIt).shape.getRadius())) {
 		(*enemyIt).life -= 50;
 		if ((*enemyIt).life <= 0) {
-			GainResources(ressource, 150, tableaux);
+			GainResources(ressource, 150, tableaux, points.totalPoints, points.levelMultiplicator);
 			TakeDamage(ship, (*enemyIt).damage, tableaux);
 			return allEnemy.erase(enemyIt);
 		}
@@ -250,7 +253,7 @@ std::vector<Enemy>::iterator StratHeavyMove(std::vector<Enemy>::iterator& enemyI
 }
 
 
-std::vector<Enemy>::iterator StratBomberMove(std::vector<Enemy>::iterator& enemyIt,  std::vector<Enemy>& allEnemy, std::vector<Bullets>& allbullets, Ship& ship, InfoShip& info, RessourcesStorage& ressource, const float& deltaTime, int tableaux) {
+std::vector<Enemy>::iterator StratBomberMove(std::vector<Enemy>::iterator& enemyIt,  std::vector<Enemy>& allEnemy, std::vector<Bullets>& allbullets, Ship& ship, InfoShip& info, RessourcesStorage& ressource, const float& deltaTime, int tableaux, Points& points) {
 	// L'ennemi ce dirige sur la position du vaiseau
 	MoveToPoint((*enemyIt).shape, ship.ship.getPosition(), (*enemyIt).speed, false, deltaTime);
 
@@ -263,7 +266,7 @@ std::vector<Enemy>::iterator StratBomberMove(std::vector<Enemy>::iterator& enemy
 	}
 
 	if (CollideWithFrendlyBullet(allbullets, (*enemyIt).shape, true)) {
-		GainResources(ressource, 150, tableaux);
+		GainResources(ressource, 150, tableaux, points.totalPoints, points.levelMultiplicator);
 		return allEnemy.erase(enemyIt);
 	}
 
@@ -271,7 +274,7 @@ std::vector<Enemy>::iterator StratBomberMove(std::vector<Enemy>::iterator& enemy
 }
 
 
-std::vector<Enemy>::iterator StratTorpedoLuncherMove(std::vector<Enemy>::iterator& enemyIt, std::vector<Enemy>& allEnemy, std::map<int, Torpedo>& enemyTorpedo, InfoShip& info, std::vector<Bullets>& allBullets, sf::Vector2f shipPosition, RessourcesStorage& ressource, const float& deltaTime, int tableaux) {
+std::vector<Enemy>::iterator StratTorpedoLuncherMove(std::vector<Enemy>::iterator& enemyIt, std::vector<Enemy>& allEnemy, std::map<int, Torpedo>& enemyTorpedo, InfoShip& info, std::vector<Bullets>& allBullets, sf::Vector2f shipPosition, RessourcesStorage& ressource, const float& deltaTime, int tableaux, Points& points) {
 
 	std::map<int, Torpedo>::iterator it = enemyTorpedo.find((*enemyIt).torpedoKey);
 
@@ -286,7 +289,7 @@ std::vector<Enemy>::iterator StratTorpedoLuncherMove(std::vector<Enemy>::iterato
 	if (CollideWithFrendlyBullet(allBullets, (*enemyIt).shape, false)) {
 		(*enemyIt).life -= info.atkPoints;
 		if ((*enemyIt).life <= 0) {
-			GainResources(ressource, 150, tableaux);
+			GainResources(ressource, 150, tableaux, points.totalPoints, points.levelMultiplicator);
 			return allEnemy.erase(enemyIt);
 		}
 	}
