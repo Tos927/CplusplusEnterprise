@@ -62,8 +62,8 @@ void Shoot(Enemy& enemy, std::vector<Bullets>& enemyBullets, float angle, const 
 bool CollideWithShip(Ship& ship, sf::Vector2f originePos, int radius);
 bool CollideWithFrendlyBullet(std::vector<Bullets>& allBullets, sf::CircleShape origine, bool destroyBullet);
 void TakeDamage(Ship& ship, int damage, int tableaux);
-void GainResources(RessourcesStorage& ressource, int gain, int tableaux, int& totalScore, int& levelMultiplicator);
+void GainResources(RessourcesStorage& ressource, int gain, int tableaux, int& totalScore, int& levelMultiplicator, Ship& ship);
 
 void StratHeavyMove(std::vector<Enemy>::iterator& enemyIt, std::vector<Enemy>& allEnemy, std::vector<Bullets>& shipBullets, Ship& ship, InfoShip& info, std::vector<Bullets>& enemyBullets, sf::Vector2f shipPosition, RessourcesStorage& ressource, const float& deltaTime, int tableaux, Points& points);
 void StratBomberMove(std::vector<Enemy>::iterator& enemyIt, std::vector<Enemy>& allEnemy, std::vector<Bullets>& allbullets, Ship& ship, InfoShip& info, RessourcesStorage& ressource, const float& deltaTime, int tableaux, Points& points);
-void StratTorpedoLuncherMove(std::vector<Enemy>::iterator& enemyIt, std::vector<Enemy>& allEnemy, std::map<int, Torpedo>& enemyTorpedo, InfoShip& info, std::vector<Bullets>& allBullets, sf::Vector2f shipPosition, RessourcesStorage& ressource, const float& deltaTime, int tableaux, Points& points);
+void StratTorpedoLuncherMove(std::vector<Enemy>::iterator& enemyIt, std::vector<Enemy>& allEnemy, std::map<int, Torpedo>& enemyTorpedo, InfoShip& info, std::vector<Bullets>& allBullets, sf::Vector2f shipPosition, RessourcesStorage& ressource, const float& deltaTime, int tableaux, Points& points, Ship& ship);

@@ -270,6 +270,11 @@ void UpdateLifeBar(Ship& ship, InfoShip& infoShip, sf::RectangleShape& lifeBar, 
         ship.currentLife = 0;
     }
 
+    if (ship.currentLife > infoShip.lifePoints)
+    {
+        ship.currentLife = infoShip.lifePoints;
+    }
+
     // Create a float that contains the current percentage of life 
     float currentPercentageOfLife = ((float)ship.currentLife / (float)infoShip.lifePoints);
 

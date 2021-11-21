@@ -346,7 +346,7 @@ int main()
                             break;
                         }
                         case 3: {
-                            StratTorpedoLuncherMove(enemyIt, allEnemies, enemyTorpedo, infoShip, allBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds(), tableaux, points);
+                            StratTorpedoLuncherMove(enemyIt, allEnemies, enemyTorpedo, infoShip, allBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds(), tableaux, points, ship);
                             break;
                         }
                     }
