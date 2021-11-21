@@ -38,7 +38,7 @@ void InitializeEnemy(Enemy& enemy, int type) {
 			enemy.defaultNbBulletSemi = 4;
 
 			// Vie
-			enemy.life = 300;
+			enemy.life = 250;
 			break;
 		}
 
@@ -205,7 +205,7 @@ void TakeDamage(Ship& ship, int damage, int tableaux) {
 
 void GainResources(RessourcesStorage& ressource, int gain, int tableaux, int& totalScore, int& levelMultiplicator)
 {
-	int enemyPoint = 10;
+	int enemyPoint = 15;
 	ressource.ownResource += gain + (5 * tableaux);
 	ressource.nameResource.setString(ressource.resource + std::to_string(ressource.ownResource));
 	totalScore += enemyPoint * levelMultiplicator;

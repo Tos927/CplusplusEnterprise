@@ -6,6 +6,10 @@
 
 struct Bullets;
 struct Points;
+struct Ship;
+struct InfoShip;
+struct RessourcesStorage;
+
 enum TypeOfEnemies
 {
 	SimpleEnemy,

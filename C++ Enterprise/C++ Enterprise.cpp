@@ -260,8 +260,8 @@ int main()
                     ResetToCenter(ship);
                     tableaux += 1;
                     points.levelMultiplicator += tableaux;
-                    torpedo.damage += (points.levelMultiplicator / 10);
-                    enemy.damage += (points.levelMultiplicator / 10);
+                    torpedo.damage += (points.levelMultiplicator / 5);
+                    enemy.damage += (points.levelMultiplicator / 5);
                     level = NewLevel(3, 10, 40, 60, 80, 4, 0, 3, 0, 3, 0, allEnemies);
                     //level = NewLevel(3, 10, 40, 60, 80, (4+(points.levelMultiplicator/10)), 0, (3 + (points.levelMultiplicator / 10)), 0, (3 + (points.levelMultiplicator / 10)), 0, allEnemies);
                     displayTitle = false;
