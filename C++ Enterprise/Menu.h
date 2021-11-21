@@ -77,3 +77,7 @@ void DrawOneStorage(RessourcesStorage& storage, sf::RenderWindow& window);
 void SetOriginText(sf::Text& text);
 
 void UpdateLifeBar(Ship& ship, InfoShip& infoShip, sf::RectangleShape& lifeBar, int maxlifeWidth, int maxLifeHeight, sf::Text& lifeInGame);
+
+void Clamp(int& valeur, int min, int max);
+
+void Clamp(float& valeur, float min, float max);
