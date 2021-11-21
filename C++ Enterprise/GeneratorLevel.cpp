@@ -52,6 +52,7 @@ std::vector<Planet> NewLevel(int planetMax, int planetMin, float radiusMax, floa
 			newPlanet.isValide = true;
 			newPlanet.pShape.setPosition(newPlanet.position);
 			newPlanet.pShape.setRadius(newPlanet.radius);
+			newPlanet.pShape.setFillColor(sf::Color::Color(211, 211, 211));
 			
 		}
 		allPlanets.push_back(newPlanet);

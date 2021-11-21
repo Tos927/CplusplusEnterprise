@@ -28,16 +28,18 @@ void InitializeShip(Ship& ship)
 	ResetToCenter(ship);
 
 	//Colorisation elements
-	ship.ship.setFillColor(sf::Color::Color(169, 169, 169));
-	ship.weapon.setFillColor(sf::Color::Color(169, 169, 169));
+	ship.ship.setFillColor(sf::Color::Color(128, 128, 128));
+	ship.weapon.setFillColor(sf::Color::Color(128, 128, 128));
 	ship.weapon.setOutlineColor(sf::Color::Black);
 	ship.weapon.setOutlineThickness(1);
 	ship.react1.setFillColor(sf::Color::Color(105, 105, 105));
 	ship.react2.setFillColor(sf::Color::Color(105, 105, 105));
-	ship.centreG.setFillColor(sf::Color::Color(169, 169, 169));
+	ship.centreG.setFillColor(sf::Color::Color(128, 128, 128));
 	ship.centreG.setOutlineColor(sf::Color::Black);
 	ship.centreG.setOutlineThickness(1);
 	ship.centreR.setFillColor(sf::Color::Red);
+	ship.centreR.setOutlineColor(sf::Color::Black);
+	ship.centreR.setOutlineThickness(1);
 }
 
 void ShipMovement(Ship& ship, float deltaTime, float& angle, float& vitesse, InfoShip& infoShip) 
@@ -189,24 +191,38 @@ void InvincibilityShip(Ship& ship, const float& deltaTime) {
 
 
 	if (!ship.isInvisibleDisplay) {
-		ship.ship.setFillColor(sf::Color::Blue);
+		ship.ship.setFillColor(sf::Color::Color(128, 128, 128));
 		ship.ship.setOutlineThickness(0);
-		ship.react1.setFillColor(sf::Color::Green);
+		ship.weapon.setFillColor(sf::Color::Color(128, 128, 128));
+		ship.weapon.setOutlineColor(sf::Color::Black);
+		ship.weapon.setOutlineThickness(1);
+		ship.react1.setFillColor(sf::Color::Color(105, 105, 105));
 		ship.react1.setOutlineThickness(0);
-		ship.react2.setFillColor(sf::Color::Green);
-		ship.react2.setOutlineThickness(0);
-		ship.weapon.setFillColor(sf::Color::Red);
-		ship.weapon.setOutlineThickness(0);
+		ship.react2.setFillColor(sf::Color::Color(105, 105, 105));
+		ship.react2.setOutlineThickness(0); 
+		ship.centreG.setFillColor(sf::Color::Color(128, 128, 128));
+		ship.centreG.setOutlineColor(sf::Color::Black);
+		ship.centreG.setOutlineThickness(1);
+		ship.centreR.setFillColor(sf::Color::Red);
+		ship.centreR.setOutlineColor(sf::Color::Black);
+		ship.centreR.setOutlineThickness(1);
 	}
 	else {
 		ship.ship.setFillColor(sf::Color::Black);
 		ship.ship.setOutlineThickness(1);
+		ship.weapon.setFillColor(sf::Color::Black);
+		ship.weapon.setOutlineColor(sf::Color::White);
+		ship.weapon.setOutlineThickness(1);
 		ship.react1.setFillColor(sf::Color::Black);
 		ship.react1.setOutlineThickness(1);
 		ship.react2.setFillColor(sf::Color::Black);
 		ship.react2.setOutlineThickness(1);
-		ship.weapon.setFillColor(sf::Color::Black);
-		ship.weapon.setOutlineThickness(1);
+		ship.centreG.setFillColor(sf::Color::Black);
+		ship.centreG.setOutlineColor(sf::Color::White);
+		ship.centreG.setOutlineThickness(1);
+		ship.centreR.setFillColor(sf::Color::Black);
+		ship.centreR.setOutlineColor(sf::Color::White);
+		ship.centreR.setOutlineThickness(1);
 	}
 }
 

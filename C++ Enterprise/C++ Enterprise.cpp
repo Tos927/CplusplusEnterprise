@@ -131,7 +131,7 @@ int main()
             case sf::Event::KeyPressed:
                 // ------------------------------------ Start - Input Menu  ------------------------------------ //
 
-                if (event.key.code == sf::Keyboard::Escape)
+                if (event.key.code == sf::Keyboard::Escape && !isLost)
                 {
                     displayMenu = !displayMenu;
                 }
