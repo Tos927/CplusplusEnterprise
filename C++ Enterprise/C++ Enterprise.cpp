@@ -243,6 +243,8 @@ int main()
                     allEnemies.clear();
                     enemyBullets.clear();
                     allBullets.clear();
+                    enemyTorpedo.clear();
+                    allTrailParticules.clear();
                     ResetToCenter(ship);
                     level = NewLevel(3, 10, 20, 20, 50, 4, 0, 3, 0, 3, 0, allEnemies);
                     displayTitle = false;

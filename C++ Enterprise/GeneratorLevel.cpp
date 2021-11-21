@@ -13,9 +13,9 @@
 std::vector<Planet> NewLevel(int planetMax, int planetMin, float radiusMax, float radiusMin, float security, int bomberMax, int bomberMin, int torpedoMax, int torpedoMin, int heavyMax, int heavyMin, std::vector<Enemy>& allEnemies) {
 
 	int planets = ((double)rand() / RAND_MAX) * (double(planetMax) - double(planetMin)) + planetMin;
-	int bomberNbr = ((double)rand() / RAND_MAX) * (double(bomberMax) - double(bomberMin)) + planetMin;
-	int torpedoNbr = ((double)rand() / RAND_MAX) * (double(torpedoMax) - double(torpedoMin)) + planetMin;
-	int heavyNbr = ((double)rand() / RAND_MAX) * (double(heavyMax) - double(heavyMin)) + planetMin;
+	int bomberNbr = ((double)rand() / RAND_MAX) * (double(bomberMax) - double(bomberMin)) + bomberMin;
+	int torpedoNbr = ((double)rand() / RAND_MAX) * (double(torpedoMax) - double(torpedoMin)) + torpedoMin;
+	int heavyNbr = ((double)rand() / RAND_MAX) * (double(heavyMax) - double(heavyMin)) + heavyMin;
 	std::vector<Planet> allPlanets;
 	std::cout << "--- NOUVEAU NIVEAU --- Nombre de planet :" << planets << std::endl;
 
@@ -61,27 +61,26 @@ std::vector<Planet> NewLevel(int planetMax, int planetMin, float radiusMax, floa
 		allPlanets.push_back(newPlanet);
 		std::cout << "Succet !" << std::endl;
 	}
-
-	/*for (int i = 0; i < heavyNbr; i++)
+	for (int j = 0; j < heavyNbr; j++)
 	{
 		posX = ((double)rand() / RAND_MAX) * ((double(WIDTH) - double(radius)) - double(radius)) + double(radius);
 		posY = ((double)rand() / RAND_MAX) * ((double(HEIGHT) - double(radius)) - double(radius)) + double(radius);
 		CreatNewEnemy(allEnemies, sf::Vector2f(posX + radius + 10, posY + radius), 1);
 		std::cout << "ennemy create" << std::endl;
 	}
-	for (int i = 0; i < bomberNbr; i++)
+	for (int k = 0; k < bomberNbr; k++)
 	{
 		posX = ((double)rand() / RAND_MAX) * ((double(WIDTH) - double(radius)) - double(radius)) + double(radius);
 		posY = ((double)rand() / RAND_MAX) * ((double(HEIGHT) - double(radius)) - double(radius)) + double(radius);
 		CreatNewEnemy(allEnemies, sf::Vector2f(posX + radius, posY + radius + 20), 2);
 		std::cout << "ennemy create" << std::endl;
 	}
-	for (int i = 0; i < torpedoNbr; i++)
+	for (int l = 0; l < torpedoNbr; l++)
 	{
 		posX = ((double)rand() / RAND_MAX) * ((double(WIDTH) - double(radius)) - double(radius)) + double(radius);
 		posY = ((double)rand() / RAND_MAX) * ((double(HEIGHT) - double(radius)) - double(radius)) + double(radius);
 		CreatNewEnemy(allEnemies, sf::Vector2f(posX + radius + 15, posY + radius + 15), 3);
 		std::cout << "ennemy create" << std::endl;
-	}*/
+	}
 	return allPlanets;
 }
