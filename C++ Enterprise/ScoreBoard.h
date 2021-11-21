@@ -11,4 +11,4 @@ struct Points
 	int totalPoints = 0;
 };
 
-void UpdateScoreBoard(sf::Text ScoreBoardText, Points& points);
+void UpdateScoreBoard(sf::Text& ScoreBoardText, Points& points);

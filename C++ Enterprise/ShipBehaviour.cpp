@@ -135,7 +135,6 @@ void ActualisationProps(std::vector<Planet>& planete, std::vector<Bullets>& bull
 			pIt = planete.erase(pIt);
 			ressource.ownResource += 150 + (5 * tableaux);
 			totalScore += planetPoints * levelMultiplicator;
-			std::cout << "Le score totale est de : " << totalScore << "Le multiplicateur est de : " << levelMultiplicator << std::endl;
 		}
 		else
 		{

@@ -214,7 +214,6 @@ void GainResources(RessourcesStorage& ressource, int gain, int tableaux, int& to
 	ressource.ownResource += gain + (5 * tableaux);
 	ressource.nameResource.setString(ressource.resource + std::to_string(ressource.ownResource));
 	totalScore += enemyPoint * levelMultiplicator;
-	std::cout << "Le score totale est de : " << totalScore << "Le multiplicateur est de : " << levelMultiplicator << std::endl;
 }
 
 // ------------------------------------------------------------------------------ //

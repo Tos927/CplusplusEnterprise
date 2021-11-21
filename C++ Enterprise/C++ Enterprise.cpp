@@ -100,7 +100,7 @@ int main()
     // Text GameOver and Scoreboard
     sf::Text GameOverText = SetUpText("(GAME-OVER)", barcadettf, 100, sf::Color::Red, sf::Vector2f(WIDTH / 2, HEIGHT / 2));
     SetOriginText(GameOverText);
-    sf::Text ScoreBoardText = SetUpText("Score : " + std::to_string(points.totalPoints), aAtmospheric_ttf, 20, sf::Color::Blue, sf::Vector2f(WIDTH/2, HEIGHT * 0.05));
+    sf::Text ScoreBoardText = SetUpText("Score : " + std::to_string(points.totalPoints), aAtmospheric_ttf, 20, sf::Color::White, sf::Vector2f(WIDTH/2, HEIGHT * 0.05));
     SetOriginText(ScoreBoardText);
 
 
@@ -198,6 +198,7 @@ int main()
         UpdateStorageInGame(storageInGame);
 
         UpdateLifeBar(ship, infoShip, lifeBar, maxlifeWidth, maxLifeHeight, lifeInGame);
+
         UpdateScoreBoard(ScoreBoardText, points);
 
         // ------------------------------------ End - Dynamic/Update Menu Item ------------------------------------ //
