@@ -326,20 +326,24 @@ int main()
                         break;
                     }
                     case 1: {
-                        enemyIt = StratHeavyMove(enemyIt, allEnemies, allBullets, ship, infoShip, enemyBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds(), tableaux, points);
+                        StratHeavyMove(enemyIt, allEnemies, allBullets, ship, infoShip, enemyBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds(), tableaux, points);
                         break;
                     }
                     case 2: {
-                        enemyIt = StratBomberMove(enemyIt, allEnemies, allBullets, ship, infoShip, storage, elapsedTime.asSeconds(), tableaux, points);
+                        StratBomberMove(enemyIt, allEnemies, allBullets, ship, infoShip, storage, elapsedTime.asSeconds(), tableaux, points);
                         break;
                     }
                     case 3: {
-                        enemyIt = StratTorpedoLuncherMove(enemyIt, allEnemies, enemyTorpedo, infoShip, allBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds(),tableaux, points);
+                        StratTorpedoLuncherMove(enemyIt, allEnemies, enemyTorpedo, infoShip, allBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds(), tableaux, points);
                         break;
                     }
                     }
 
-                    if (enemyIt != allEnemies.end()) {
+                    if (!enemyIt->isValid) {
+                        allExplosion.push_back(CreationExplosion(sf::Color::Yellow, enemyIt->shape.getPosition()));
+                        enemyIt = allEnemies.erase(enemyIt);
+                    }
+                    else {
                         enemyIt++;
                     }
                 }
