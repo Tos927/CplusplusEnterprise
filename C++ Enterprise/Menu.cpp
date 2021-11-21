@@ -2,9 +2,6 @@
 #include <SFML/Graphics.hpp>
 
 #include "Menu.h"
-#include "AppPath.h"
-#include "GeneratorLevel.h"
-#include "ShipBehaviour.h"
 
 void SetOriginText(sf::Text& text)
 {

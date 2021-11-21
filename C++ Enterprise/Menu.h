@@ -1,4 +1,7 @@
 #pragma once
+#include "AppPath.h"
+#include "GeneratorLevel.h"
+#include "ShipBehaviour.h"
 
 struct InfoShip;
 struct Ship;

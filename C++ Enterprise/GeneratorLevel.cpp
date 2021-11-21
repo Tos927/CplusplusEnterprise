@@ -1,9 +1,6 @@
 #include "GeneratorLevel.h"
-#include "ShipBehaviour.h"
-#include "EnemiesBehaviour.h"
 #include <iostream>
 #include <vector>
-
 
 /// <summary>
 /// Créer de façon aléatoire un nouvel ensemble de planète de nombre et taille prédéfinie. Une marge de sécurité peut être ajoutée entre chaques planètes.

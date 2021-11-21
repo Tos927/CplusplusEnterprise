@@ -9,7 +9,6 @@
 #include "Particules.h"
 #include "ScoreBoard.h"
 
-
 int main()
 {
     // Initialisation GameOver
@@ -104,8 +103,12 @@ int main()
     SetOriginText(GameOverText);
     sf::Text ToucheP = SetUpText("Appuyer sur P pour quitter", aAtmospheric_ttf, 50, sf::Color::White, sf::Vector2f(WIDTH / 2, HEIGHT / 3));
     SetOriginText(ToucheP);
+    ToucheP.setOutlineColor(sf::Color::Black);
+    ToucheP.setOutlineThickness(1);
     sf::Text ScoreBoardText = SetUpText("Score : " + std::to_string(points.totalPoints), aAtmospheric_ttf, 20, sf::Color::White, sf::Vector2f(WIDTH/2, HEIGHT * 0.05));
     SetOriginText(ScoreBoardText);
+    ScoreBoardText.setOutlineColor(sf::Color::Black);
+    ScoreBoardText.setOutlineThickness(1);
 
 
     // ------------------------------------ End - Initialization Menu  ------------------------------------ //
@@ -216,7 +219,6 @@ int main()
             window.draw(barcadeText);
         }
 
-
         // Whatever I want to draw goes here 
 
         if (displayMenu)
@@ -324,21 +326,21 @@ int main()
                 while (enemyIt != allEnemies.end()) {
                     switch ((*enemyIt).type)
                     {
-                    case 0: {
-                        break;
-                    }
-                    case 1: {
-                        StratHeavyMove(enemyIt, allEnemies, allBullets, ship, infoShip, enemyBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds(), tableaux, points);
-                        break;
-                    }
-                    case 2: {
-                        StratBomberMove(enemyIt, allEnemies, allBullets, ship, infoShip, storage, elapsedTime.asSeconds(), tableaux, points);
-                        break;
-                    }
-                    case 3: {
-                        StratTorpedoLuncherMove(enemyIt, allEnemies, enemyTorpedo, infoShip, allBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds(), tableaux, points);
-                        break;
-                    }
+                        case 0: {
+                            break;
+                        }
+                        case 1: {
+                            StratHeavyMove(enemyIt, allEnemies, allBullets, ship, infoShip, enemyBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds(), tableaux, points);
+                            break;
+                        }
+                        case 2: {
+                            StratBomberMove(enemyIt, allEnemies, allBullets, ship, infoShip, storage, elapsedTime.asSeconds(), tableaux, points);
+                            break;
+                        }
+                        case 3: {
+                            StratTorpedoLuncherMove(enemyIt, allEnemies, enemyTorpedo, infoShip, allBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds(), tableaux, points);
+                            break;
+                        }
                     }
 
                     if (!enemyIt->isValid) {
@@ -377,7 +379,6 @@ int main()
                 if (!ship.canTakeDamage) {
                     InvincibilityShip(ship, elapsedTime.asSeconds());
                 }
-
             }
 
             // ------------ Rendu ------------ //

@@ -1,9 +1,5 @@
-
 #include <iostream>
 #include "EnemiesBehaviour.h"
-#include "ShipBehaviour.h"
-#include "Menu.h"
-#include "ScoreBoard.h"
 #include <map>
 
 void InitializeEnemy(Enemy& enemy, int type) {

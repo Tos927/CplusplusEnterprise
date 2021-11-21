@@ -1,7 +1,4 @@
 #include "ShipBehaviour.h"
-#include "GeneratorLevel.h"
-#include "Menu.h"
-#include "AppPath.h"
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <vector>
@@ -51,7 +48,7 @@ void ShipMovement(Ship& ship, float deltaTime, float& angle, float& vitesse)
 	ship.react2.setRotation(angle);
 
 	//Propultion du vaisseau
-	int speed = 200;
+	int speed = 300;
 	int maxSpeed = 300;
 	int minSpeed = 0;
 	sf::Vector2f direction;
