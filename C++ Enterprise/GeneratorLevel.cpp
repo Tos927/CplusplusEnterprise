@@ -1,4 +1,3 @@
-
 #include "GeneratorLevel.h"
 #include "ShipBehaviour.h"
 #include "EnemiesBehaviour.h"

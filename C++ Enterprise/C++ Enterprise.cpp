@@ -7,6 +7,7 @@
 #include "GeneratorLevel.h"
 #include "EnemiesBehaviour.h"
 #include "Particules.h"
+#include "ScoreBoard.h"
 
 
 int main()
@@ -22,6 +23,9 @@ int main()
     float vitesse = 0;
     int tableaux = -1;
     InitializeShip(ship);
+
+    //Preparation au scoreboard
+    Points points;
 
     // object de la scène
     std::vector<Planet> level;
@@ -92,8 +96,13 @@ int main()
 
     // Text life on the life bar 
     sf::Text lifeInGame = SetUpText(std::to_string(ship.currentLife) + "/" + std::to_string(infoShip.lifePoints), aAtmospheric_ttf, 15, sf::Color::White, sf::Vector2f(maxlifeWidth, maxLifeHeight) - sf::Vector2f(maxlifeWidth / 2, -32.5));
+    
+    // Text GameOver and Scoreboard
     sf::Text GameOverText = SetUpText("(GAME-OVER)", barcadettf, 100, sf::Color::Red, sf::Vector2f(WIDTH / 2, HEIGHT / 2));
     SetOriginText(GameOverText);
+    sf::Text ScoreBoardText = SetUpText("Score : " + std::to_string(points.totalPoints), aAtmospheric_ttf, 20, sf::Color::White, sf::Vector2f(WIDTH/2, HEIGHT * 0.05));
+    SetOriginText(ScoreBoardText);
+
 
     // ------------------------------------ End - Initialization Menu  ------------------------------------ //
 
@@ -188,8 +197,9 @@ int main()
         RessourcesStorage storageInGame = storage;
         UpdateStorageInGame(storageInGame);
 
-
         UpdateLifeBar(ship, infoShip, lifeBar, maxlifeWidth, maxLifeHeight, lifeInGame);
+
+        UpdateScoreBoard(ScoreBoardText, points);
 
         // ------------------------------------ End - Dynamic/Update Menu Item ------------------------------------ //
         // Logique
@@ -207,7 +217,6 @@ int main()
 
         if (displayMenu)
         {
-
             // Draw the Menu background
             window.draw(menu2);
             window.draw(menu);
@@ -229,15 +238,12 @@ int main()
 
         else
         {
-            window.draw(lifeBar);
-            window.draw(lifeBarOutline);
-            window.draw(lifeInGame);
             isLost = !IsShipAlive(ship);
 
             if (!isLost) 
             {
                 ShipMovement(ship, elapsedTime.asSeconds(), angle, vitesse);
-                ActualisationProps(level, allBullets, storage, tableaux);
+                ActualisationProps(level, allBullets, storage, tableaux, points.totalPoints, points.levelMultiplicator);
                 if (IsOutOfScreen(ship.ship.getPosition(), 10.0f))
                 {
                     allEnemies.clear();
@@ -249,6 +255,7 @@ int main()
                     level = NewLevel(3, 10, 20, 20, 50, 4, 0, 3, 0, 3, 0, allEnemies);
                     displayTitle = false;
                     tableaux += 1;
+                    points.levelMultiplicator += tableaux;
                 }
 
                 // Déplacement des balles alliers
@@ -314,15 +321,15 @@ int main()
                         break;
                     }
                     case 1: {
-                        enemyIt = StratHeavyMove(enemyIt, allEnemies, allBullets, ship, infoShip, enemyBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds(), tableaux);
+                        enemyIt = StratHeavyMove(enemyIt, allEnemies, allBullets, ship, infoShip, enemyBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds(), tableaux, points);
                         break;
                     }
                     case 2: {
-                        enemyIt = StratBomberMove(enemyIt, allEnemies, allBullets, ship, infoShip, storage, elapsedTime.asSeconds(), tableaux);
+                        enemyIt = StratBomberMove(enemyIt, allEnemies, allBullets, ship, infoShip, storage, elapsedTime.asSeconds(), tableaux, points);
                         break;
                     }
                     case 3: {
-                        enemyIt = StratTorpedoLuncherMove(enemyIt, allEnemies, enemyTorpedo, infoShip, allBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds(),tableaux);
+                        enemyIt = StratTorpedoLuncherMove(enemyIt, allEnemies, enemyTorpedo, infoShip, allBullets, ship.ship.getPosition(), storage, elapsedTime.asSeconds(),tableaux, points);
                         break;
                     }
                     }
@@ -364,6 +371,11 @@ int main()
 
             // ------------ Rendu ------------ //
 
+            // Planètes
+            for (Planet p : level) {
+                window.draw(p.pShape);
+            }
+
             for (Explosion explosion : allExplosion) {
                 window.draw(explosion.explosionShape);
                 window.draw(explosion.explosionShape2);
@@ -377,14 +389,13 @@ int main()
             for (Enemy enemy : allEnemies) {
                 window.draw(enemy.shape);
             }
-
-            // Planètes
-            for (Planet p : level) {
-                window.draw(p.pShape);
-            }
             
             // Draw the In-Game storage
             DrawOneStorage(storageInGame, window);
+            window.draw(lifeBar);
+            window.draw(lifeBarOutline);
+            window.draw(lifeInGame);
+            window.draw(ScoreBoardText);
 
             // Balles alliers
             for (Bullets& bul : allBullets)
