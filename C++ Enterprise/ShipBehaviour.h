@@ -15,10 +15,10 @@ struct InfoShip
 	std::string atkString = "ATK : ";
 	int atkPoints = 50;
 
-	std::string lifeString = " / HP : ";
+	std::string lifeString = "HP : ";
 	int lifePoints = 100;
 
-	std::string bspeedString = " / Bullet Speed : ";
+	std::string bspeedString = "Bullet Speed : ";
 	float bspeedPoints = 300.0f;
 
 	std::string shipSpeed = "Ship Speed : ";

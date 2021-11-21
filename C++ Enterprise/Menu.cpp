@@ -171,8 +171,38 @@ void UpdateEquipOnLevelUp(EquipStruct& equip, RessourcesStorage& storage, InfoSh
 
         equip.level++;
 
-        equip.currentStatsBonus += equip.statsBonusOnLevelUp;
+        if (equip.equipID != 3 && equip.equipID != 4)
+        {
+            equip.statsBonusOnLevelUp += 10;
+        }   
 
+        if (equip.equipID == 3 && equip.level > 27)
+        {
+            equip.statsBonusOnLevelUp += 1;
+        }
+
+        if (equip.equipID == 4)
+        {
+            switch (equip.level)
+            {
+            case 10:
+            case 20:
+            case 30:
+            case 40:
+            case 50:
+            case 60:
+                equip.statsBonusOnLevelUp += 1;
+                break;
+            case 70:
+            case 80:
+            case 90:
+                equip.statsBonusOnLevelUp += 2;
+                break;
+            }
+        }
+
+        equip.currentStatsBonus += equip.statsBonusOnLevelUp;
+        
         switch (equip.equipID)
         {
         case 1:
@@ -188,9 +218,17 @@ void UpdateEquipOnLevelUp(EquipStruct& equip, RessourcesStorage& storage, InfoSh
         case 3:
             // Increases the bullet speed of the ship
             infoShip.bspeedPoints += equip.statsBonusOnLevelUp;
+
+            Clamp(infoShip.bspeedPoints, 0, 3000);
+            Clamp(equip.currentStatsBonus, 0, 2700);
+
+            if (infoShip.bspeedPoints >= 3000)
+            {
+                equip.statsBonusOnLevelUp = 0;
+            }
             break;
         case 4:
-            infoShip.atkPoints += equip.statsBonusOnLevelUp;
+            infoShip.speed += equip.statsBonusOnLevelUp;
             break;
         }
     }
@@ -240,4 +278,31 @@ void UpdateLifeBar(Ship& ship, InfoShip& infoShip, sf::RectangleShape& lifeBar, 
 
     // Update the Text of life on the life bar
     lifeInGame.setString(std::to_string(ship.currentLife) + "/" + std::to_string(infoShip.lifePoints));
+    SetOriginText(lifeInGame);
+    //lifeInGame.setPosition(sf::Vector2f(maxlifeWidth, maxLifeHeight) - sf::Vector2f(maxlifeWidth / 2, -32.5));
+    lifeInGame.setPosition(sf::Vector2f(WIDTH * 0.02, HEIGHT * 0.05) + sf::Vector2f(maxlifeWidth /2, maxLifeHeight/3));
+}
+
+void Clamp(int& valeur, int min, int max)
+{
+    if (valeur > max)
+    {
+        valeur = max;
+    }
+    else if (valeur < min)
+    {
+        valeur = min;
+    }
+}
+
+void Clamp(float& valeur, float min, float max)
+{
+    if (valeur > max)
+    {
+        valeur = max;
+    }
+    else if (valeur < min)
+    {
+        valeur = min;
+    }
 }
