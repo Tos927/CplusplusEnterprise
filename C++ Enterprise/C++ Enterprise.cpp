@@ -7,6 +7,7 @@
 #include "GeneratorLevel.h"
 #include "EnemiesBehaviour.h"
 #include "Particules.h"
+#include <algorithm>
 
 
 int main()
@@ -59,7 +60,7 @@ int main()
     menu2.setOutlineColor(sf::Color::Color(54, 54, 54));
 
     // Background information of the ship 
-    sf::RectangleShape shipInfo = SetupBackground(sf::Vector2f(WIDTH * 0.25, HEIGHT * 0.09), sf::Color::Color(240, 240, 240), sf::Vector2f(WIDTH * 0.27, HEIGHT * 0.18));
+    sf::RectangleShape shipInfo = SetupBackground(sf::Vector2f(WIDTH * 0.24, HEIGHT * 0.13), sf::Color::Color(240, 240, 240), sf::Vector2f(WIDTH * 0.27, HEIGHT * 0.18));
     shipInfo.setOutlineThickness(3);
     shipInfo.setOutlineColor(sf::Color::Color(54, 54, 54));
 
@@ -76,8 +77,8 @@ int main()
 
     EquipStruct equip1 = Equip(1, "E", "Deflector Shield", posbackG + sf::Vector2f(margin, margin), posbackG, aAtmospheric_ttf, 15, "Energy shield that protects spacecraft\nfrom laser fire, in-flight projectiles and\naccidental space debris interaction.");
     EquipStruct equip2 = Equip(2, "R", "Photon Torpedo", posbackG + sf::Vector2f(pRight + margin, margin), posbackG + sf::Vector2f(pRight, 0), aAtmospheric_ttf, 20, "Improvement of the technology contained in\nthe cannons in order to have a firepower\nthat can cause massive damage to the enemy\nstructures.");
-    EquipStruct equip3 = Equip(3, "T", "Artillery", posbackG + sf::Vector2f(margin, pTop + margin), posbackG + sf::Vector2f(0, pTop), aAtmospheric_ttf, 25, "The artillery's upgrade increases the power\nof the ship's cannons, thus increasing the\nspeed at which the projectiles advance\nthrough space.");
-    EquipStruct equip4 = Equip(4, "Y", "Crew", posbackG + sf::Vector2f(pRight + margin, pTop + margin), posbackG + sf::Vector2f(pRight, pTop), aAtmospheric_ttf, 1, "Upgrading your ship's crew increases the\nfirepower of your ship as well as the number\nof resources you can harvest and other\nbonuses depending on the level.");
+    EquipStruct equip3 = Equip(3, "T", "Artillery", posbackG + sf::Vector2f(margin, pTop + margin), posbackG + sf::Vector2f(0, pTop), aAtmospheric_ttf, 1, "The artillery's upgrade increases the power\nof the ship's cannons, thus increasing the\nspeed at which the projectiles advance\nthrough space.");
+    EquipStruct equip4 = Equip(4, "Y", "Thruster", posbackG + sf::Vector2f(pRight + margin, pTop + margin), posbackG + sf::Vector2f(pRight, pTop), aAtmospheric_ttf, 1, "Improved ship's thrusters improve your\nspeed of movement in space to cross the\ngalaxy faster");
 
     RessourcesStorage storage = Storage(aAtmospheric_ttf);
 
@@ -173,16 +174,17 @@ int main()
         // Update ship information
         sf::Text InfoShipTitle = SetUpText("Ship Information : Level " + std::to_string(infoShip.shipLevel), aAtmospheric_ttf, 20, sf::Color::Black, /*pos*/ sf::Vector2f(WIDTH * 0.275, HEIGHT * 0.185));
 
-        sf::Text InfoShipValue = SetUpText(infoShip.atkString + std::to_string(infoShip.atkPoints) +
-            infoShip.lifeString + std::to_string(ship.currentLife) + "/" + std::to_string(infoShip.lifePoints) + infoShip.bspeedString + std::to_string((int)infoShip.bspeedPoints),
-            aAtmospheric_ttf, 15, sf::Color::Black, /*pos*/ sf::Vector2f(WIDTH * 0.275, HEIGHT * 0.235));
+        sf::Text InfoShipValue = SetUpText(infoShip.atkString + std::to_string(infoShip.atkPoints) + "\n" +
+            infoShip.lifeString + std::to_string(ship.currentLife) + "/" + std::to_string(infoShip.lifePoints) + "\n" + infoShip.bspeedString + std::to_string((int)infoShip.bspeedPoints)
+            + "\n" + infoShip.shipSpeed + std::to_string((int)infoShip.speed),
+            aAtmospheric_ttf, 13, sf::Color::Black, /*pos*/ sf::Vector2f(WIDTH * 0.275, HEIGHT * 0.235));
 
         UpdateStorage(storage);
 
         UpdateTextLevel(equip1, posbackG, " HP", storage);
         UpdateTextLevel(equip2, posbackG + sf::Vector2f(pRight, 0), " Attack", storage);
         UpdateTextLevel(equip3, posbackG + sf::Vector2f(0, pTop), " Bullet Speed", storage);
-        UpdateTextLevel(equip4, posbackG + sf::Vector2f(pRight, pTop), " Attack", storage);
+        UpdateTextLevel(equip4, posbackG + sf::Vector2f(pRight, pTop), " Ship Speed", storage);
 
         // Duplicate the storage after updating for the In-Game Storage
         RessourcesStorage storageInGame = storage;
@@ -236,7 +238,7 @@ int main()
 
             if (!isLost) 
             {
-                ShipMovement(ship, elapsedTime.asSeconds(), angle, vitesse);
+                ShipMovement(ship, elapsedTime.asSeconds(), angle, vitesse, infoShip);
                 ActualisationProps(level, allBullets, storage, tableaux);
                 if (IsOutOfScreen(ship.ship.getPosition(), 10.0f))
                 {

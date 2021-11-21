@@ -12,11 +12,14 @@ struct InfoShip
 	std::string atkString = "ATK : ";
 	int atkPoints = 50;
 
-	std::string lifeString = " / HP : ";
+	std::string lifeString = "HP : ";
 	int lifePoints = 100;
 
-	std::string bspeedString = " / Bullet Speed : ";
+	std::string bspeedString = "Bullet Speed : ";
 	float bspeedPoints = 300.0f;
+
+	std::string shipSpeed = "Ship Speed : ";
+	int speed = 200;
 };
 
 struct Ship
@@ -45,7 +48,7 @@ struct Bullets
 };
 
 void InitializeShip(Ship& ship);
-void ShipMovement(Ship& ship, float deltaTime, float& angle, float& vitesse);
+void ShipMovement(Ship& ship, float deltaTime, float& angle, float& vitesse, InfoShip& infoShip);
 bool IsOutOfScreen(sf::Vector2f shipPosition, float screenTrigger);
 void ResetToCenter(Ship& ship);
 void CreateBullet(std::vector<Bullets>& bullets, int speed, int damage, const sf::CircleShape& origineShape, float angleInDeg); //void CreateBullet(std::vector<Bullets>& bullets, InfoShip& infoShip, float bulletAngle, const Ship& shipPosition);

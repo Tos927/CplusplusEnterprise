@@ -32,7 +32,7 @@ void InitializeShip(Ship& ship)
 	ship.react2.setFillColor(sf::Color::Green);
 }
 
-void ShipMovement(Ship& ship, float deltaTime, float& angle, float& vitesse) 
+void ShipMovement(Ship& ship, float deltaTime, float& angle, float& vitesse, InfoShip& infoShip) 
 {
 	int rotationSpeed = 200;
 
@@ -51,15 +51,14 @@ void ShipMovement(Ship& ship, float deltaTime, float& angle, float& vitesse)
 	ship.react2.setRotation(angle);
 
 	//Propultion du vaisseau
-	int speed = 200;
 	int maxSpeed = 300;
 	int minSpeed = 0;
 	sf::Vector2f direction;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		direction.x = cos(angle/180 * PI) * speed * deltaTime;
-		direction.y = sin(angle/180 * PI) * speed * deltaTime;
+		direction.x = cos(angle/180 * PI) * infoShip.speed * deltaTime;
+		direction.y = sin(angle/180 * PI) * infoShip.speed * deltaTime;
 		ship.ship.move(direction);
 		ship.weapon.move(direction);
 		ship.react1.move(direction);
