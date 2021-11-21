@@ -44,7 +44,7 @@ struct RessourcesStorage
     std::string resource = "Resources ";
     sf::Text nameResource;
 
-    int ownResource = 0;// Need 2 272 118 to Lvl99
+    int ownResource = 2272118;// Need 2 272 118 to Lvl99
 };
 
 // Fonction qui Setup un text et le place dans la fenetre 
