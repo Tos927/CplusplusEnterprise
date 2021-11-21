@@ -230,6 +230,11 @@ void DrawOneStorage(RessourcesStorage& storage, sf::RenderWindow& window)
 
 void UpdateLifeBar(Ship& ship, InfoShip& infoShip, sf::RectangleShape& lifeBar, int maxlifeWidth, int maxLifeHeight, sf::Text& lifeInGame)
 {
+    if (ship.currentLife < 0)
+    {
+        ship.currentLife = 0;
+    }
+
     // Create a float that contains the current percentage of life 
     float currentPercentageOfLife = ((float)ship.currentLife / (float)infoShip.lifePoints);
 
