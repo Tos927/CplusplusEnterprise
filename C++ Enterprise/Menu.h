@@ -45,16 +45,16 @@ struct RessourcesStorage
 };
 
 // Fonction qui Setup un text et le place dans la fenetre 
-sf::Text SetUpText(std::string textContent, sf::Font& arialttf, int charaSize, sf::Color color, sf::Vector2f posText);
+sf::Text SetUpText(std::string textContent, sf::Font& font, int charaSize, sf::Color color, sf::Vector2f posText);
 
 // Fonction qui Setup un RectangleShape/Background et le place dans la fenetre 
 sf::RectangleShape SetupBackground(sf::Vector2f backgroundSize, sf::Color color, sf::Vector2f posBackground);
 
 // Fonction qui crée le storage
-RessourcesStorage Storage(sf::Font& arialttf);
+RessourcesStorage Storage(sf::Font& font);
 
 //Fonction qui crée les Equip
-EquipStruct Equip(int equipID, std::string key, std::string name, sf::Vector2f posNameText, sf::Vector2f posBackground, sf::Font& arialttf, int statsBonusOnLevelUp, std::string description);
+EquipStruct Equip(int equipID, std::string key, std::string name, sf::Vector2f posNameText, sf::Vector2f posBackground, sf::Font& font, int statsBonusOnLevelUp, std::string description);
 
 //Fonction qui crée le background du Menu
 sf::RectangleShape Menu(sf::Vector2f rectangleSize, sf::Color color, sf::Vector2f position);

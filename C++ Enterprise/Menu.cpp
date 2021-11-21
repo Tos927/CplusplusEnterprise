@@ -11,12 +11,12 @@ void SetOriginText(sf::Text& text)
     text.setOrigin((text.getGlobalBounds().width / 2), (text.getGlobalBounds().height / 2));
 }
 
-sf::Text SetUpText(std::string textContent, sf::Font& arialttf, int charaSize, sf::Color color, sf::Vector2f posText)
+sf::Text SetUpText(std::string textContent, sf::Font& font, int charaSize, sf::Color color, sf::Vector2f posText)
 {
     sf::Text text;
 
     text.setString(textContent);
-    text.setFont(arialttf);
+    text.setFont(font);
     text.setCharacterSize(charaSize);
     text.setFillColor(color);
     text.setPosition(posText);
@@ -44,7 +44,7 @@ sf::RectangleShape Menu(sf::Vector2f rectangleSize, sf::Color color, sf::Vector2
     return menu;
 }
 
-struct EquipStruct Equip(int equipID, std::string key, std::string name, sf::Vector2f posNameText, sf::Vector2f posBackground, sf::Font& arialttf, int statsBonusOnLevelUp, std::string description)
+struct EquipStruct Equip(int equipID, std::string key, std::string name, sf::Vector2f posNameText, sf::Vector2f posBackground, sf::Font& font, int statsBonusOnLevelUp, std::string description)
 {
     EquipStruct equip;
 
@@ -53,7 +53,7 @@ struct EquipStruct Equip(int equipID, std::string key, std::string name, sf::Vec
     equip.statsBonusOnLevelUp = statsBonusOnLevelUp;
 
     // Equip background and name text
-    equip.name = SetUpText(name, arialttf, 17, sf::Color::Black, posNameText);
+    equip.name = SetUpText(name, font, 17, sf::Color::Black, posNameText);
 
     float equipBgWidth = WIDTH * 0.22;
     float equipBgHeight = HEIGHT * 0.12;
@@ -67,22 +67,22 @@ struct EquipStruct Equip(int equipID, std::string key, std::string name, sf::Vec
     equip.levelBg = SetupBackground(sf::Vector2f(levelBgWidth, equipBgHeight), sf::Color::Color(54, 54, 54), posBackground + sf::Vector2f(equipBgWidth - levelBgWidth, 0)); //190 0
 
     // Place the text Lvl1 at the center bottom of the level's background 
-    equip.textLevel = SetUpText("LvL" + std::to_string(equip.level), arialttf, 20, sf::Color::White, posBackground + sf::Vector2f(equipBgWidth - (levelBgWidth / 2), levelBgWidth * 0.80));
+    equip.textLevel = SetUpText("LvL" + std::to_string(equip.level), font, 20, sf::Color::White, posBackground + sf::Vector2f(equipBgWidth - (levelBgWidth / 2), levelBgWidth * 0.80));
     SetOriginText(equip.textLevel);
 
     // Place the preview level 
-    equip.previewLevel = SetUpText("LvL" + std::to_string(equip.level) + " -> LvL" + std::to_string(equip.level + 1), arialttf, 10, sf::Color::White, posBackground + sf::Vector2f(equipBgWidth - (levelBgWidth / 2), levelBgWidth * 0.40));
+    equip.previewLevel = SetUpText("LvL" + std::to_string(equip.level) + " -> LvL" + std::to_string(equip.level + 1), font, 10, sf::Color::White, posBackground + sf::Vector2f(equipBgWidth - (levelBgWidth / 2), levelBgWidth * 0.40));
     SetOriginText(equip.previewLevel);
 
     // Place the text Press E/R/T/Y at the center Top of the level's background 
-    equip.keyText = SetUpText("Press " + key, arialttf, 10, sf::Color::White, posBackground + sf::Vector2f(equipBgWidth - (levelBgWidth / 2), levelBgWidth * 0.20));
+    equip.keyText = SetUpText("Press " + key, font, 10, sf::Color::White, posBackground + sf::Vector2f(equipBgWidth - (levelBgWidth / 2), levelBgWidth * 0.20));
     SetOriginText(equip.keyText);
 
-    equip.neededResourcesText = SetUpText("Needed resources : " + std::to_string(equip.neededResources), arialttf, 10, sf::Color::Black, posNameText + sf::Vector2f(0, 25));
+    equip.neededResourcesText = SetUpText("Needed resources : " + std::to_string(equip.neededResources), font, 10, sf::Color::Black, posNameText + sf::Vector2f(0, 25));
 
-    equip.definition = SetUpText(description, arialttf, 8, sf::Color::Black, posNameText + sf::Vector2f(0, 45));
+    equip.definition = SetUpText(description, font, 8, sf::Color::Black, posNameText + sf::Vector2f(0, 45));
 
-    equip.currentBonus = SetUpText("Current bonus stats : " + std::to_string(equip.currentStatsBonus) + "Current bonus stats : " + std::to_string(equip.currentStatsBonus + equip.statsBonusOnLevelUp), arialttf, 9, sf::Color::Black, posNameText + sf::Vector2f(0, 110));
+    equip.currentBonus = SetUpText("Current bonus stats : " + std::to_string(equip.currentStatsBonus) + "Current bonus stats : " + std::to_string(equip.currentStatsBonus + equip.statsBonusOnLevelUp), font, 9, sf::Color::Black, posNameText + sf::Vector2f(0, 110));
 
     equip.background.setOutlineThickness(3);
     equip.background.setOutlineColor(sf::Color::Color(255, 255, 255));
@@ -90,7 +90,7 @@ struct EquipStruct Equip(int equipID, std::string key, std::string name, sf::Vec
     return equip;
 }
 
-struct RessourcesStorage Storage(sf::Font& arialttf)
+struct RessourcesStorage Storage(sf::Font& font)
 {
     RessourcesStorage storage;
 
@@ -100,10 +100,10 @@ struct RessourcesStorage Storage(sf::Font& arialttf)
     storage.resourcesBg = SetupBackground(sf::Vector2f(resourcesBgWidth, HEIGHT * 0.10), sf::Color::Color(240, 240, 240), sf::Vector2f(WIDTH * 0.675 - (resourcesBgWidth / 2), HEIGHT * 0.18));
 
     // Place the text at the middle top of resourcesBg
-    storage.storage = SetUpText("Ressource Storage", arialttf, 13, sf::Color::Black, sf::Vector2f(WIDTH * 0.675 - (resourcesBgWidth / 2) + (resourcesBgWidth / 2), HEIGHT * (0.18 + 0.02)));
+    storage.storage = SetUpText("Ressource Storage", font, 13, sf::Color::Black, sf::Vector2f(WIDTH * 0.675 - (resourcesBgWidth / 2) + (resourcesBgWidth / 2), HEIGHT * (0.18 + 0.02)));
     SetOriginText(storage.storage);
 
-    storage.nameResource = SetUpText(storage.resource + std::to_string(storage.ownResource), arialttf, 25, sf::Color::Black, sf::Vector2f(WIDTH * 0.675 - (resourcesBgWidth / 2) + (resourcesBgWidth / 2), HEIGHT * (0.18 + 0.08)));
+    storage.nameResource = SetUpText(storage.resource + std::to_string(storage.ownResource), font, 25, sf::Color::Black, sf::Vector2f(WIDTH * 0.675 - (resourcesBgWidth / 2) + (resourcesBgWidth / 2), HEIGHT * (0.18 + 0.08)));
 
 
     storage.resourcesBg.setOutlineThickness(3);
