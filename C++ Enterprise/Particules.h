@@ -19,12 +19,13 @@ struct Explosion
 
 struct TrailParticule {
 	bool isValid = true;
-	sf::CircleShape shape;
+	sf::RectangleShape shape;
+	sf::Color color;
 	float timeDisplay = 2.0f;
 };
 
 Explosion CreationExplosion(sf::Color color, sf::Vector2f position);
 void ExpendingExplosion(std::vector<Explosion>::iterator& explosionIt,const float& deltaTime);
-TrailParticule CreatParticuleTrail(sf::Vector2f position, float angle);
-void UpdateTrail(std::vector<TrailParticule>::iterator& trailIt,const float& deltaTime);
+TrailParticule CreatParticuleTrail(sf::Vector2f position, int r, int g, int b, float angle);
+void UpdateTrail(std::vector<TrailParticule>::iterator& trailIt, int clearSpeed, const float& deltaTime);
 void CreatTrail(std::map<int, Torpedo>::iterator& torpedoIt, std::vector<TrailParticule>& allTrailParticules, const float& deltaTime);

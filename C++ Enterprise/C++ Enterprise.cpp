@@ -353,7 +353,7 @@ int main()
 
                 std::vector<TrailParticule>::iterator trailIt = allTrailParticules.begin();
                 while (trailIt != allTrailParticules.end()) {
-                    UpdateTrail(trailIt, elapsedTime.asSeconds());
+                    UpdateTrail(trailIt, 100, elapsedTime.asSeconds());
 
                     if (!trailIt->isValid) {
                         trailIt = allTrailParticules.erase(trailIt);

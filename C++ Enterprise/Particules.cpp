@@ -38,19 +38,25 @@ void ExpendingExplosion(std::vector<Explosion>::iterator& explosionIt, const flo
 	}
 }
 
-TrailParticule CreatParticuleTrail(sf::Vector2f position, float angle) {
+TrailParticule CreatParticuleTrail(sf::Vector2f position, int r, int g, int b, float angle) {
 	TrailParticule particule;
 	particule.shape.setPosition(position);
-	particule.shape.setRadius(5);
-	particule.shape.setOrigin(15, 5);
+	particule.shape.setSize(sf::Vector2f(5,5));
+	particule.shape.setOrigin(10, 2.5f);
+
+	particule.color = sf::Color(r, g, b, 255);
+	particule.shape.setFillColor(particule.color);
 
 	float oppAngle = angle - 90;
 	particule.shape.setRotation(oppAngle);
 	return particule;
 }
 
-void UpdateTrail(std::vector<TrailParticule>::iterator& trailIt,const float& deltaTime) {
+void UpdateTrail(std::vector<TrailParticule>::iterator& trailIt, int clearSpeed, const float& deltaTime) {
 	trailIt->timeDisplay -= deltaTime;
+
+	trailIt->color = sf::Color(trailIt->color.r, trailIt->color.g, trailIt->color.b, trailIt->color.a - deltaTime * clearSpeed);
+	trailIt->shape.setFillColor(trailIt->color);
 
 	if (trailIt->timeDisplay <= 0) {
 		trailIt->isValid = false;
@@ -62,7 +68,7 @@ void CreatTrail(std::map<int, Torpedo>::iterator& torpedoIt, std::vector<TrailPa
 		torpedoIt->second.timeTrail -= deltaTime;
 	}
 	else {
-		allTrailParticules.push_back(CreatParticuleTrail(torpedoIt->second.shap.getPosition(), torpedoIt->second.shap.getRotation()));
+		allTrailParticules.push_back(CreatParticuleTrail(torpedoIt->second.shap.getPosition(), 255, 255, 255, torpedoIt->second.shap.getRotation()));
 		torpedoIt->second.timeTrail = 0.1f;
 	}
 }
